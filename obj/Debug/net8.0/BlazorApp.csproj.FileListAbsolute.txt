@@ -27,3 +27,4 @@ C:\Users\Micah\RiderProjects\SAPApp\obj\Debug\net8.0\refint\BlazorApp.dll
 C:\Users\Micah\RiderProjects\SAPApp\obj\Debug\net8.0\BlazorApp.pdb
 C:\Users\Micah\RiderProjects\SAPApp\obj\Debug\net8.0\BlazorApp.genruntimeconfig.cache
 C:\Users\Micah\RiderProjects\SAPApp\obj\Debug\net8.0\ref\BlazorApp.dll
+C:\Users\Micah\RiderProjects\SAPApp\obj\Debug\net8.0\BlazorApp.sourcelink.json
