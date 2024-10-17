@@ -5,14 +5,28 @@
         <NavMenu />
     </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
+    <main class="d-flex flex-column justify-content-between">
         <article class="content px-4">
             @Body
         </article>
+        <div class="d-flex flex-row justify-content-between border border-2">
+            <div class="px-4">
+                <div class="d-flex flex-column justify-content-between mb-2 mt-2">
+                    <div>
+                        Contact the Office of Financial Aid:
+                    </div>
+                    <div>
+                        Email: finaid@stmartin.edu
+                    </div>
+                    <div>
+                        Phone: 360-688-2150; Text: 360-995-1008
+                    </div>
+                </div>
+            </div>
+            <div class="px-4 s-flex flex-column align-content-center">
+                <img src="Saint-Martins-logo.svg" alt="Saint Martin's Logo" height="50"/>
+            </div>
+        </div>
     </main>
 </div>
 
