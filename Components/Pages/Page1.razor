@@ -55,6 +55,55 @@
     </div>
   </form>
 </div>
+<p><H3>Requirments - Incomplete appeals will not be reviewed or denied:</H3></p>
+<p>please read an ditital that you have submitted the required form s/documentation with this appeal.</p>
+
+
+<label for="myCheck">Signed, typed/ written personal statment(no more than 500 words) explaning: </label>
+<p> 1. Any extenuating circumstance that cause you to be palced on SAP Must appeal; </p>
+<p>2. How the entenuating circumstances that cause you to be palced on SAP Must Appeal;</p>
+<p>3. What you have done to overcome the extenuating circumstance(s)</p>
+<p>4. What specific steps are yot taking to ensure future success in attaining you academic goals?</p>
+
+<input type="checkbox" id="myCheck" onclick="myFunction()">
+
+<p id="text" style="display:none">Checkbox is CHECKED!</p>
+
+<label for="myCheck">Offical documentation supporting your extenuating circumstance(s).:</label> 
+<p> the Only acceptable forms of documentation are listed on the back of this form.</p>
+<input type="checkbox" id="myCheck" onclick="myFunction()">
+
+<p id="text" style="display:none">Checkbox is CHECKED!</p>
+
+<label for="myCheck">Payment arrangment: Iunderstand the Office of Financial Aid wit NOT hold my classes pending a decision by the SAP committee if i am unable to pay any balance on the account; and<label>
+<input type="checkbox" id="myCheck" onclick="myFunction()">
+<p id="text" style="display:none">Checkbox is CHECKED!</p>
+
+<p id="text" style="display:I understand that the decision of the Office of Financial aid is final.">Checkbox is CHECKED!</p>
+<label for="myCheck">I understand that the decision of the Office of Financial aid is final.</label> 
+<input type="checkbox" id="myCheck" onclick="myFunction()">
+<p id="text" style="display:none">Checkbox is CHECKED!</p>
+<
+
+<script>
+function myFunction() {
+  var checkBox = document.getElementById("myCheck");
+  var text = document.getElementById("text");
+  if (checkBox.checked == true){
+    text.style.display = "block";
+  } else {
+     text.style.display = "none";
+  }
+}
+</script>
+<div class="row">
+      <input type="submit" value="Submit">
+    </div>
+  </form>
+</div>
+
+</body>
+</html>
 
 </body>
 </html>
