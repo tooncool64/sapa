@@ -3,6 +3,7 @@ namespace BlazorApp;
 
 public class User
 {
+    [Key]
     public int UserId { get; set; }
     
     [Required]
