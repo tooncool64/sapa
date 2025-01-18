@@ -9,21 +9,25 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div>
-        <label for="firstName">Username:</label>
-        <input id="firstName" @bind="_user.Username" />
+        <label for="username">Username:</label>
+        <input id="username" @bind="_user.Username" />
     </div>
+    
     <div>
-        <label for="lastName">Password:</label>
-        <input id="lastName" @bind="_user.Password" />
+        <label for="password">Password:</label>
+        <input id="password" @bind="_user.Password" />
     </div>
+    
     <button type="submit">Submit</button>
 </EditForm>
 
 @code {
     private readonly User _user = new User();
-
+    
     private async Task HandleSubmit()
     {
+        _user.Id = Guid.NewGuid();
+        
         DbContext.Users.Add(_user);
         await DbContext.SaveChangesAsync();
     }
