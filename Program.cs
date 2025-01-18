@@ -1,10 +1,19 @@
+using BlazorApp;
 using BlazorApp.Components;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddDbContext<CosmosContext>(options =>
+{
+    var endpointUri = Environment.GetEnvironmentVariable("DATABASE_URI");
+    var primaryKey = Environment.GetEnvironmentVariable("PRIMARY_DATABASE_KEY");
+    options.UseCosmos(endpointUri, primaryKey, databaseName: "Users");
+});
 
 var app = builder.Build();
 

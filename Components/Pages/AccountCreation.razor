@@ -1,0 +1,31 @@
+@page "/AccountCreation"
+@inject CosmosContext DbContext
+
+<PageTitle>Create your Account</PageTitle>
+
+<h3>Add a New Person</h3>
+
+<EditForm Model="_user" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="firstName">Username:</label>
+        <input id="firstName" @bind="_user.Username" />
+    </div>
+    <div>
+        <label for="lastName">Password:</label>
+        <input id="lastName" @bind="_user.Password" />
+    </div>
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private readonly User _user = new User();
+
+    private async Task HandleSubmit()
+    {
+        DbContext.Users.Add(_user);
+        await DbContext.SaveChangesAsync();
+    }
+}
