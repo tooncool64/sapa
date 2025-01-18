@@ -5,10 +5,9 @@
 
 <h3>Add a New Person</h3>
 
-<EditForm Model="_user" OnValidSubmit="HandleSubmit">
+<EditForm Model="_user" OnValidSubmit="HandleSubmit" FormName="AddUserForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
-
     <div>
         <label for="firstName">Username:</label>
         <input id="firstName" @bind="_user.Username" />
