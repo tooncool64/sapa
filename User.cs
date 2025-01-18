@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+
 namespace BlazorApp;
 
 public class User
 {
-    [Key]
-    public int UserId { get; set; }
+    public int Id { get; set; }
     
     [Required]
     public string Username;
