@@ -1,5 +1,7 @@
 @page "/AccountCreation"
+@using Microsoft.AspNetCore.Authorization
 @inject CosmosContext DbContext
+@attribute [Authorize]
 
 <PageTitle>Create your Account</PageTitle>
 

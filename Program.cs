@@ -1,5 +1,6 @@
 using BlazorApp;
 using BlazorApp.Components;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,11 @@ builder.Services.AddDbContext<CosmosContext>(options =>
     options.UseCosmos(endpointUri, primaryKey, databaseName: "Users");
 });
 
+builder.Services.AddOidcAuthentication(options =>
+{
+    builder.Configuration.Bind("AzureAd", options.ProviderOptions);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,6 +32,9 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
