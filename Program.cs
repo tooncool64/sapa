@@ -1,6 +1,8 @@
 using BlazorApp;
 using BlazorApp.Components;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,22 +17,19 @@ builder.Services.AddDbContext<CosmosContext>(options =>
     options.UseCosmos(endpointUri, primaryKey, databaseName: "Users");
 });
 
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(options =>
+    {
+        builder.Configuration.Bind("AzureAd", options);
+
+        // Optionally, override with environment variables
+        options.Authority = Environment.GetEnvironmentVariable("AzureAd__Authority") ?? options.Authority;
+        options.ClientId = Environment.GetEnvironmentVariable("AzureAd__ClientId") ?? options.ClientId;
+        options.CallbackPath = Environment.GetEnvironmentVariable("AzureAd_RedirectUri") ?? options.CallbackPath;
+    });
+
 builder.Services.AddAuthorizationCore();
 
-builder.Services.AddMsalAuthentication(options =>
-{
-    builder.Configuration.Bind("AzureAd", options.ProviderOptions);
-
-    options.ProviderOptions.Authentication.Authority = Environment.GetEnvironmentVariable("AzureAd__Authority");
-    options.ProviderOptions.Authentication.ClientId = Environment.GetEnvironmentVariable("AzureAd__ClientId");
-    options.ProviderOptions.Authentication.RedirectUri = Environment.GetEnvironmentVariable("AzureAd_RedirectUri");
-});
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = "Bearer";
-    options.DefaultChallengeScheme = "Bearer";
-});
 
 var app = builder.Build();
 
