@@ -28,10 +28,9 @@ builder.Services.AddMsalAuthentication(options =>
 
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultScheme = "Bearer";
+    options.DefaultAuthenticateScheme = "Bearer";
     options.DefaultChallengeScheme = "Bearer";
 });
-
 
 var app = builder.Build();
 
