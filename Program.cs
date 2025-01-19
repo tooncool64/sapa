@@ -1,6 +1,5 @@
 using BlazorApp;
 using BlazorApp.Components;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +18,10 @@ builder.Services.AddDbContext<CosmosContext>(options =>
 builder.Services.AddOidcAuthentication(options =>
 {
     builder.Configuration.Bind("AzureAd", options.ProviderOptions);
+
+    options.ProviderOptions.Authority = Environment.GetEnvironmentVariable("AzureAd__Authority");
+    options.ProviderOptions.ClientId = Environment.GetEnvironmentVariable("AzureAd__ClientId");
+    options.ProviderOptions.RedirectUri = Environment.GetEnvironmentVariable("AzureAd_RedirectUri");
 });
 
 var app = builder.Build();
