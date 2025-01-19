@@ -26,6 +26,13 @@ builder.Services.AddMsalAuthentication(options =>
     options.ProviderOptions.Authentication.RedirectUri = Environment.GetEnvironmentVariable("AzureAd_RedirectUri");
 });
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = "Bearer";
+    options.DefaultChallengeScheme = "Bearer";
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
