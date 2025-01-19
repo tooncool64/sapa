@@ -15,13 +15,15 @@ builder.Services.AddDbContext<CosmosContext>(options =>
     options.UseCosmos(endpointUri, primaryKey, databaseName: "Users");
 });
 
-builder.Services.AddOidcAuthentication(options =>
+builder.Services.AddAuthorizationCore();
+
+builder.Services.AddMsalAuthentication(options =>
 {
     builder.Configuration.Bind("AzureAd", options.ProviderOptions);
 
-    options.ProviderOptions.Authority = Environment.GetEnvironmentVariable("AzureAd__Authority");
-    options.ProviderOptions.ClientId = Environment.GetEnvironmentVariable("AzureAd__ClientId");
-    options.ProviderOptions.RedirectUri = Environment.GetEnvironmentVariable("AzureAd_RedirectUri");
+    options.ProviderOptions.Authentication.Authority = Environment.GetEnvironmentVariable("AzureAd__Authority");
+    options.ProviderOptions.Authentication.ClientId = Environment.GetEnvironmentVariable("AzureAd__ClientId");
+    options.ProviderOptions.Authentication.RedirectUri = Environment.GetEnvironmentVariable("AzureAd_RedirectUri");
 });
 
 var app = builder.Build();

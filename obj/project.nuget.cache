@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "k5eQyrsPE/w=",
+  "dgSpecHash": "1i7IEx/Kgmg=",
   "success": true,
   "projectFilePath": "C:\\Users\\Micah\\RiderProjects\\SAPApp\\BlazorApp.csproj",
   "expectedPackageFiles": [
@@ -31,6 +31,7 @@
     "C:\\Users\\Micah\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\8.0.12\\microsoft.aspnetcore.identity.ui.8.0.12.nupkg.sha512",
     "C:\\Users\\Micah\\.nuget\\packages\\microsoft.aspnetcore.metadata\\8.0.12\\microsoft.aspnetcore.metadata.8.0.12.nupkg.sha512",
     "C:\\Users\\Micah\\.nuget\\packages\\microsoft.aspnetcore.webutilities\\2.3.0\\microsoft.aspnetcore.webutilities.2.3.0.nupkg.sha512",
+    "C:\\Users\\Micah\\.nuget\\packages\\microsoft.authentication.webassembly.msal\\8.0.12\\microsoft.authentication.webassembly.msal.8.0.12.nupkg.sha512",
     "C:\\Users\\Micah\\.nuget\\packages\\microsoft.azure.cosmos\\3.46.1\\microsoft.azure.cosmos.3.46.1.nupkg.sha512",
     "C:\\Users\\Micah\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\Micah\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.0\\microsoft.bcl.hashcode.1.1.0.nupkg.sha512",

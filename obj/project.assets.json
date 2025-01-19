@@ -483,6 +483,28 @@
           }
         }
       },
+      "Microsoft.Authentication.WebAssembly.Msal/8.0.12": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.WebAssembly.Authentication": "8.0.12"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.Authentication.WebAssembly.Msal.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Authentication.WebAssembly.Msal.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/Microsoft.Authentication.WebAssembly.Msal.props": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/Microsoft.Authentication.WebAssembly.Msal.props": {}
+        }
+      },
       "Microsoft.Azure.Cosmos/3.46.1": {
         "type": "package",
         "dependencies": {
@@ -2756,6 +2778,26 @@
         "lib/netstandard2.0/Microsoft.AspNetCore.WebUtilities.xml",
         "microsoft.aspnetcore.webutilities.2.3.0.nupkg.sha512",
         "microsoft.aspnetcore.webutilities.nuspec"
+      ]
+    },
+    "Microsoft.Authentication.WebAssembly.Msal/8.0.12": {
+      "sha512": "iJBtLqABlzeKsfk0QMh7x2UrcSpAo4LSOBBOsRupN7c8z81yA/oL6yw5sLJP7kd5+dMJv53eg9I6U2cclZJC2w==",
+      "type": "package",
+      "path": "microsoft.authentication.webassembly.msal/8.0.12",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.txt",
+        "build/Microsoft.AspNetCore.StaticWebAssets.props",
+        "build/Microsoft.Authentication.WebAssembly.Msal.props",
+        "buildMultiTargeting/Microsoft.Authentication.WebAssembly.Msal.props",
+        "buildTransitive/Microsoft.Authentication.WebAssembly.Msal.props",
+        "lib/net8.0/Microsoft.Authentication.WebAssembly.Msal.dll",
+        "lib/net8.0/Microsoft.Authentication.WebAssembly.Msal.xml",
+        "microsoft.authentication.webassembly.msal.8.0.12.nupkg.sha512",
+        "microsoft.authentication.webassembly.msal.nuspec",
+        "staticwebassets/AuthenticationService.js"
       ]
     },
     "Microsoft.Azure.Cosmos/3.46.1": {
@@ -6395,6 +6437,7 @@
       "Microsoft.AspNetCore.Identity >= 2.3.0",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.12",
       "Microsoft.AspNetCore.Identity.UI >= 8.0.12",
+      "Microsoft.Authentication.WebAssembly.Msal >= 8.0.12",
       "Microsoft.Azure.Cosmos >= 3.46.1",
       "Microsoft.EntityFrameworkCore.Cosmos >= 9.0.1"
     ]
@@ -6462,6 +6505,10 @@
             "version": "[8.0.12, )"
           },
           "Microsoft.AspNetCore.Identity.UI": {
+            "target": "Package",
+            "version": "[8.0.12, )"
+          },
+          "Microsoft.Authentication.WebAssembly.Msal": {
             "target": "Package",
             "version": "[8.0.12, )"
           },

@@ -66,6 +66,10 @@
               "target": "Package",
               "version": "[8.0.12, )"
             },
+            "Microsoft.Authentication.WebAssembly.Msal": {
+              "target": "Package",
+              "version": "[8.0.12, )"
+            },
             "Microsoft.Azure.Cosmos": {
               "target": "Package",
               "version": "[3.46.1, )"
