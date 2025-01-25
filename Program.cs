@@ -28,7 +28,8 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
         options.CallbackPath = Environment.GetEnvironmentVariable("AzureAd_RedirectUri") ?? options.CallbackPath;
     });
 
-builder.Services.AddAuthorizationCore();
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 
 
 var app = builder.Build();
