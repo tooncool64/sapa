@@ -5,13 +5,3 @@
 <h3>Admin Page</h3>
 
 <p>Only users in the Admin role can view this page.</p>
-
-<AuthorizeView Roles="Admin">
-    <Authorized>
-        <h3>Welcome, Admin!</h3>
-    </Authorized>
-    <NotAuthorized>
-        <h3>You are not authorized to view this page.</h3>
-        <RedirectToLogin />
-    </NotAuthorized>
-</AuthorizeView>
