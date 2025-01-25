@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@inject NavigationManager Navigation
 
 <PageTitle>Home</PageTitle>
 
@@ -56,6 +58,15 @@
     </p>
     
     <Microsoft.AspNetCore.Components.WebAssembly.Authentication.RemoteAuthenticatorView Action="LogOut">
-        Logging you out...
+        Logging out...
     </Microsoft.AspNetCore.Components.WebAssembly.Authentication.RemoteAuthenticatorView>
+    
+    <button @onclick="Logout">Logout</button>
+    
+    @code {
+        private void Logout()
+        {
+            Navigation.NavigateTo("authentication/logout");
+        }
+    }
 </div>
