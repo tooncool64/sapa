@@ -1,0 +1,7 @@
+﻿@page "/advisor"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Advisor")]
+
+<h3>Advisor Page</h3>
+
+<p>Only users in the Advisor role can view this page.</p>

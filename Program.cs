@@ -29,7 +29,8 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+    .AddPolicy("Admin", policy => policy.RequireRole("Admin"))
+    .AddPolicy("Advisor", policy => policy.RequireRole("Advisor"));
 
 
 var app = builder.Build();
