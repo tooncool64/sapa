@@ -1,0 +1,15 @@
+﻿@page "/logout"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.AspNetCore.Authorization
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+
+<button @onclick="LogoutAction">Logout</button>
+
+@code {
+    private async Task LogoutAction()
+    {
+    // This will initiate the Azure AD logout process
+        NavigationManager.NavigateToLogout("/");
+    }
+}
