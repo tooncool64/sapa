@@ -1,13 +1,1 @@
-﻿@page "/logout"
-
-<a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a>
-
-<AuthorizeView>
-    <Authorized>
-        Hello
-        <a href="MicrosoftIdentity/Account/SignOut">Log out</a>
-    </Authorized>
-    <NotAuthorized>
-        <a href="MicrosoftIdentity/Account/SignIn">Log in</a>
-    </NotAuthorized>
-</AuthorizeView>
+﻿
