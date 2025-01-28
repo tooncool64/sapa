@@ -3,8 +3,21 @@ using BlazorApp.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
+using QuestPDF.Infrastructure;
+using SAPA.Components.PDF.Templates;
+using SAPA.Components.PDF.Data;
+using QuestPDF.Fluent;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//QuestPDF free license
+QuestPDF.Settings.License = LicenseType.Community;
+
+//QuestPDF compiler
+var model = AppealDocumentDataSource.GetSampleAppeal(); // Get sample data
+    var document = new AppealDocument(model);
+
+    document.GeneratePdf("StudentAppeal.pdf"); // Save as PDF
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
