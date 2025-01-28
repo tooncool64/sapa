@@ -7,6 +7,7 @@ using QuestPDF.Infrastructure;
 using SAPA.Components.PDF.Templates;
 using SAPA.Components.PDF.Data;
 using QuestPDF.Fluent;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,16 +31,17 @@ builder.Services.AddDbContext<CosmosContext>(options =>
     options.UseCosmos(endpointUri, primaryKey, databaseName: "Users");
 });
 
-builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(options =>
-    {
-        builder.Configuration.Bind("AzureAd", options);
+builder.Services.AddMsalAuthentication(options =>
+{
+    builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
 
-        // Optionally, override with environment variables
-        options.Authority = Environment.GetEnvironmentVariable("AzureAd__Authority") ?? options.Authority;
-        options.ClientId = Environment.GetEnvironmentVariable("AzureAd__ClientId") ?? options.ClientId;
-        options.CallbackPath = Environment.GetEnvironmentVariable("AzureAd_RedirectUri") ?? options.CallbackPath;
-    });
+
+    options.ProviderOptions.DefaultAccessTokenScopes.Add("api://your-api-client-id/.default");
+
+   
+    options.ProviderOptions.LoginMode = "redirect"; // Options: "popup" or "redirect"
+});
+
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Admin", policy => policy.RequireRole("Admin"))
