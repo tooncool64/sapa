@@ -7,7 +7,6 @@ using QuestPDF.Infrastructure;
 using SAPA.Components.PDF.Templates;
 using SAPA.Components.PDF.Data;
 using QuestPDF.Fluent;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
