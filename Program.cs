@@ -31,17 +31,17 @@ builder.Services.AddDbContext<CosmosContext>(options =>
     options.UseCosmos(endpointUri, primaryKey, databaseName: "Users");
 });
 
-builder.Services.AddMsalAuthentication(options =>
-{
-    builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(options =>
+    {
+        builder.Configuration.Bind("AzureAd", options);
 
-
-    options.ProviderOptions.DefaultAccessTokenScopes.Add("api://your-api-client-id/.default");
-
-   
-    options.ProviderOptions.LoginMode = "redirect"; // Options: "popup" or "redirect"
-});
-
+        // Optionally, override with environment variables
+        options.Authority = Environment.GetEnvironmentVariable("AzureAd__Authority") ?? options.Authority;
+        options.ClientId = Environment.GetEnvironmentVariable("AzureAd__ClientId") ?? options.ClientId;
+        options.CallbackPath = Environment.GetEnvironmentVariable("AzureAd_RedirectUri") ?? options.CallbackPath;
+        options.SignedOutRedirectUri = "/";
+    });
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Admin", policy => policy.RequireRole("Admin"))
