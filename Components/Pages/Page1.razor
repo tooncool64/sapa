@@ -87,12 +87,18 @@
 <label for="myCheck">Official documentation supporting your extenuating circumstance(s):</label>
 <p> The only acceptable forms of documentation are pdf and word.</p>
 
-<label for="myCheck"><input type="checkbox" id="myCheck" onclick="myFunction()">Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if i am unable to pay any balance on the account; and</label>
-<p id="text" style="display:none">Checkbox is CHECKED!</p>
-
-<label for="myCheck"><input type="checkbox" id="myCheck" onclick="myFunction()">I understand that the decision of the Office of Financial aid is final.</label>
-<p id="text" style="display:none">Checkbox is CHECKED!</p>
-
+<section class="card">
+            <h2>Acknowledgements</h2>
+            <label class="checkbox-container">
+                <input type="checkbox" id="myCheck" onclick="myFunction()"> Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.
+            </label>
+            <p id="text" style="display:none">Checkbox is CHECKED!</p>
+            
+            <label class="checkbox-container">
+                <input type="checkbox" id="myCheck" onclick="myFunction()"> I understand that the decision of the Office of Financial Aid is final.
+            </label>
+            <p id="text" style="display:none">Checkbox is CHECKED!</p>
+        </section>
 <script>
 function myFunction() {
   var checkBox = document.getElementById("myCheck");
