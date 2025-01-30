@@ -14,10 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 QuestPDF.Settings.License = LicenseType.Community;
 
 //QuestPDF compiler
-var model = AppealDocumentDataSource.GetSampleAppeal(); // Get sample data
+var model = AppealDocumentDataSource.GetSampleAppeal(); // Get data
     var document = new AppealDocument(model);
 
-    // document.GeneratePdf("StudentAppeal.pdf"); // Save as PDF
+    document.GeneratePdf("StudentAppeal.pdf"); // Save as PDF
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -39,7 +39,7 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
         options.Authority = Environment.GetEnvironmentVariable("AzureAd__Authority") ?? options.Authority;
         options.ClientId = Environment.GetEnvironmentVariable("AzureAd__ClientId") ?? options.ClientId;
         options.CallbackPath = Environment.GetEnvironmentVariable("AzureAd_RedirectUri") ?? options.CallbackPath;
-        options.SignedOutRedirectUri = "/";
+        options.RequireHttpsMetadata = true;
     });
 
 builder.Services.AddAuthorizationBuilder()

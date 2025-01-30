@@ -3,58 +3,86 @@
 <PageTitle>Page1</PageTitle>
 
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-    <title>Page1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAP Appeal Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .submit-btn {
+            background: #004080;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <main>
+            <section id="student-info" class="card">
+                <h2>Student Information</h2>
+                <label>Name: <input type="text" placeholder="Your name.."></label>
+                <label>Student ID#: <input type="text" placeholder="ex: p000.."></label>
+                <label>Date: <input type="date"></label>
+                <label>Major: <input type="text" placeholder="Your major.."></label>
+            </section>
 
-<h2>Satisfactory Academic Progress Appeal Form</h2>
-<p>Saint Martins University Office of Financial Aid has notified you that your Academic progress does not meet the level required to recive student financial aid; However, you have the right to appeal your status. The Office of Financial Aid considers appeals based on a variety of extenuating circumstances (e.g., personal illness or injury, death of an immediate family member, or other unusal circumstances beyond your control).</p>
-
-<div class="container">
-  <label for="fname">Student Information</label>
-  <form action="/action_page.php">
-    <div class="row">
-      <div class="col-25">
-        <label for="fname">First Name</label>
-      </div>
-      <div class="col-75">
-        <input type="text" id="fname" name="firstname" placeholder="Your name..">
-      </div>
+            <section id="appeal-details" class="card">
+                <h2>Appeal Explanation</h2>
+                <p>Please provide a signed, typed, or written statement (max 500 words) explaining:</p>
+                <ol>
+                    <li>Any extenuating circumstances that led to your SAP status.</li>
+                    <li>How these circumstances affected your academic progress.</li>
+                    <li>Steps you have taken to overcome them.</li>
+                    <li>Your plan for future academic success.</li>
+                </ol>
+                <textarea rows="6" placeholder="Write your explanation here..."></textarea>
+            </section>
+          </main>
     </div>
-    <div class="row">
-      <div class="col-25">
-        <label for="lname">Student ID#</label>
-      </div>
-      <div class="col-75">
-        <input type="text" id="lname" name="ex:p000123456" placeholder="ex:p000..">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-25">
-      </div>
-      <div class="col-75">
-         <label for="fdate">Date</label>
-      </div>
-      <div class="col-75">
-        <input type="text" id="fday" name="date" placeholder="date..">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-25">
-       <label for="major">Major</label>
-      <input type="text" id="ftext" name="major" placeholder="major.."> 
-      </div>
-    </div>
-    <div class="row">
-      <input type="submit" value="Submit">
-    </div>
-  </form>
-</div>
-<h3>Requirments - Incomplete appeals will not be reviewed or denied:</h3>
-<p>please read an ditital that you have submitted the required form s/documentation with this appeal.</p>
 
 
 <label for="myCheck">Signed, typed/ written personal statement(no more than 500 words) explaining: </label>
@@ -67,14 +95,15 @@
 
 <p id="text" style="display:none">Checkbox is CHECKED!</p>
 
-<label for="myCheck">Official documentation supporting your extenuating circumstance(s).:</label> 
-<p> the Only acceptable forms of documentation are listed on the back of this form.</p>
+<label for="myCheck">Official documentation supporting your extenuating circumstance(s):</label>
+
+<p> The only acceptable forms of documentation are pdf and word.</p>
 <input type="checkbox" id="myCheck" onclick="myFunction()">
 
 <p id="text" style="display:none">Checkbox is CHECKED!</p>
 
-<label for="myCheck">Payment arrangement: I understand the Office of Financial Aid wit NOT hold my classes pending a decision by the SAP committee if i am unable to pay any balance on the account; and</label>
 <input type="checkbox" id="myCheck" onclick="myFunction()">
+<label for="myCheck">Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if i am unable to pay any balance on the account; and</label>
 <p id="text" style="display:none">Checkbox is CHECKED!</p>
 
 
