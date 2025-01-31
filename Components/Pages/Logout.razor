@@ -2,11 +2,11 @@
 @inject NavigationManager Navigation
 @page "/logout"
 
-<button @onclick="TestClick">Log Out</button>
+<button @onclick="BeginSignOut">Log Out</button>
 
 @code {
-    private void TestClick()
+    private void BeginSignOut()
     {
-        Console.WriteLine("Logout button clicked!"); // Should appear in console
+        Navigation.NavigateToLogout("signout-oidc", "/");
     }
 }

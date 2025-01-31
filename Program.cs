@@ -2,6 +2,9 @@ using BlazorApp;
 using BlazorApp.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Identity.Web;
 using QuestPDF.Infrastructure;
 using SAPA.Components.PDF.Templates;
@@ -45,7 +48,6 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Admin", policy => policy.RequireRole("Admin"))
     .AddPolicy("Advisor", policy => policy.RequireRole("Advisor"));
-
 
 var app = builder.Build();
 
