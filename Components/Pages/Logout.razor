@@ -4,16 +4,19 @@
 <div class="nav-item px-3">
     <AuthorizeView>
         <Authorized>
+            <!-- Use Entra ID's POST logout endpoint -->
             <form action="/MicrosoftIdentity/Account/SignOut" method="post">
+                <AntiforgeryToken /> <!-- Critical for POST security -->
                 <input type="hidden" name="returnUrl" value="/" />
                 <button type="submit" class="nav-link">
-                    <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+                    <span class="bi bi-arrow-bar-left-nav-menu"></span> Logout
                 </button>
             </form>
         </Authorized>
         <NotAuthorized>
+            <!-- Direct link to Entra ID login -->
             <a class="nav-link" href="/MicrosoftIdentity/Account/SignIn">
-                <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
+                <span class="bi bi-person-badge-nav-menu"></span> Login
             </a>
         </NotAuthorized>
     </AuthorizeView>

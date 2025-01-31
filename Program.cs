@@ -1,5 +1,6 @@
 using BlazorApp;
 using BlazorApp.Components;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Components;
@@ -34,20 +35,29 @@ builder.Services.AddDbContext<CosmosContext>(options =>
 });
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(options =>
-    {
+    .AddMicrosoftIdentityWebApp(options => {
         builder.Configuration.Bind("AzureAd", options);
-
-        // Optionally, override with environment variables
-        options.Authority = Environment.GetEnvironmentVariable("AzureAd__Authority") ?? options.Authority;
-        options.ClientId = Environment.GetEnvironmentVariable("AzureAd__ClientId") ?? options.ClientId;
-        options.CallbackPath = Environment.GetEnvironmentVariable("AzureAd_RedirectUri") ?? options.CallbackPath;
-        options.RequireHttpsMetadata = true;
+        options.Events = new OpenIdConnectEvents {
+            // Optional: Handle logout cleanup
+            OnRedirectToIdentityProviderForSignOut = context => {
+                context.ProtocolMessage.PostLogoutRedirectUri = "/";
+                return Task.CompletedTask;
+            }
+        };
     });
 
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("Admin", policy => policy.RequireRole("Admin"))
-    .AddPolicy("Advisor", policy => policy.RequireRole("Advisor"));
+    .AddPolicy("Admin", policy =>
+        policy.RequireClaim("roles", "Admin"))
+    .AddPolicy("Advisor", policy => 
+        policy.RequireClaim("roles", "Advisor"));
+
+builder.Services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme, 
+    options => {
+        options.SlidingExpiration = true;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+        options.LogoutPath = "/logout";
+    });
 
 builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
 
