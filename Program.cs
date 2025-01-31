@@ -47,6 +47,7 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
         options.ClientId = Environment.GetEnvironmentVariable("AzureAd__ClientID");
         options.CallbackPath = "/signin-oidc";
         options.SignedOutCallbackPath = "/signout-oidc";
+        options.SignedOutRedirectUri = "https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/";
     });
 
 builder.Services.AddAuthorizationBuilder()
@@ -59,7 +60,6 @@ builder.Services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefa
     options => {
         options.SlidingExpiration = true;
         options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-        options.LogoutPath = "/MicrosoftIdentity/Account/SignOut";
     });
 
 builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
