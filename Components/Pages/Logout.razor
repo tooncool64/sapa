@@ -1,17 +1,19 @@
 ﻿@page "/logout"
+@using Microsoft.AspNetCore.Authentication
+@inject NavigationManager NavigationManager
+@inject IHttpContextAccessor HttpContextAccessor
 
-<a class="nav-link" href="javascript:void(0);" onclick="deleteCookieAndRedirect('@_url')">Sign Out</a>
+<a class="nav-link" href="javascript:void(0);" @onclick="DeleteCookieAndRedirect">Sign Out</a>
 
 @code {
-    readonly string _url = $"https://login.microsoftonline.com/{Environment.GetEnvironmentVariable("AzureAd__TenantID")}/oauth2/v2.0/logout?post_logout_redirect_uri={@Uri.EscapeDataString("https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/")}";
-}
+    readonly string _url = $"https://login.microsoftonline.com/{Environment.GetEnvironmentVariable("AzureAd__TenantID")}/oauth2/v2.0/logout?post_logout_redirect_uri={Uri.EscapeDataString("https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/")}";
 
-<script>
-    function deleteCookieAndRedirect(url) {
-        // Replace 'YourCookieName' with the actual cookie name you want to delete
-        document.cookie = ".AspNetCore.Cookies=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-        
-        // Redirect after deleting the cookie
-        window.location.href = url;
+    private async Task DeleteCookieAndRedirect()
+    {
+        if (HttpContextAccessor.HttpContext != null)
+        {
+            await HttpContextAccessor.HttpContext.SignOutAsync();
+        }
+        NavigationManager.NavigateTo(_url, forceLoad: true);
     }
-</script>
+}
