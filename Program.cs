@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Identity.Web;
 using QuestPDF.Infrastructure;
 using SAPA.Components.PDF.Templates;
@@ -84,6 +85,13 @@ app.UseAuthorization();
 app.UseAntiforgery();
 
 app.MapControllers();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", ".well-known")),
+    RequestPath = "/.well-known"
+});
 
 app.UseStaticFiles();
 
