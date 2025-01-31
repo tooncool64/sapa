@@ -1,17 +1,6 @@
-﻿@inject NavigationManager Navigation
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@page "/logout"
+﻿@page "/logout"
 
-@code {
-    async Task LogoutAction()
-    {
-        await SignInManager.SignOutAsync();
-        Navigation.NavigateTo(_url, true);
-    }
-} 
-
-<a class="nav-link" href="#" @onclick="LogoutAction">Sign Out</a>
+<a class="nav-link" href="@_url">Sign Out</a>
 
 @code {
 

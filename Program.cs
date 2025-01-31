@@ -62,12 +62,7 @@ builder.Services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefa
         options.LogoutPath = "/MicrosoftIdentity/Account/SignOut";
     });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<CosmosContext>();
-
 builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
-
-builder.Services.AddScoped<SignInManager<IdentityUser>>();
 
 var app = builder.Build();
 
