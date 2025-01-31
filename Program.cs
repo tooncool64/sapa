@@ -17,7 +17,7 @@ QuestPDF.Settings.License = LicenseType.Community;
 var model = AppealDocumentDataSource.GetSampleAppeal(); // Get data
     var document = new AppealDocument(model);
 
-    document.GeneratePdf("StudentAppeal.pdf"); // Save as PDF
+   // document.GeneratePdf("StudentAppeal.pdf"); // Save as PDF
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

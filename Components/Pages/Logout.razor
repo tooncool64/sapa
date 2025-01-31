@@ -1,15 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject NavigationManager Navigation
-@inject SignOutSessionStateManager SignOutManager
 @page "/logout"
 
-<button onclick="@BeginSignOut()">Log Out</button>
+<button @onclick="BeginSignOut">Log Out</button>
 
 @code {
-
-    private async Task BeginSignOut()
+    private void BeginSignOut()
     {
-        await SignOutManager.SetSignOutState();
-        Navigation.NavigateTo("authentication/logout");
+        Navigation.NavigateToLogout("authentication/logout");
     }
 }
