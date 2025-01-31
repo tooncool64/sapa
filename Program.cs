@@ -88,6 +88,13 @@ app.MapControllers();
 
 app.UseStaticFiles();
 
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", ".well-known")),
+    RequestPath = "/.well-known"
+});
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
