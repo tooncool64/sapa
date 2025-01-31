@@ -43,7 +43,7 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     {
         builder.Configuration.Bind("AzureAd", options);
         options.Instance = "https://login.microsoftonline.com/";
-        options.TenantId = Environment.GetEnvironmentVariable("AzureAd__TenantID");
+        options.TenantId = "common";
         options.ClientId = Environment.GetEnvironmentVariable("AzureAd__ClientID");
         options.CallbackPath = "/signin-oidc";
         options.SignedOutCallbackPath = "/signout-oidc";
