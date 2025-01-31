@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\favicon.png" />
-    <Content Include=".well-known\microsoft-identity-association.json" />
   </ItemGroup>
 
   <ItemGroup>
