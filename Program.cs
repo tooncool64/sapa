@@ -39,6 +39,7 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
         options.Authority = Environment.GetEnvironmentVariable("AzureAd__Authority") ?? options.Authority;
         options.ClientId = Environment.GetEnvironmentVariable("AzureAd__ClientId") ?? options.ClientId;
         options.CallbackPath = Environment.GetEnvironmentVariable("AzureAd_RedirectUri") ?? options.CallbackPath;
+        options.SignedOutCallbackPath = "/";
         options.RequireHttpsMetadata = true;
     });
 
