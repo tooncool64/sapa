@@ -86,13 +86,6 @@ app.UseAntiforgery();
 
 app.MapControllers();
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(".well-known")),
-    RequestPath = "/.well-known"
-});
-
 app.UseStaticFiles();
 
 app.MapRazorComponents<App>()
