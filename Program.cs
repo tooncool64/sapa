@@ -36,12 +36,15 @@ builder.Services.AddDbContext<CosmosContext>(options =>
 });
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(options => {
+    .AddMicrosoftIdentityWebApp(options => 
+    {
         builder.Configuration.Bind("AzureAd", options);
-        options.Events = new OpenIdConnectEvents {
-            // Optional: Handle logout cleanup
-            OnRedirectToIdentityProviderForSignOut = context => {
-                context.ProtocolMessage.PostLogoutRedirectUri = "/";
+        options.Events = new OpenIdConnectEvents 
+        {
+            OnRedirectToIdentityProviderForSignOut = context => 
+            {
+                var postLogoutRedirectUri = builder.Configuration["AzureAd:PostLogoutRedirectUri"];
+                context.ProtocolMessage.PostLogoutRedirectUri = postLogoutRedirectUri;
                 return Task.CompletedTask;
             }
         };
