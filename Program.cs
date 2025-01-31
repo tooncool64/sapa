@@ -89,7 +89,7 @@ app.MapControllers();
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", ".well-known")),
+        Path.Combine(".well-known")),
     RequestPath = "/.well-known"
 });
 
