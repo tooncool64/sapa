@@ -8,6 +8,10 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\favicon.png" />
+    <Content Include="wwwroot/.well-known/microsoft-identity-association.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
