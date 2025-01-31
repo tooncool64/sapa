@@ -11,6 +11,7 @@ using QuestPDF.Infrastructure;
 using SAPA.Components.PDF.Templates;
 using SAPA.Components.PDF.Data;
 using QuestPDF.Fluent;
+using Microsoft.Identity.Web.UI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,9 +76,11 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseAntiforgery();
+app.UseRouting();
 
 app.UseStaticFiles();
-app.UseAntiforgery();
+
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

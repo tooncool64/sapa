@@ -1337,6 +1337,25 @@
           }
         }
       },
+      "Microsoft.Identity.Web.UI/3.5.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Identity.Web": "3.5.0"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.Identity.Web.UI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Identity.Web.UI.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Microsoft.IdentityModel.Abstractions/8.3.1": {
         "type": "package",
         "compile": {
@@ -4440,6 +4459,27 @@
         "lib/netstandard2.0/Microsoft.Identity.Web.TokenCache.xml",
         "microsoft.identity.web.tokencache.3.6.0.nupkg.sha512",
         "microsoft.identity.web.tokencache.nuspec"
+      ]
+    },
+    "Microsoft.Identity.Web.UI/3.5.0": {
+      "sha512": "wTySFDzpFvwNCBQ/e+6oDJI3mpHqUxH4xGX27T6blPhdCLSs5Sy2AthkUL0mReFs6thPouIKhjCNJoXr4wYPtQ==",
+      "type": "package",
+      "path": "microsoft.identity.web.ui/3.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "lib/net6.0/Microsoft.Identity.Web.UI.dll",
+        "lib/net6.0/Microsoft.Identity.Web.UI.xml",
+        "lib/net7.0/Microsoft.Identity.Web.UI.dll",
+        "lib/net7.0/Microsoft.Identity.Web.UI.xml",
+        "lib/net8.0/Microsoft.Identity.Web.UI.dll",
+        "lib/net8.0/Microsoft.Identity.Web.UI.xml",
+        "lib/net9.0/Microsoft.Identity.Web.UI.dll",
+        "lib/net9.0/Microsoft.Identity.Web.UI.xml",
+        "microsoft.identity.web.ui.3.5.0.nupkg.sha512",
+        "microsoft.identity.web.ui.nuspec"
       ]
     },
     "Microsoft.IdentityModel.Abstractions/8.3.1": {
@@ -7646,6 +7686,7 @@
       "Microsoft.Azure.Cosmos >= 3.46.1",
       "Microsoft.EntityFrameworkCore.Cosmos >= 9.0.1",
       "Microsoft.Identity.Web >= 3.6.0",
+      "Microsoft.Identity.Web.UI >= 3.5.0",
       "QuestPDF >= 2024.12.3"
     ]
   },
@@ -7734,6 +7775,10 @@
           "Microsoft.Identity.Web": {
             "target": "Package",
             "version": "[3.6.0, )"
+          },
+          "Microsoft.Identity.Web.UI": {
+            "target": "Package",
+            "version": "[3.5.0, )"
           },
           "QuestPDF": {
             "target": "Package",

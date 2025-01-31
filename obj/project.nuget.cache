@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "2piDHnjGF5M=",
+  "dgSpecHash": "QVh8hrA+bRQ=",
   "success": true,
   "projectFilePath": "C:\\Users\\Micah\\RiderProjects\\SAPApp\\BlazorApp.csproj",
   "expectedPackageFiles": [
@@ -75,6 +75,7 @@
     "C:\\Users\\Micah\\.nuget\\packages\\microsoft.identity.web.diagnostics\\3.6.0\\microsoft.identity.web.diagnostics.3.6.0.nupkg.sha512",
     "C:\\Users\\Micah\\.nuget\\packages\\microsoft.identity.web.tokenacquisition\\3.6.0\\microsoft.identity.web.tokenacquisition.3.6.0.nupkg.sha512",
     "C:\\Users\\Micah\\.nuget\\packages\\microsoft.identity.web.tokencache\\3.6.0\\microsoft.identity.web.tokencache.3.6.0.nupkg.sha512",
+    "C:\\Users\\Micah\\.nuget\\packages\\microsoft.identity.web.ui\\3.5.0\\microsoft.identity.web.ui.3.5.0.nupkg.sha512",
     "C:\\Users\\Micah\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.3.1\\microsoft.identitymodel.abstractions.8.3.1.nupkg.sha512",
     "C:\\Users\\Micah\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.3.1\\microsoft.identitymodel.jsonwebtokens.8.3.1.nupkg.sha512",
     "C:\\Users\\Micah\\.nuget\\packages\\microsoft.identitymodel.logging\\8.3.1\\microsoft.identitymodel.logging.8.3.1.nupkg.sha512",

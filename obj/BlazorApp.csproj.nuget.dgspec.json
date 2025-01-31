@@ -86,6 +86,10 @@
               "target": "Package",
               "version": "[3.6.0, )"
             },
+            "Microsoft.Identity.Web.UI": {
+              "target": "Package",
+              "version": "[3.5.0, )"
+            },
             "QuestPDF": {
               "target": "Package",
               "version": "[2024.12.3, )"
