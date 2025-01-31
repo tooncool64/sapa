@@ -64,6 +64,8 @@ builder.Services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefa
 
 builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
 
+builder.Services.AddScoped<IHttpContextAccessor>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
