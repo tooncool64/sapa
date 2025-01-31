@@ -1,6 +1,13 @@
 ﻿@inject NavigationManager Navigation
+@inject IJSRuntime JS
 @page "/logout"
 
-<a class="nav-link" href="/MicrosoftIdentity/Account/SignOut?post_logout_redirect_uri=@Uri.EscapeDataString(Navigation.BaseUri)">
-    <span class="bi bi-arrow-bar-left-nav-menu"></span> Logout
-</a>
+<button @onclick="LogoutAction">Logout</button>
+
+@code {
+    async Task LogoutAction()
+    {
+        await JS.InvokeVoidAsync("eval", "document.cookie.split(';').forEach((c) => document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/'));");
+        Navigation.NavigateTo("MicrosoftIdentity/Account/SignOut", forceLoad: true);
+    }
+}

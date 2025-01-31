@@ -58,7 +58,7 @@ builder.Services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefa
     options => {
         options.SlidingExpiration = true;
         options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-        options.LogoutPath = "/logout";
+        options.LogoutPath = "/MicrosoftIdentity/Account/SignOut";
     });
 
 builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
