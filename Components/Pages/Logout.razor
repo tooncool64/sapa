@@ -1,13 +1,10 @@
 ﻿@inject NavigationManager Navigation
-@inject IJSRuntime JS
 @page "/logout"
 
-<button @onclick="LogoutAction">Logout</button>
+<a class="nav-link" href="@_url">Sign Out</a>
 
 @code {
-    async Task LogoutAction()
-    {
-        await JS.InvokeVoidAsync("eval", "document.cookie.split(';').forEach((c) => document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/'));");
-        Navigation.NavigateTo("MicrosoftIdentity/Account/SignOut", forceLoad: true);
-    }
+
+    readonly string _url = $"https://login.microsoftonline.com/{Environment.GetEnvironmentVariable("AzureAd__TenantID")}/oauth2/v2.0/logout?post_logout_redirect_uri={@Uri.EscapeDataString("https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/")}";
+
 }
