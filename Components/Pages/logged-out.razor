@@ -1,0 +1,18 @@
+﻿@page "/logged-out"
+@using Microsoft.AspNetCore.Authentication
+@inject NavigationManager NavigationManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+@code {
+    
+    static readonly string Url = $"https://login.microsoftonline.com/{Environment.GetEnvironmentVariable("AzureAd__TenantID")}/oauth2/v2.0/logout?post_logout_redirect_uri={Uri.EscapeDataString("https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/")}";
+    
+    protected override async Task OnInitializedAsync()
+    {
+        if (HttpContextAccessor.HttpContext != null)
+            {
+                await HttpContextAccessor.HttpContext.SignOutAsync();
+            }
+            NavigationManager.NavigateTo(Url, forceLoad: true);
+        }
+}
