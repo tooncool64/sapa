@@ -1,5 +1,4 @@
 ﻿@page "/logged-out"
-@using Microsoft.AspNetCore.Authentication
 @inject NavigationManager NavigationManager
 @inject IHttpContextAccessor HttpContextAccessor
 
@@ -11,7 +10,7 @@
     {
         if (HttpContextAccessor.HttpContext != null)
             {
-                await HttpContextAccessor.HttpContext.SignOutAsync();
+                 HttpContextAccessor.HttpContext.Response.Cookies.Delete(".AspNetCore.Cookies");
             }
             NavigationManager.NavigateTo(Url, forceLoad: true);
         }
