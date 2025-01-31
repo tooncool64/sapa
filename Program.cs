@@ -24,6 +24,8 @@ var model = AppealDocumentDataSource.GetSampleAppeal(); // Get data
 
    // document.GeneratePdf("StudentAppeal.pdf"); // Save as PDF
 
+builder.Services.AddControllersWithViews();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -82,8 +84,9 @@ app.UseRouting();
 app.UseAuthorization();
 app.UseAntiforgery();
 
-app.UseStaticFiles();
+app.MapControllers();
 
+app.UseStaticFiles();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
