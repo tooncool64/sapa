@@ -4,36 +4,17 @@
 <div class="nav-item px-3">
     <AuthorizeView>
         <Authorized>
-            <form action="signout-oidc" method="post">
-                <AntiforgeryToken />
-                <input type="hidden" name="ReturnUrl" value="@_currentUrl" />
+            <form action="/MicrosoftIdentity/Account/SignOut" method="post">
+                <input type="hidden" name="returnUrl" value="/" />
                 <button type="submit" class="nav-link">
                     <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
                 </button>
             </form>
         </Authorized>
         <NotAuthorized>
-            <a class="nav-link" href="signin-oidc">
+            <a class="nav-link" href="/MicrosoftIdentity/Account/SignIn">
                 <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
             </a>
         </NotAuthorized>
     </AuthorizeView>
 </div>
-
-@code {
-    private string? _currentUrl;
-
-    protected override void OnInitialized()
-    {
-        _currentUrl = Navigation.Uri;
-        Navigation.LocationChanged += OnLocationChanged;
-    }
-
-    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
-    {
-        _currentUrl = Navigation.Uri;
-        StateHasChanged();
-    }
-
-    public void Dispose() => Navigation.LocationChanged -= OnLocationChanged;
-}

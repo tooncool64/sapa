@@ -49,6 +49,8 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Admin", policy => policy.RequireRole("Admin"))
     .AddPolicy("Advisor", policy => policy.RequireRole("Advisor"));
 
+builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
