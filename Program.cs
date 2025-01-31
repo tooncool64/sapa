@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Web;
 using QuestPDF.Infrastructure;
 using SAPA.Components.PDF.Templates;
@@ -61,7 +62,12 @@ builder.Services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefa
         options.LogoutPath = "/MicrosoftIdentity/Account/SignOut";
     });
 
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<CosmosContext>();
+
 builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
+
+builder.Services.AddScoped<SignInManager<IdentityUser>>();
 
 var app = builder.Build();
 
