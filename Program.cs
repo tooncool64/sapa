@@ -91,7 +91,7 @@ app.UseStaticFiles(new StaticFileOptions
 app.UseDirectoryBrowser(new DirectoryBrowserOptions
 {
     FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", ".well-known")),
+        Path.Combine(Directory.GetCurrentDirectory(), ".well-known")),
     RequestPath = "/.well-known"
 });
 
