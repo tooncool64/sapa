@@ -1,13 +1,6 @@
 ﻿@inject NavigationManager Navigation
 @page "/logout"
 
-<AuthorizeView>
-    <Authorized>
-        <a class="nav-link" href="MicrosoftIdentity/Account/SignOut?post_logout_redirect_uri=@Uri.EscapeDataString(Navigation.BaseUri)">
-            <span class="bi bi-arrow-bar-left-nav-menu"></span> Logout
-        </a>
-    </Authorized>
-    <NotAuthorized>
-        <a class="nav-link" href="/MicrosoftIdentity/Account/SignIn">Login</a>
-    </NotAuthorized>
-</AuthorizeView>
+<a class="nav-link" href="/MicrosoftIdentity/Account/SignOut?post_logout_redirect_uri=@Uri.EscapeDataString(Navigation.BaseUri)">
+    <span class="bi bi-arrow-bar-left-nav-menu"></span> Logout
+</a>

@@ -46,16 +46,6 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
         options.ClientId = Environment.GetEnvironmentVariable("AzureAd__ClientID");
         options.CallbackPath = "/signin-oidc";
         options.SignedOutCallbackPath = "/signout-oidc";
-
-        options.Events = new OpenIdConnectEvents 
-        {
-            OnRedirectToIdentityProviderForSignOut = context => 
-            {
-                var postLogoutRedirectUri = builder.Configuration["AzureAd:PostLogoutRedirectUri"];
-                context.ProtocolMessage.PostLogoutRedirectUri = postLogoutRedirectUri;
-                return Task.CompletedTask;
-            }
-        };
     });
 
 builder.Services.AddAuthorizationBuilder()
@@ -85,8 +75,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
 
