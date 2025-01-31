@@ -76,8 +76,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseAntiforgery();
 app.UseRouting();
+app.UseAntiforgery();
 
 app.UseStaticFiles();
 
