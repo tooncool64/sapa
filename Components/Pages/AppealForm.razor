@@ -56,27 +56,40 @@
     </style>
 <body>
     <div class="container">
+        <header>
+            <button id="toggle-button" onclick="toggleLanguage()">Español</button>
+        </header>
         <main>
             <section id="student-info" class="card">
-                <h2>Student Information</h2>
-                <label>Name: <input type="text" placeholder="Your name.."></label>
-                <label>Student ID#: <input type="text" placeholder="ex: p000.."></label>
-                <label>Date: <input type="date"></label>
-                <label>Major: <input type="text" placeholder="Your major.."></label>
+            <h2 id="student-info-heading">Student Information</h2>
+                <label id="label-name">
+                    <span class="label-text">Name:</span> <input type="text" placeholder="Your name.." />
+                </label>
+                <label id="label-student-id">
+                    <span class="label-text">Student ID#:</span> <input type="text" placeholder="ex: p000.." />
+                </label>
+                <label id="label-date">
+                    <span class="label-text">Date:</span> <input type="date" />
+                </label>
+                <label id="label-major">
+                    <span class="label-text">Major:</span> <input type="text" placeholder="Your major.." />
+                </label>
             </section>
 
             <section id="appeal-details" class="card">
-                <h2>Appeal Explanation</h2>
-                <p>Please provide a signed, typed, or written statement (max 500 words) explaining:</p>
-                <ol>
+                <h2 id="appeal-details-heading">Appeal Explanation</h2>
+                <p id="appeal-details-text">
+                    Please provide a signed, typed, or written statement (max 500 words) explaining:
+                </p>
+                <ol id="appeal-details-list">
                     <li>Any extenuating circumstances that led to your SAP status.</li>
                     <li>How these circumstances affected your academic progress.</li>
                     <li>Steps you have taken to overcome them.</li>
                     <li>Your plan for future academic success.</li>
                 </ol>
-                <textarea rows="6" placeholder="Write your explanation here..."></textarea>
+                <textarea id="textarea" rows="6" placeholder="Write your explanation here..."></textarea>
             </section>
-          </main>
+        </main>
     </div>
 
 <label for="myCheck">Official documentation supporting your extenuating circumstance(s):</label>
@@ -105,6 +118,94 @@ function myFunction() {
      text.style.display = "none";
   }
 }
+
+var currentLanguage = "en";
+
+    // Translation dictionary
+    var translations = {
+      en: {
+        title: "SAP Appeal Form",
+        "student-info-heading": "Student Information",
+        "label-name": "Name:",
+        "label-student-id": "Student ID#:",
+        "label-date": "Date:",
+        "label-major": "Major:",
+        "appeal-details-heading": "Appeal Explanation",
+        "appeal-details-text": "Please provide a signed, typed, or written statement (max 500 words) explaining:",
+        "appeal-details-list": [
+          "Any extenuating circumstances that led to your SAP status.",
+          "How these circumstances affected your academic progress.",
+          "Steps you have taken to overcome them.",
+          "Your plan for future academic success."
+        ],
+        "textarea-placeholder": "Write your explanation here...",
+        "toggle-button": "Español"
+      },
+      es: {
+        title: "Formulario de Apelación SAP",
+        "student-info-heading": "Información del Estudiante",
+        "label-name": "Nombre:",
+        "label-student-id": "ID del Estudiante:",
+        "label-date": "Fecha:",
+        "label-major": "Especialidad:",
+        "appeal-details-heading": "Explicación de la Apelación",
+        "appeal-details-text": "Por favor, proporcione una declaración firmada, mecanografiada o escrita (máximo 500 palabras) explicando:",
+        "appeal-details-list": [
+          "Cualquier circunstancia atenuante que llevó a su estado SAP.",
+          "Cómo estas circunstancias afectaron su progreso académico.",
+          "Los pasos que ha tomado para superarlos.",
+          "Su plan para el éxito académico futuro."
+        ],
+        "textarea-placeholder": "Escriba su explicación aquí...",
+        "toggle-button": "English"
+      }
+    };
+
+    // Function to toggle between English and Spanish
+    function toggleLanguage() {
+      // Switch language
+      currentLanguage = currentLanguage === "en" ? "es" : "en";
+      
+      // Update page language and title
+      document.documentElement.lang = currentLanguage;
+      document.title = translations[currentLanguage].title;
+
+      // Update the student info section
+      document.getElementById("student-info-heading").innerText =
+        translations[currentLanguage]["student-info-heading"];
+      document.querySelector("#label-name .label-text").innerText =
+        translations[currentLanguage]["label-name"];
+      document.querySelector("#label-student-id .label-text").innerText =
+        translations[currentLanguage]["label-student-id"];
+      document.querySelector("#label-date .label-text").innerText =
+        translations[currentLanguage]["label-date"];
+      document.querySelector("#label-major .label-text").innerText =
+        translations[currentLanguage]["label-major"];
+
+      // Update the appeal explanation section
+      document.getElementById("appeal-details-heading").innerText =
+        translations[currentLanguage]["appeal-details-heading"];
+      document.getElementById("appeal-details-text").innerText =
+        translations[currentLanguage]["appeal-details-text"];
+
+      // Update the list items for appeal details
+      var listItems = document.querySelectorAll("#appeal-details-list li");
+      translations[currentLanguage]["appeal-details-list"].forEach(function (text, index) {
+        if (listItems[index]) {
+          listItems[index].innerText = text;
+        }
+      });
+
+      // Update textarea placeholder
+      document.getElementById("textarea").setAttribute(
+        "placeholder",
+        translations[currentLanguage]["textarea-placeholder"]
+      );
+
+      // Update the toggle button text to show the other language option
+      document.getElementById("toggle-button").innerText =
+        translations[currentLanguage]["toggle-button"];
+    }
 </script>
 <!-- <div class="row">
     <input type="submit" value="Submit">
