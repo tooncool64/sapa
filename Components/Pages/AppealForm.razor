@@ -92,21 +92,38 @@
         </main>
     </div>
 
-<label for="myCheck">Official documentation supporting your extenuating circumstance(s):</label>
-<p> The only acceptable forms of documentation are pdf and word.</p>
+    <div class="documentation">
+      <label id="documentation-label" for="myCheck">
+        <span class="label-text">
+          Official documentation supporting your extenuating circumstance(s):
+        </span>
+      </label>
+      <p id="documentation-description">
+        The only acceptable forms of documentation are pdf and word.
+      </p>
+    </div>
 
-<section class="card">
-            <h2>Acknowledgements</h2>
-            <div class="checkbox-container">
-                <input type="checkbox" onclick="myFunction()"><span>Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.</span>
-            </div>
-            <p id="text1" style="display:none">Checkbox is CHECKED!</p>
-            
-            <div class="checkbox-container">
-                <input type="checkbox" onclick="myFunction()"><span>I understand that the decision of the Office of Financial Aid is final.</span>
-            </div>
-            <p id="text2" style="display:none">Checkbox is CHECKED!</p>
-        </section>
+    <section class="card" id="acknowledgements-section">
+      <!-- Changed: Added an id to the heading for language toggling -->
+      <h2 id="acknowledgements-heading">Acknowledgements</h2>
+      <div class="checkbox-container">
+        <input type="checkbox" onclick="myFunction()">
+        <!-- Changed: Added an id to the span for text updating -->
+        <span id="checkbox1-text">
+          Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.
+        </span>
+      </div>
+      <!-- Changed: Paragraph for checked message with an id -->
+      <p id="text1" style="display:none">Checkbox is CHECKED!</p>
+      
+      <div class="checkbox-container">
+        <input type="checkbox" onclick="myFunction()">
+        <span id="checkbox2-text">
+          I understand that the decision of the Office of Financial Aid is final.
+        </span>
+      </div>
+      <p id="text2" style="display:none">Checkbox is CHECKED!</p>
+    </section>
 
 <script>
 function myFunction() {
@@ -205,6 +222,22 @@ var currentLanguage = "en";
       // Update the toggle button text to show the other language option
       document.getElementById("toggle-button").innerText =
         translations[currentLanguage]["toggle-button"];
+        document.querySelector("#documentation-label .label-text").innerText =
+        translations[currentLanguage]["documentation-label"];
+      document.getElementById("documentation-description").innerText =
+        translations[currentLanguage]["documentation-description"];
+
+      // Update Acknowledgements section
+      document.getElementById("acknowledgements-heading").innerText =
+        translations[currentLanguage]["acknowledgements-heading"];
+      document.getElementById("checkbox1-text").innerText =
+        translations[currentLanguage]["checkbox1-text"];
+      document.getElementById("checkbox2-text").innerText =
+        translations[currentLanguage]["checkbox2-text"];
+      document.getElementById("text1").innerText =
+        translations[currentLanguage]["checkbox-is-checked"];
+      document.getElementById("text2").innerText =
+        translations[currentLanguage]["checkbox-is-checked"];
     }
 </script>
 <!-- <div class="row">
