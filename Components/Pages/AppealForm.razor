@@ -4,7 +4,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <style>
+<style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -69,26 +69,59 @@
         }
     </style>
 <body>
-    <div class="container">
-        <header>
-            <button id="toggle-button" onclick="toggleLanguage()">Español</button>
-        </header>
-        <main>
+<div class="container">
+    <header>
+        <button id="toggle-button" onclick="toggleLanguage()">Español</button>
+    </header>
+    <main>
+        <EditForm Model="@appealForm1" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+            
+            
+        @if (_submitError)
+        {
+            <div class="alert alert-danger" role="alert">
+                An error occurred while submitting the form. Please try again.
+            </div>
+        }
+            
             <section id="student-info" class="card">
-            <h2 id="student-info-heading">Student Information</h2>
+                <h2 id="student-info-heading">Student Information</h2>
                 <label id="label-name">
-                    <span class="label-text">Name:</span> <input type="text" placeholder="Your name.." />
+                    <span class="label-text">Name:</span>
+                    <InputText @bind-Value="appealForm1.Name" placeholder="Your name.."/>
                 </label>
                 <label id="label-student-id">
-                    <span class="label-text">Student ID#:</span> <input type="text" placeholder="ex: p000.." />
+                    <span class="label-text">Student ID#:</span>
+                    <InputText @bind-Value="appealForm1.StudentId" placeholder="ex: p000.."/>
                 </label>
                 <label id="label-date">
-                    <span class="label-text">Date:</span> <input type="date" />
+                    <span class="label-text">Date:</span>
+                    <InputDate @bind-Value="appealForm1.Date"/>
+                </label>
+                <label id="email-name">
+                    <span class="email-name">Email:</span>
+                    <InputText @bind-Value="appealForm1.Email"/>
                 </label>
                 <label id="label-major">
-                    <span class="label-text">Major:</span> <input type="text" placeholder="Your major.." />
+                    <span class="label-text">Major:</span>
+                    <InputText @bind-Value="appealForm1.Major" placeholder="Your major.."/>
                 </label>
             </section>
+            
+            <div class="form-actions">
+            <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">
+                @if (_isSubmitting)
+                {
+                    <span>Submitting...</span>
+                }
+                else
+                {
+                    <span>Submit Appeal</span>
+                }
+            </button>
+            </div>
 
             <section id="appeal-details" class="card">
                 <h2 id="appeal-details-heading">Appeal Explanation</h2>
@@ -101,43 +134,35 @@
                     <li>Steps you have taken to overcome them.</li>
                     <li>Your plan for future academic success.</li>
                 </ol>
-                <textarea id="textarea" rows="6" placeholder="Write your explanation here..."></textarea>
+                <InputTextArea @bind-Value="appealForm1.AppealExplanation" rows="6" placeholder="Write your explanation here..."/>
             </section>
-        </main>
+
+            <button type="submit" class="btn btn-primary">Submit Appeal</button>
+        </EditForm>
+    </main>
     </div>
 
-    <div class="documentation">
-      <label id="documentation-label" for="myCheck">
-        <span class="label-text">
-          Official documentation supporting your extenuating circumstance(s):
-        </span>
-      </label>
-      <p id="documentation-description">
-        The only acceptable forms of documentation are pdf and word.
-      </p>
-    </div>
-
-    <section class="card" id="acknowledgements-section">
-      <!-- Changed: Added an id to the heading for language toggling -->
-      <h2 id="acknowledgements-heading">Acknowledgements</h2>
-      <div class="checkbox-container">
+<section class="card" id="acknowledgements-section">
+    <!-- Changed: Added an id to the heading for language toggling -->
+    <h2 id="acknowledgements-heading">Acknowledgements</h2>
+    <div class="checkbox-container">
         <input type="checkbox" onclick="myFunction()">
         <!-- Changed: Added an id to the span for text updating -->
         <span id="checkbox1-text">
-          Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.
+            Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.
         </span>
-      </div>
-      <!-- Changed: Paragraph for checked message with an id -->
-      <p id="text1" style="display:none">Checkbox is CHECKED!</p>
+    </div>
+    <!-- Changed: Paragraph for checked message with an id -->
+    <p id="text1" style="display:none">Checkbox is CHECKED!</p>
       
-      <div class="checkbox-container">
+    <div class="checkbox-container">
         <input type="checkbox" onclick="myFunction()">
         <span id="checkbox2-text">
-          I understand that the decision of the Office of Financial Aid is final.
+            I understand that the decision of the Office of Financial Aid is final.
         </span>
-      </div>
-      <p id="text2" style="display:none">Checkbox is CHECKED!</p>
-    </section>
+    </div>
+    <p id="text2" style="display:none">Checkbox is CHECKED!</p>
+</section>
 
 <script>
 function myFunction() {
@@ -199,3 +224,29 @@ function toggleLanguage() {
 
 </body>
 </html>
+
+@code {
+    private AppealFormModel1 appealForm1 = new AppealFormModel1();
+    private bool _isSubmitting = false;
+    private bool _submitError = false;
+
+    private void HandleValidSubmit()
+    {
+        try
+        {
+            _isSubmitting = true;
+            _submitError = false;
+            
+            AppealService.SubmitAppeal(appealForm1);
+        }
+        catch (Exception ex)
+        {
+            _submitError = true;
+            Console.WriteLine($"Error submitting appeal: {ex.Message}");
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+}

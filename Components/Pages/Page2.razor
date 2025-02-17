@@ -95,6 +95,16 @@
             <p>b. A prescribed academic plan of work from an academic advisor.</p>
         </div>
     </div>
+    <div class="documentation">
+          <label id="documentation-label" for="myCheck">
+            <span class="label-text">
+              Official documentation supporting your extenuating circumstance(s):
+            </span>
+          </label>
+          <p id="documentation-description">
+            The only acceptable forms of documentation are pdf and word.
+          </p>
+        </div>
 
     <div class="card">
         <p><strong>Note:</strong> Appeals submitted for reasons above will be reviewed on a case-by-case basis. Appeals are not automatically approved for any of the above reasons but are reviewed based on circumstances, documented academic history, and academic success potential.</p>
@@ -104,6 +114,18 @@
 <div class="card">
     <NavLink href="/appeal3"><button>Next Page</button></NavLink>
 </div>
+
+<script>
+function myFunction() {
+  var checkBox = document.getElementById("myCheck");
+  var text = document.getElementById("text");
+  if (checkBox.checked == true){
+    text.style.display = "block";
+  } else {
+     text.style.display = "none";
+  }
+}
+</script>
 
 </body>
 </html>
