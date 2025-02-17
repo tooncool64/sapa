@@ -74,7 +74,7 @@
         <button id="toggle-button" onclick="toggleLanguage()">Español</button>
     </header>
     <main>
-        <EditForm Model="@appealForm1" OnValidSubmit="@HandleValidSubmit">
+        <EditForm Model="@appealForm1" FormName="AppealForm1" OnValidSubmit="@HandleValidSubmit">
             <DataAnnotationsValidator/>
             <ValidationSummary/>
             
@@ -109,19 +109,6 @@
                     <InputText @bind-Value="appealForm1.Major" placeholder="Your major.."/>
                 </label>
             </section>
-            
-            <div class="form-actions">
-            <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">
-                @if (_isSubmitting)
-                {
-                    <span>Submitting...</span>
-                }
-                else
-                {
-                    <span>Submit Appeal</span>
-                }
-            </button>
-            </div>
 
             <section id="appeal-details" class="card">
                 <h2 id="appeal-details-heading">Appeal Explanation</h2>
@@ -134,10 +121,21 @@
                     <li>Steps you have taken to overcome them.</li>
                     <li>Your plan for future academic success.</li>
                 </ol>
-                <InputTextArea @bind-Value="appealForm1.AppealExplanation" rows="6" placeholder="Write your explanation here..."/>
+                <InputTextArea @bind-Value="appealForm1.AppealExplanation" id="text-area" rows="6" onkeydown="wordLimit()" placeholder="Write your explanation here..."/>
             </section>
 
-            <button type="submit" class="btn btn-primary">Submit Appeal</button>
+                <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">
+                            @if (_isSubmitting)
+                            {
+                                <span>Submitting...</span>
+                            }
+                            else
+                            {
+                                <span>Submit Appeal</span>
+                            }
+                        </button>
+                        </div>
         </EditForm>
     </main>
     </div>
@@ -213,6 +211,18 @@ function toggleLanguage() {
   document.getElementById("checkbox1-text").innerText = translations[currentLanguage]["checkbox1-text"];
   document.getElementById("checkbox2-text").innerText = translations[currentLanguage]["checkbox2-text"];
 }
+
+function wordLimit(){
+    
+       var jobValue = document.getElementById('text-area').value
+       var words = jobValue.value.split(/\s+/);
+       var maxWords = 500; 
+       var numWords = words.length;
+       if(numWords > maxWords){
+    		  jobValue.preventDefault(); 
+        }
+}
+
 </script>
 <!-- <div class="row">
     <input type="submit" value="Submit">

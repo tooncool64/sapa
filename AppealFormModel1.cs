@@ -11,6 +11,7 @@ public class AppealFormModel1
     [Required]
     public DateTime? Date { get; set; }
     [Required]
+    [DataType(DataType.EmailAddress)]
     public string Email { get; set; }
     [Required]
     public string Major { get; set; }
