@@ -83,7 +83,7 @@
             <div class="form-group">
                 <label id="label-name">
                     <span class="label-text">Name:</span>
-                    <InputText @bind-Value="appealForm1.Name" class="form-control" placeholder="Your name.." />
+                    <InputText @bind="appealForm1.Name" class="form-control" placeholder="Your name.." />
                     <ValidationMessage For="@(() => appealForm1.Name)" />
                 </label>
             </div>
@@ -91,7 +91,7 @@
             <div class="form-group">
                 <label id="label-student-id">
                     <span class="label-text">Student ID#:</span>
-                    <InputText @bind-Value="appealForm1.StudentId" class="form-control" placeholder="ex: p000.." />
+                    <InputText @bind="appealForm1.StudentId" class="form-control" placeholder="ex: p000.." />
                     <ValidationMessage For="@(() => appealForm1.StudentId)" />
                 </label>
             </div>
@@ -99,7 +99,7 @@
             <div class="form-group">
                 <label id="label-date">
                     <span class="label-text">Date:</span>
-                    <InputDate @bind-Value="appealForm1.Date" class="form-control" />
+                    <InputDate @bind="appealForm1.Date" class="form-control" />
                     <ValidationMessage For="@(() => appealForm1.Date)" />
                 </label>
             </div>
@@ -107,7 +107,7 @@
             <div class="form-group">
                 <label id="email-name">
                     <span class="email-name">Email:</span>
-                    <InputText @bind-Value="appealForm1.Email" class="form-control" />
+                    <InputText @bind="appealForm1.Email" class="form-control" />
                     <ValidationMessage For="@(() => appealForm1.Email)" />
                 </label>
             </div>
@@ -115,7 +115,7 @@
             <div class="form-group">
                 <label id="label-major">
                     <span class="label-text">Major:</span>
-                    <InputText @bind-Value="appealForm1.Major" class="form-control" placeholder="Your major.." />
+                    <InputText @bind="appealForm1.Major" class="form-control" placeholder="Your major.." />
                     <ValidationMessage For="@(() => appealForm1.Major)" />
                 </label>
             </div>
@@ -133,7 +133,7 @@
                 <li>Your plan for future academic success.</li>
             </ol>
             <div class="form-group">
-                <InputTextArea @bind-Value="appealForm1.AppealExplanation" 
+                <InputTextArea @bind="appealForm1.AppealExplanation" 
                                class="form-control"
                                id="text-area" 
                                rows="6" 
@@ -276,15 +276,17 @@ function wordLimit(){
         };
     }
 
-    private async Task HandleValidSubmit()
+    private void HandleValidSubmit()
     {
+        Console.WriteLine("Form submitted successfully!");
+        
         try
         {
             _isSubmitting = true;
             StateHasChanged();
 
     // Simulate API call
-            AppealService.SubmitAppeal(appealForm1);
+            // AppealService.SubmitAppeal(appealForm1);
             
             _submitted = true;
     // Here you would typically navigate to a success page
