@@ -1,6 +1,6 @@
 ﻿namespace BlazorApp;
 
-public class AppealService
+public static class AppealService
 {
     public static void SubmitAppeal(AppealFormModel1 appealForm1)
     {

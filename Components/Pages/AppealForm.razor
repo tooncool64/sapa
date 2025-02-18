@@ -99,7 +99,7 @@
             <div class="form-group">
                 <label id="label-date">
                     <span class="label-text">Date:</span>
-                    <InputDate @bind="appealForm1.Date" class="form-control" />
+                    <InputDate TValue="DateTime?" @bind="appealForm1.Date" class="form-control" />
                     <ValidationMessage For="@(() => appealForm1.Date)" />
                 </label>
             </div>
@@ -286,7 +286,7 @@ function wordLimit(){
             StateHasChanged();
 
     // Simulate API call
-            // AppealService.SubmitAppeal(appealForm1);
+            AppealService.SubmitAppeal(appealForm1);
             
             _submitted = true;
     // Here you would typically navigate to a success page
