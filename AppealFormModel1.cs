@@ -11,10 +11,10 @@ public class AppealFormModel1
     public string StudentId { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Date is required")]
-    public DateTime? Date { get; set; } = DateTime.Today;
+    public DateTime? Date { get; set; }
 
     [Required(ErrorMessage = "Email is required")]
-    [EmailAddress(ErrorMessage = "Invalid email address")]
+    [EmailAddress(ErrorMessage = "Please enter a valid email address")]
     public string Email { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Major is required")]

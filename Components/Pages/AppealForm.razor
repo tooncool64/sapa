@@ -73,80 +73,97 @@
     <header>
         <button onclick="toggleLanguage()">Español</button>
     </header>
-    <main>
-        <EditForm Model="@appealForm1" FormName="AppealForm1" OnValidSubmit="@HandleValidSubmit">
-            <DataAnnotationsValidator />
+<main>
+    <EditForm Model="@appealForm1" FormName="AppealForm1" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
             
-            @if (!string.IsNullOrEmpty(_errorMessage))
-            {
-                <div class="alert alert-danger">
-                    @_errorMessage
-                </div>
-            }
-            
-            <ValidationSummary />
-            
-            <section id="student-info" class="card">
-                <h2 id="student-info-heading">Student Information</h2>
+        <section id="student-info" class="card">
+            <h2 id="student-info-heading">Student Information</h2>
+            <div class="form-group">
                 <label id="label-name">
                     <span class="label-text">Name:</span>
-                    <InputText @bind-Value="appealForm1.Name" placeholder="Your name.." />
+                    <InputText @bind-Value="appealForm1.Name" class="form-control" placeholder="Your name.." />
                     <ValidationMessage For="@(() => appealForm1.Name)" />
                 </label>
+            </div>
+                        
+            <div class="form-group">
                 <label id="label-student-id">
                     <span class="label-text">Student ID#:</span>
-                    <InputText @bind-Value="appealForm1.StudentId" placeholder="ex: p000.." />
+                    <InputText @bind-Value="appealForm1.StudentId" class="form-control" placeholder="ex: p000.." />
                     <ValidationMessage For="@(() => appealForm1.StudentId)" />
                 </label>
+            </div>
+            
+            <div class="form-group">
                 <label id="label-date">
                     <span class="label-text">Date:</span>
-                    <InputDate @bind-Value="appealForm1.Date" />
+                    <InputDate @bind-Value="appealForm1.Date" class="form-control" />
                     <ValidationMessage For="@(() => appealForm1.Date)" />
                 </label>
+            </div>
+            
+            <div class="form-group">
                 <label id="email-name">
                     <span class="email-name">Email:</span>
-                    <InputText @bind-Value="appealForm1.Email" />
+                    <InputText @bind-Value="appealForm1.Email" class="form-control" />
                     <ValidationMessage For="@(() => appealForm1.Email)" />
                 </label>
+            </div>
+            
+            <div class="form-group">
                 <label id="label-major">
                     <span class="label-text">Major:</span>
-                    <InputText @bind-Value="appealForm1.Major" placeholder="Your major.." />
+                    <InputText @bind-Value="appealForm1.Major" class="form-control" placeholder="Your major.." />
                     <ValidationMessage For="@(() => appealForm1.Major)" />
                 </label>
-            </section>
-
-            <section id="appeal-details" class="card">
-                <h2 id="appeal-details-heading">Appeal Explanation</h2>
-                <p id="appeal-details-text">
-                    Please provide a signed, typed, or written statement (max 500 words) explaining:
-                </p>
-                <ol id="appeal-details-list">
-                    <li>Any extenuating circumstances that led to your SAP status.</li>
-                    <li>How these circumstances affected your academic progress.</li>
-                    <li>Steps you have taken to overcome them.</li>
-                    <li>Your plan for future academic success.</li>
-                </ol>
-                <InputTextArea @bind-Value="appealForm1.AppealExplanation" 
-                             id="text-area" 
-                             rows="6" 
-                             placeholder="Write your explanation here..." />
-                <ValidationMessage For="@(() => appealForm1.AppealExplanation)" />
-            </section>
-
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">
-                    @if (_isSubmitting)
-                    {
-                        <span>Submitting...</span>
-                    }
-                    else
-                    {
-                        <span>Submit Appeal</span>
-                    }
-                </button>
             </div>
-        </EditForm>
-    </main>
+        </section>
+            
+        <section id="appeal-details" class="card">
+            <h2 id="appeal-details-heading">Appeal Explanation</h2>
+            <p id="appeal-details-text">
+                Please provide a signed, typed, or written statement (max 500 words) explaining:
+            </p>
+            <ol id="appeal-details-list">
+                <li>Any extenuating circumstances that led to your SAP status.</li>
+                <li>How these circumstances affected your academic progress.</li>
+                <li>Steps you have taken to overcome them.</li>
+                <li>Your plan for future academic success.</li>
+            </ol>
+            <div class="form-group">
+                <InputTextArea @bind-Value="appealForm1.AppealExplanation" 
+                               class="form-control"
+                               id="text-area" 
+                               rows="6" 
+                               placeholder="Write your explanation here..." />
+                <ValidationMessage For="@(() => appealForm1.AppealExplanation)" />
+            </div>
+        </section>
+            
+        <div class="form-actions mt-3">
+            <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">
+                @if (_isSubmitting)
+                {
+                    <span>Submitting...</span>
+                }
+                else
+                {
+                    <span>Submit Appeal</span>
+                }
+            </button>
+        </div>
+    </EditForm>
+    
+        @if (_submitted)
+        {
+            <div class="alert alert-success mt-3">
+                Form submitted successfully!
+            </div>
+        }
+        
+</main>
 </div>
 
 <section class="card" id="acknowledgements-section">
@@ -247,28 +264,40 @@ function wordLimit(){
 </html>
 
 @code {
-    private AppealFormModel1 appealForm1 = new AppealFormModel1();
-    private bool _isSubmitting = false;
-    private bool _submitError = false;
-    private string _errorMessage = string.Empty;
+    private AppealFormModel1 appealForm1 = new();
+    private bool _isSubmitting;
+    private bool _submitted;
 
-    private void HandleValidSubmit()
+    protected override void OnInitialized()
+    {
+        appealForm1 = new AppealFormModel1
+        {
+            Date = DateTime.Today
+        };
+    }
+
+    private async Task HandleValidSubmit()
     {
         try
         {
             _isSubmitting = true;
-            _submitError = false;
-            
+            StateHasChanged();
+
+    // Simulate API call
             AppealService.SubmitAppeal(appealForm1);
+            
+            _submitted = true;
+    // Here you would typically navigate to a success page
+    // or show a success message
         }
         catch (Exception ex)
         {
-            _submitError = true;
-            _errorMessage = "An error occurred while submitting the form: " + ex.Message;
+            Console.WriteLine($"Error: {ex.Message}");
         }
         finally
         {
             _isSubmitting = false;
+            StateHasChanged();
         }
     }
 }
