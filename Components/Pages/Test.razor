@@ -1,12 +1,19 @@
 ﻿@page "/testupload"
 
-<h1>Test Upload</h1>
+<h1>Test Upload Page</h1>
 
 <InputFile OnChange="@UploadFile" multiple />
 
 @code {
+    // This will execute when the component is initialized (page loads)
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("TestUpload.razor - OnInitialized method executed! (Page Load Log)");
+    }
+
     private async Task UploadFile(InputFileChangeEventArgs e)
     {
-        Console.WriteLine("UploadFile method triggered!"); // Simple log
+        Console.WriteLine("UploadFile method triggered!"); // Keep your existing log here too
+    // ... rest of your upload logic ...
     }
 }
