@@ -39,6 +39,13 @@ builder.Services.AddDbContext<CosmosContext>(options =>
     options.UseCosmos(endpointUri, primaryKey, databaseName: "Appeals");
 });
 
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.AddConsole();
+    loggingBuilder.AddDebug();
+    loggingBuilder.AddAzureWebAppDiagnostics();
+});
+
 builder.Services.AddScoped(sp => new HttpClient());
 
 builder.Services.AddCors(options =>

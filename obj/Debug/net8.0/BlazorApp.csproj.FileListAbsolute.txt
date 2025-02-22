@@ -334,3 +334,7 @@ C:\Users\Micah\RiderProjects\SAPApp\bin\Debug\net8.0\runtimes\win\lib\net6.0\Sys
 C:\Users\Micah\RiderProjects\SAPApp\obj\Debug\net8.0\BlazorApp.csproj.AssemblyReference.cache
 C:\Users\Micah\RiderProjects\SAPApp\obj\Debug\net8.0\BlazorApp.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Micah\RiderProjects\SAPApp\obj\Debug\net8.0\BlazorApp.csproj.Up2Date
+C:\Users\Micah\RiderProjects\SAPApp\bin\Debug\net8.0\Azure.Storage.Blobs.dll
+C:\Users\Micah\RiderProjects\SAPApp\bin\Debug\net8.0\Azure.Storage.Common.dll
+C:\Users\Micah\RiderProjects\SAPApp\bin\Debug\net8.0\Microsoft.Identity.Web.UI.dll
+C:\Users\Micah\RiderProjects\SAPApp\bin\Debug\net8.0\System.IO.Hashing.dll

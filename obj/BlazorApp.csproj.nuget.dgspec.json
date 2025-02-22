@@ -86,6 +86,14 @@
               "target": "Package",
               "version": "[9.0.1, )"
             },
+            "Microsoft.Extensions.Logging.AzureAppServices": {
+              "target": "Package",
+              "version": "[9.0.2, )"
+            },
+            "Microsoft.Extensions.Logging.Console": {
+              "target": "Package",
+              "version": "[9.0.2, )"
+            },
             "Microsoft.Identity.Web": {
               "target": "Package",
               "version": "[3.6.0, )"

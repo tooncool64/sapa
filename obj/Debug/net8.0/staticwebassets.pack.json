@@ -5,6 +5,22 @@
       "PackagePath": "staticwebassets\\BlazorApp.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\Micah\\RiderProjects\\SAPApp\\wwwroot\\.well-known\\microsoft-identity-association.json",
+      "PackagePath": "staticwebassets\\.well-known\\microsoft-identity-association.json"
+    },
+    {
+      "Id": "C:\\Users\\Micah\\RiderProjects\\SAPApp\\wwwroot\\AppealFormPage1.css",
+      "PackagePath": "staticwebassets\\AppealFormPage1.css"
+    },
+    {
+      "Id": "C:\\Users\\Micah\\RiderProjects\\SAPApp\\wwwroot\\AppealFormPage2.css",
+      "PackagePath": "staticwebassets\\AppealFormPage2.css"
+    },
+    {
+      "Id": "C:\\Users\\Micah\\RiderProjects\\SAPApp\\wwwroot\\AppealFormPage3.css",
+      "PackagePath": "staticwebassets\\AppealFormPage3.css"
+    },
+    {
       "Id": "C:\\Users\\Micah\\RiderProjects\\SAPApp\\wwwroot\\Saint-Martins-logo.svg",
       "PackagePath": "staticwebassets\\Saint-Martins-logo.svg"
     },
