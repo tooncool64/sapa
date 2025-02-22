@@ -1,5 +1,6 @@
 ﻿@page "/appeal2"
 @inject HttpClient Http
+@inject ILogger<AppealFormPage2> Logger
 
 <PageTitle>Appeal Documentation</PageTitle>
 
@@ -82,6 +83,16 @@
 
 <InputFile OnChange="@UploadFile" multiple />
 
+<!--Test Div -->
+<div class="mt-3">
+    @if (_uploadStatus != null)
+    {
+        <div class="@(_uploadStatus.Success ? "text-success" : "text-danger")">
+            @_uploadStatus.Message
+        </div>
+    }
+</div>
+
 
 <div class="card">
     <NavLink href="/appeal3"><button>Next Page</button></NavLink>
@@ -103,16 +114,75 @@ function myFunction() {
 </html>
 
 @code {
+    private UploadStatus? _uploadStatus;
+
+    private class UploadStatus
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; } = "";
+    }
+
     private async Task UploadFile(InputFileChangeEventArgs e)
     {
-        foreach (var file in e.GetMultipleFiles()) // Get selected files
+        try
         {
-            var content = new MultipartFormDataContent();
-            var stream = file.OpenReadStream(10_000_000); // Limit file size (10MB)
-            content.Add(new StreamContent(stream), "file", file.Name);
+            _uploadStatus = null;
+            var files = e.GetMultipleFiles();
+            
+            foreach (var file in files)
+            {
+                try
+                {
+                    var content = new MultipartFormDataContent();
+                    var stream = file.OpenReadStream(10_000_000);
+                    var streamContent = new StreamContent(stream);
+                    content.Add(streamContent, "file", file.Name);
 
-            var response = await Http.PostAsync("https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/api/upload", content);
-            Console.WriteLine(response.IsSuccessStatusCode ? $"Uploaded {file.Name} successfully!" : $"Upload failed for {file.Name}");
+                    var response = await Http.PostAsync(
+                        "https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/api/upload", 
+                        content);
+
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new Exception($"Upload failed: {response.StatusCode} - {responseContent}");
+                    }
+
+                    _uploadStatus = new UploadStatus 
+                    { 
+                        Success = true, 
+                        Message = $"Successfully uploaded {file.Name}" 
+                    };
+                    
+                    Logger.LogInformation("File {FileName} uploaded successfully", file.Name);
+                }
+                catch (Exception ex)
+                {
+                    _uploadStatus = new UploadStatus 
+                    { 
+                        Success = false, 
+                        Message = $"Failed to upload {file.Name}: {ex.Message}" 
+                    };
+                    
+                    Logger.LogError(ex, "Error uploading file {FileName}", file.Name);
+                }
+                finally
+                {
+                    StateHasChanged();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _uploadStatus = new UploadStatus 
+            { 
+                Success = false, 
+                Message = $"Error processing files: {ex.Message}" 
+            };
+            
+            Logger.LogError(ex, "Error in file upload handler");
+            StateHasChanged();
         }
     }
 }
