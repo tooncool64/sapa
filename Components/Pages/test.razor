@@ -1,0 +1,12 @@
+﻿@page "/testupload"
+
+<h1>Test Upload</h1>
+
+<InputFile OnChange="@UploadFile" multiple />
+
+@code {
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        Console.WriteLine("UploadFile method triggered!"); // Simple log
+    }
+}
