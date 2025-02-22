@@ -1,0 +1,243 @@
+﻿@page "/appeal"
+
+<PageTitle>Appeal Form</PageTitle>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="AppealFormPage1.css"/>
+</head>
+<body>
+<div class="container">
+    <header>
+        <button onclick="toggleLanguage()">Español</button>
+    </header>
+    <main>
+        <EditForm Model="@appealForm1" FormName="AppealForm1" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator/>
+
+            <section id="student-info" class="card">
+                <h2 id="student-info-heading">Student Information</h2>
+                <div class="form-group">
+                    <label id="label-name">
+                        <span class="label-text">Name:</span>
+                        <InputText @bind-Value="appealForm1.Name" class="form-control" placeholder="Your name.."/>
+                        <ValidationMessage For="@(() => appealForm1.Name)"/>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label id="label-student-id">
+                        <span class="label-text">Student ID#:</span>
+                        <InputText @bind-Value="appealForm1.StudentId" class="form-control" placeholder="ex: p000.."/>
+                        <ValidationMessage For="@(() => appealForm1.StudentId)"/>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label id="label-date">
+                        <span class="label-text">Date:</span>
+                        <InputDate @bind-Value="appealForm1.Date" class="form-control"/>
+                        <ValidationMessage For="@(() => appealForm1.Date)"/>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label id="email-name">
+                        <span class="email-name">Email:</span>
+                        <InputText @bind-Value="appealForm1.Email" class="form-control"/>
+                        <ValidationMessage For="@(() => appealForm1.Email)"/>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label id="label-major">
+                        <span class="label-text">Major:</span>
+                        <InputText @bind-Value="appealForm1.Major" class="form-control" placeholder="Your major.."/>
+                        <ValidationMessage For="@(() => appealForm1.Major)"/>
+                    </label>
+                </div>
+            </section>
+
+            <section id="appeal-details" class="card">
+                <h2 id="appeal-details-heading">Appeal Explanation</h2>
+                <p id="appeal-details-text">
+                    Please provide a signed, typed, or written statement (max 500 words) explaining:
+                </p>
+                <ol id="appeal-details-list">
+                    <li>Any extenuating circumstances that led to your SAP status.</li>
+                    <li>How these circumstances affected your academic progress.</li>
+                    <li>Steps you have taken to overcome them.</li>
+                    <li>Your plan for future academic success.</li>
+                </ol>
+                <div class="form-group">
+                    <InputTextArea @bind-Value="appealForm1.AppealExplanation"
+                                   class="form-control"
+                                   id="text-area"
+                                   rows="6"
+                                   placeholder="Write your explanation here..."/>
+                    <ValidationMessage For="@(() => appealForm1.AppealExplanation)"/>
+                </div>
+            </section>
+
+            <div class="form-actions mt-3">
+                <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">
+                    @if (_isSubmitting)
+                    {
+                        <span>Submitting...</span>
+                    }
+                    else
+                    {
+                        <span>Submit Appeal</span>
+                    }
+                </button>
+            </div>
+        </EditForm>
+
+        @if (_submitted)
+        {
+            <div class="alert alert-success mt-3">
+                Form submitted successfully!
+            </div>
+        }
+
+    </main>
+</div>
+
+<section class="card" id="acknowledgements-section">
+    <!-- Changed: Added an id to the heading for language toggling -->
+    <h2 id="acknowledgements-heading">Acknowledgements</h2>
+    <div class="checkbox-container">
+        <input type="checkbox" onclick="myFunction()">
+        <!-- Changed: Added an id to the span for text updating -->
+        <span id="checkbox1-text">
+            Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.
+        </span>
+    </div>
+    <!-- Changed: Paragraph for checked message with an id -->
+    <p id="text1" style="display:none">Checkbox is CHECKED!</p>
+
+    <div class="checkbox-container">
+        <input type="checkbox" onclick="myFunction()">
+        <span id="checkbox2-text">
+            I understand that the decision of the Office of Financial Aid is final.
+        </span>
+    </div>
+    <p id="text2" style="display:none">Checkbox is CHECKED!</p>
+</section>
+
+<script>
+function myFunction() {
+  var checkBox = document.getElementById("myCheck");
+  var text = document.getElementById("text");
+  if (checkBox.checked == true){
+    text.style.display = "block";
+  } else {
+     text.style.display = "none";
+  }
+}
+
+var currentLanguage = "en";
+
+
+var translations = {
+  en: {
+    title: "SAP Appeal Form",
+    "toggle-button": "Español",
+    "documentation-label": "Official documentation supporting your extenuating circumstance(s):",
+    "documentation-description": "The only acceptable forms of documentation are PDF and Word.",
+    "acknowledgements-heading": "Acknowledgements",
+    "checkbox1-text": "Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.",
+    "checkbox2-text": "I understand that the decision of the Office of Financial Aid is final."
+  },
+  es: {
+    title: "Formulario de Apelación SAP",
+    "toggle-button": "English",
+    "documentation-label": "Documentación oficial que respalda sus circunstancias atenuantes:",
+    "documentation-description": "Las únicas formas aceptables de documentación son PDF y Word.",
+    "acknowledgements-heading": "Reconocimientos",
+    "checkbox1-text": "Arreglo de pago: Entiendo que la Oficina de Ayuda Financiera NO retendrá mis clases a la espera de una decisión del comité SAP si no puedo pagar el saldo de la cuenta.",
+    "checkbox2-text": "Entiendo que la decisión de la Oficina de Ayuda Financiera es definitiva."
+  }
+};
+
+
+function toggleLanguage() {
+  currentLanguage = currentLanguage === "en" ? "es" : "en";
+  
+  document.documentElement.lang = currentLanguage;
+  document.title = translations[currentLanguage].title;
+  
+  document.getElementById("toggle-button").innerText = translations[currentLanguage]["toggle-button"];
+  document.getElementById("documentation-label").innerText = translations[currentLanguage]["documentation-label"];
+  document.getElementById("documentation-description").innerText = translations[currentLanguage]["documentation-description"];
+  document.getElementById("acknowledgements-heading").innerText = translations[currentLanguage]["acknowledgements-heading"];
+  document.getElementById("checkbox1-text").innerText = translations[currentLanguage]["checkbox1-text"];
+  document.getElementById("checkbox2-text").innerText = translations[currentLanguage]["checkbox2-text"];
+}
+
+// does not work lol
+
+function wordLimit(){
+    
+       var jobValue = document.getElementById('text-area').value
+       var words = jobValue.value.split(/\s+/);
+       var maxWords = 500; 
+       var numWords = words.length;
+       if(numWords > maxWords){
+    		  jobValue.preventDefault(); 
+        }
+}
+
+</script>
+<!-- <div class="row">
+    <input type="submit" value="Submit">
+</div> -->
+
+<div class="card">
+    <NavLink href="/appeal2"><button>Next Page</button></NavLink>
+</div>
+
+</body>
+</html>
+
+@code {
+    private AppealFormModel1 appealForm1 = new();
+    private bool _isSubmitting;
+    private bool _submitted;
+
+    protected override void OnInitialized()
+    {
+        appealForm1 = new AppealFormModel1
+        {
+            Date = DateTime.Today
+        };
+    }
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("Form submitted successfully!");
+        
+        try
+        {
+            _isSubmitting = true;
+            StateHasChanged();
+
+    // Simulate API call
+            AppealService.SubmitAppeal(appealForm1);
+            
+            _submitted = true;
+    // Here you would typically navigate to a success page
+    // or show a success message
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        finally
+        {
+            _isSubmitting = false;
+            StateHasChanged();
+        }
+    }
+}

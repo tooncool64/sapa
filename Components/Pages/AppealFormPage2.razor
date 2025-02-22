@@ -1,45 +1,13 @@
 ﻿@page "/appeal2"
+@inject HttpClient Http
 
 <PageTitle>Appeal Documentation</PageTitle>
 
 <!DOCTYPE html>
 <html lang="en">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        h2 {
-            background: #004080;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .subpoints {
-            padding-left: 20px;
-        }
-    </style>
+<head>
+    <link rel="stylesheet" href="AppealFormPage2.css"/>
+</head>
 <body>
 <div class="container">
     <h1>Reasons & Supporting Documentation for SAP Appeal</h1>
@@ -96,20 +64,24 @@
         </div>
     </div>
     <div class="documentation">
-          <label id="documentation-label" for="myCheck">
+        <label id="documentation-label" for="myCheck">
             <span class="label-text">
-              Official documentation supporting your extenuating circumstance(s):
+                Official documentation supporting your extenuating circumstance(s):
             </span>
-          </label>
-          <p id="documentation-description">
+        </label>
+        <p id="documentation-description">
             The only acceptable forms of documentation are pdf and word.
-          </p>
-        </div>
+        </p>
+    </div>
 
     <div class="card">
         <p><strong>Note:</strong> Appeals submitted for reasons above will be reviewed on a case-by-case basis. Appeals are not automatically approved for any of the above reasons but are reviewed based on circumstances, documented academic history, and academic success potential.</p>
     </div>
 </div>
+
+
+<InputFile OnChange="@UploadFile" multiple />
+
 
 <div class="card">
     <NavLink href="/appeal3"><button>Next Page</button></NavLink>
@@ -129,3 +101,18 @@ function myFunction() {
 
 </body>
 </html>
+
+@code {
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        foreach (var file in e.GetMultipleFiles()) // Get selected files
+        {
+            var content = new MultipartFormDataContent();
+            var stream = file.OpenReadStream(10_000_000); // Limit file size (10MB)
+            content.Add(new StreamContent(stream), "file", file.Name);
+
+            var response = await Http.PostAsync("https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/api/upload", content);
+            Console.WriteLine(response.IsSuccessStatusCode ? $"Uploaded {file.Name} successfully!" : $"Upload failed for {file.Name}");
+        }
+    }
+}
