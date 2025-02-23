@@ -28,9 +28,9 @@ var model = AppealDocumentDataSource.GetSampleAppeal(); // Get data
 
 builder.Services.AddControllersWithViews();
 
-// Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+builder.Services.AddRazorComponents(options => 
+    options.DetailedErrors = true
+    ).AddInteractiveServerComponents();;
 
 builder.Services.AddDbContext<CosmosContext>(options =>
 {
