@@ -1,6 +1,5 @@
 ﻿@page "/appeal2"
 @inject HttpClient Http
-@inject ILogger<AppealFormPage2> Logger
 
 <PageTitle>Appeal Documentation</PageTitle>
 
@@ -81,7 +80,7 @@
 </div>
 
 
-<InputFile OnChange="@UploadFile" multiple />
+<InputFile OnChange="@UploadFile" multiple accept=".jpg, .jpeg, .png, image/*, .pdf, .docx" />
 
 <!--Test Div -->
 <div class="mt-3">
@@ -128,7 +127,7 @@ function myFunction() {
         {
             _uploadStatus = null;
             var files = e.GetMultipleFiles();
-            
+
             foreach (var file in files)
             {
                 try
@@ -139,33 +138,29 @@ function myFunction() {
                     content.Add(streamContent, "file", file.Name);
 
                     var response = await Http.PostAsync(
-                        "https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/api/upload", 
+                        "https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/api/upload",
                         content);
 
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    
+
                     if (!response.IsSuccessStatusCode)
                     {
                         throw new Exception($"Upload failed: {response.StatusCode} - {responseContent}");
                     }
 
-                    _uploadStatus = new UploadStatus 
-                    { 
-                        Success = true, 
-                        Message = $"Successfully uploaded {file.Name}" 
+                    _uploadStatus = new UploadStatus
+                    {
+                        Success = true,
+                        Message = $"Successfully uploaded {file.Name}"
                     };
-                    
-                    Logger.LogInformation("File {FileName} uploaded successfully", file.Name);
                 }
                 catch (Exception ex)
                 {
-                    _uploadStatus = new UploadStatus 
-                    { 
-                        Success = false, 
-                        Message = $"Failed to upload {file.Name}: {ex.Message}" 
+                    _uploadStatus = new UploadStatus
+                    {
+                        Success = false,
+                        Message = $"Failed to upload {file.Name}: {ex.Message}"
                     };
-                    
-                    Logger.LogError(ex, "Error uploading file {FileName}", file.Name);
                 }
                 finally
                 {
@@ -175,13 +170,11 @@ function myFunction() {
         }
         catch (Exception ex)
         {
-            _uploadStatus = new UploadStatus 
-            { 
-                Success = false, 
-                Message = $"Error processing files: {ex.Message}" 
+            _uploadStatus = new UploadStatus
+            {
+                Success = false,
+                Message = $"Error processing files: {ex.Message}"
             };
-            
-            Logger.LogError(ex, "Error in file upload handler");
             StateHasChanged();
         }
     }
