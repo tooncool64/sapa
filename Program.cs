@@ -48,6 +48,8 @@ builder.Services.AddLogging(loggingBuilder =>
 
 builder.Services.AddScoped(sp => new HttpClient());
 
+builder.Services.AddServerSideBlazor();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazor", policy =>
