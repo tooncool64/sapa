@@ -65,10 +65,10 @@
                     Please provide a signed, typed, or written statement (max 500 words) explaining:
                 </p>
                 <ol id="appeal-details-list">
-                    <li>Any extenuating circumstances that led to your SAP status.</li>
-                    <li>How these circumstances affected your academic progress.</li>
-                    <li>Steps you have taken to overcome them.</li>
-                    <li>Your plan for future academic success.</li>
+                    <li id = "appeal-list-1">Any extenuating circumstances that led to your SAP status.</li>
+                    <li id = "appeal-list-2">How these circumstances affected your academic progress.</li>
+                    <li id = "appeal-list-3">Steps you have taken to overcome them.</li>
+                    <li id = "appeal-list-4">Your plan for future academic success.</li>
                 </ol>
                 <div class="form-group">
                     <InputTextArea @bind-Value="appealForm1.AppealExplanation"
@@ -81,7 +81,7 @@
             </section>
 
             <div class="form-actions mt-3">
-                <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">
+                <button type="submit" id="submit-button" class="btn btn-primary" disabled="@_isSubmitting">
                     @if (_isSubmitting)
                     {
                         <span>Submitting...</span>
@@ -158,7 +158,8 @@ var translations = {
     "appeal-list-4": "Your plan for future academic success.",
     "acknowledgements-heading": "Acknowledgements",
     "checkbox1-text": "Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.",
-    "checkbox2-text": "I understand that the decision of the Office of Financial Aid is final."
+    "checkbox2-text": "I understand that the decision of the Office of Financial Aid is final.",
+    "submit-button": "Submit Appeal"
   },
   es: {
     title: "Formulario de Apelación SAP",
@@ -177,7 +178,8 @@ var translations = {
     "appeal-list-4": "Su plan para el éxito académico futuro.",
     "acknowledgements-heading": "Reconocimientos",
     "checkbox1-text": "Arreglo de pago: Entiendo que la Oficina de Ayuda Financiera NO retendrá mis clases a la espera de una decisión del comité SAP si no puedo pagar el saldo de la cuenta.",
-    "checkbox2-text": "Entiendo que la decisión de la Oficina de Ayuda Financiera es definitiva."
+    "checkbox2-text": "Entiendo que la decisión de la Oficina de Ayuda Financiera es definitiva.",
+    "submit-button": "Enviar Apelación"
   }
 };
 
