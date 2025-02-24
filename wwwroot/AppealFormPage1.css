@@ -60,3 +60,21 @@ input, textarea {
     width: 100%;
     text-align: center;
 }
+
+/* Language Toggle Button Styling */
+.lang-toggle {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #004080;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.lang-toggle:hover {
+    text-decoration: none;
+}

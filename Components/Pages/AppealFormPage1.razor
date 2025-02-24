@@ -10,7 +10,7 @@
 <body>
 <div class="container">
     <header>
-        <button onclick="toggleLanguage()">Español</button>
+        <button id="toggle-button" class="lang-toggle" onclick="toggleLanguage()">Español</button>
     </header>
     <main>
         <EditForm Model="@appealForm1" FormName="AppealForm1" OnValidSubmit="@HandleValidSubmit">
@@ -144,8 +144,18 @@ var translations = {
   en: {
     title: "SAP Appeal Form",
     "toggle-button": "Español",
-    "documentation-label": "Official documentation supporting your extenuating circumstance(s):",
-    "documentation-description": "The only acceptable forms of documentation are PDF and Word.",
+    "student-info-heading": "Student Information",
+    "label-name": "Name:",
+    "label-student-id": "Student ID#:",
+    "label-date": "Date:",
+    "email-name": "Email:",
+    "label-major": "Major:",
+    "appeal-details-heading": "Appeal Explanation",
+    "appeal-details-text": "Please provide a signed, typed, or written statement (max 500 words) explaining:",
+    "appeal-list-1": "Any extenuating circumstances that led to your SAP status.",
+    "appeal-list-2": "How these circumstances affected your academic progress.",
+    "appeal-list-3": "Steps you have taken to overcome them.",
+    "appeal-list-4": "Your plan for future academic success.",
     "acknowledgements-heading": "Acknowledgements",
     "checkbox1-text": "Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.",
     "checkbox2-text": "I understand that the decision of the Office of Financial Aid is final."
@@ -153,8 +163,18 @@ var translations = {
   es: {
     title: "Formulario de Apelación SAP",
     "toggle-button": "English",
-    "documentation-label": "Documentación oficial que respalda sus circunstancias atenuantes:",
-    "documentation-description": "Las únicas formas aceptables de documentación son PDF y Word.",
+    "student-info-heading": "Información del Estudiante",
+    "label-name": "Nombre:",
+    "label-student-id": "ID del Estudiante:",
+    "label-date": "Fecha:",
+    "email-name": "Correo Electrónico:",
+    "label-major": "Especialidad:",
+    "appeal-details-heading": "Explicación de la Apelación",
+    "appeal-details-text": "Por favor, proporcione una declaración firmada, mecanografiada o escrita (máximo 500 palabras) explicando:",
+    "appeal-list-1": "Cualquier circunstancia atenuante que llevó a su estado SAP.",
+    "appeal-list-2": "Cómo estas circunstancias afectaron su progreso académico.",
+    "appeal-list-3": "Los pasos que ha tomado para superarlos.",
+    "appeal-list-4": "Su plan para el éxito académico futuro.",
     "acknowledgements-heading": "Reconocimientos",
     "checkbox1-text": "Arreglo de pago: Entiendo que la Oficina de Ayuda Financiera NO retendrá mis clases a la espera de una decisión del comité SAP si no puedo pagar el saldo de la cuenta.",
     "checkbox2-text": "Entiendo que la decisión de la Oficina de Ayuda Financiera es definitiva."
@@ -165,15 +185,14 @@ var translations = {
 function toggleLanguage() {
   currentLanguage = currentLanguage === "en" ? "es" : "en";
   
-  document.documentElement.lang = currentLanguage;
-  document.title = translations[currentLanguage].title;
-  
   document.getElementById("toggle-button").innerText = translations[currentLanguage]["toggle-button"];
-  document.getElementById("documentation-label").innerText = translations[currentLanguage]["documentation-label"];
-  document.getElementById("documentation-description").innerText = translations[currentLanguage]["documentation-description"];
-  document.getElementById("acknowledgements-heading").innerText = translations[currentLanguage]["acknowledgements-heading"];
-  document.getElementById("checkbox1-text").innerText = translations[currentLanguage]["checkbox1-text"];
-  document.getElementById("checkbox2-text").innerText = translations[currentLanguage]["checkbox2-text"];
+
+  Object.keys(translations[currentLanguage]).forEach(function (key) {
+    var element = document.getElementById(key);
+    if (element) {
+        element.innerText = translations[currentLanguage][key];
+    }
+  });
 }
 
 // does not work lol
