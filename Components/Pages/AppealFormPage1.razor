@@ -183,16 +183,26 @@ var translations = {
 
 
 function toggleLanguage() {
-  currentLanguage = currentLanguage === "en" ? "es" : "en";
-  
-  document.getElementById("toggle-button").innerText = translations[currentLanguage]["toggle-button"];
+    currentLanguage = currentLanguage === "en" ? "es" : "en";
 
-  Object.keys(translations[currentLanguage]).forEach(function (key) {
-    var element = document.getElementById(key);
-    if (element) {
-        element.innerText = translations[currentLanguage][key];
-    }
-  });
+    // Update the toggle button text
+    document.getElementById("toggle-button").innerText = translations[currentLanguage]["toggle-button"];
+
+    // Loop through all translations
+    Object.keys(translations[currentLanguage]).forEach(function (key) {
+        var element = document.getElementById(key);
+        
+        if (element) {
+            // Check if it's a label with a span (for form inputs)
+            if (element.querySelector(".label-text")) {
+                element.querySelector(".label-text").innerText = translations[currentLanguage][key];
+            } 
+            // Otherwise, update normally
+            else {
+                element.innerText = translations[currentLanguage][key];
+            }
+        }
+    });
 }
 
 // does not work lol
