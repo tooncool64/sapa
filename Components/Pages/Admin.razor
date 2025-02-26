@@ -82,6 +82,88 @@
             </section>
         </main>
     </div>
-    <script src="script.js"></script>
+    <script src="script.js">
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+}
+
+.logo h1 {
+    margin: 0;
+}
+
+.search-bar input {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 20px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.sidebar ul li.active a {
+    color: #007bff;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.cards {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.card {
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+    border-radius: 4px;
+    text-align: center;
+    width: 30%;
+}
+
+.recent-submissions table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.recent-submissions th, .recent-submissions td {
+    border: 1px </script>
 </body>
 </html>
