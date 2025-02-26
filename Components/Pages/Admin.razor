@@ -105,24 +105,5 @@
         </div>
     </div>
     <script src="script.js">
-	function showSection(sectionId) {
-    // Hide all sections
-    document.querySelectorAll('.section').forEach(section => {
-        section.classList.remove('active');
-    });
-
-    // Show the selected section
-    document.getElementById(sectionId).classList.add('active');
-}
-
-function logout() {
-    alert("Logging out...");
-    <NavLink href="/logged-out">Sign out</NavLink>
-}
-
-document.getElementById('search').addEventListener('input', function() {
-    console.log('Search query:', this.value);
-    
-});
 	</body>
 	</html>
