@@ -11,78 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <div class="logo">
-            <h1>Admin Dashboard</h1>
-        </div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search...">
-        </div>
-    </header>
-    <div class="container">
-        <nav class="sidebar">
-            <ul>
-                <li class="active"><a href="#" onclick="showSection('dashboard')">Dashboard</a></li>
-                <li><a href="#" onclick="showSection('appeals')">Appeals</a></li>
-                <li><a href="#" onclick="showSection('statusUpdate')">Status Update</a></li>
-                <li><a href="#" onclick="showSection('profile')">Profile</a></li>
-                <li><a href="#" onclick="logout()">Logout</a></li>
-            </ul>
-        </nav>
-        <main class="main-content">
-            <section id="dashboard" class="section active">
-                <div class="cards">
-                    <div class="card">
-                        <h2>10</h2>
-                        <p>Appeals Submitted</p>
-                    </div>
-                    <div class="card">
-                        <h2>25</h2>
-                        <p>Comments</p>
-                    </div>
-                    <div class="card">
-                        <h2>10</h2>
-                        <p>Pending</p>
-                    </div>
-                </div>
-                <div class="recent-submissions">
-                    <h2>Recent Submissions</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Appeal</th>
-                                <th>Comments</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Appeal 1</td>
-                                <td>0</td>
-                                <td>Pending</td>
-                            </tr>
-                            <!-- Add more rows as needed -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-            <section id="appeals" class="section">
-                <h2>Appeals</h2>
-                <!-- Appeals content -->
-            </section>
-            <section id="statusUpdate" class="section">
-                <h2>Status Update</h2>
-                <!-- Status Update content -->
-            </section>
-            <section id="profile" class="section">
-                <h2>Profile</h2>
-                <!-- Profile content -->
-            </section>
-        </main>
-    </div>
-    <script src="script.js">
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -164,6 +93,80 @@ header {
 }
 
 .recent-submissions th, .recent-submissions td {
-    border: 1px </script>
+    border
+
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Admin Dashboard</h1>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+        </div>
+    </header>
+    <div class="container">
+        <nav class="sidebar">
+            <ul>
+                <li class="active"><a href="#" onclick="showSection('dashboard')">Dashboard</a></li>
+                <li><a href="#" onclick="showSection('appeals')">Appeals</a></li>
+                <li><a href="#" onclick="showSection('statusUpdate')">Status Update</a></li>
+                <li><a href="#" onclick="showSection('profile')">Profile</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <section id="dashboard" class="section active">
+                <div class="cards">
+                    <div class="card">
+                        <h2>10</h2>
+                        <p>Appeals Submitted</p>
+                    </div>
+                    <div class="card">
+                        <h2>25</h2>
+                        <p>Comments</p>
+                    </div>
+                    <div class="card">
+                        <h2>10</h2>
+                        <p>Pending</p>
+                    </div>
+                </div>
+                <div class="recent-submissions">
+                    <h2>Recent Submissions</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Appeal</th>
+                                <th>Comments</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Appeal 1</td>
+                                <td>0</td>
+                                <td>Pending</td>
+                            </tr>
+                            <!-- Add more rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="appeals" class="section">
+                <h2>Appeals</h2>
+                <!-- Appeals content -->
+            </section>
+            <section id="statusUpdate" class="section">
+                <h2>Status Update</h2>
+                <!-- Status Update content -->
+            </section>
+            <section id="profile" class="section">
+                <h2>Profile</h2>
+                <!-- Profile content -->
+            </section>
+        </main>
+    </div>
+    <script src="script.js">
+</script>
 </body>
 </html>
