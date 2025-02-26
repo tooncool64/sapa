@@ -93,11 +93,23 @@ header {
 }
 
 .recent-submissions th, .recent-submissions td {
+    border
+}
+.appeals th, .appeals td { 
+    border
     border: 1px solid #ddd;
     padding:10px
     text-align: left:
 }
-
+.appeals table { 
+     border: 1px solid #ddd;
+    padding:10px
+    text-align: left:
+}
+.status-update th, .status-update td {
+}
+.profile th, .profile td {
+}
 </style>
 
 </head>
@@ -113,11 +125,11 @@ header {
     <div class="container">
         <nav class="sidebar">
             <ul>
-                <li class="active"><a href="dashboard" onclick="showSection('dashboard')">Dashboard</a></li>
-                <li><a href="Appeals" onclick="showSection('appeals')">Appeals</a></li>
-                <li><a href="Status update" onclick="showSection('statusUpdate')">Status Update</a></li>
-                <li><a href="Profile" onclick="showSection('profile')">Profile</a></li>
-                <li><a href="Logout" onclick="logout()">Logout</a></li>
+                <li class="active"><a href="#" onclick="showSection('dashboard')">Dashboard</a></li>
+                <li><a href="#" onclick="showSection('appeals')">Appeals</a></li>
+                <li><a href="#" onclick="showSection('statusUpdate')">Status Update</a></li>
+                <li><a href="#" onclick="showSection('profile')">Profile</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
             </ul>
         </nav>
         <main class="main-content">
@@ -150,31 +162,16 @@ header {
                             <tr>
                                 <td>Appeal 1</td>
                                 <td>0</td>
-                                <td>accepted</td>
+                                <td>Pending</td>
                             </tr>
-                           
-                        </tr>
+                            <!-- Add more rows as needed -->
                         </tbody>
                     </table>
                 </div>
             </section>
             <section id="appeals" class="section">
-    <h2>Appeals</h2>
-    <form id="appealForm">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-        <label for="appeal">Students Apple:</label>
-        <textarea id="appeal" name="appeal" required></textarea>
-        <button type="submit">Submit</button>
-    </form>
-</section>
-<script>
-    document.getElementById('appealForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        alert('Appeal has been confirmed.');
-    });
-</script>
-<section id="statusUpdate" class="section">
+                <h2>Appeals</h2>
+                <section id="statusUpdate" class="section">
     <h2>Status Update</h2>
     <button class="accordion">Update 1</button>
     <div class="panel">
@@ -210,7 +207,44 @@ header {
     }
 </style>
             </section>
-            <section id="profile" class="section">
+            <section id="statusUpdate" class="section">
+                <h2>Status Update</h2>
+<section id="statusUpdate" class="section">
+    <h2>Status Update</h2>
+    <button class="accordion">Update 1</button>
+    <div class="panel">
+        <p>Status update details...</p>
+    </div>
+    <button class="accordion">Update 2</button>
+    <div class="panel">
+        <p>Status update details...</p>
+    </div>
+</section>
+<script>
+    var acc = document.getElementsByClassName('accordion');
+    for (var i = 0; i < acc.length; i++) {
+        acc[i].addEventListener('click', function() {
+            this.classList.toggle('active');
+            var panel = this.nextElementSibling;
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        });
+    }
+</script>
+<style>
+    .accordion {
+        cursor: pointer;
+        padding: 10px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+    }
+    .panel {
+        display: none;
+        padding: 0 10px;
+    }
+</style>
+      </section>      
     <h2>Profile</h2>
     <form id="profileForm">
         <label for="email">Email:</label>
