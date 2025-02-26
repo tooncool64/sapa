@@ -107,3 +107,23 @@
     <script src="script.js">
 	</body>
 	</html>
+function showSection(sectionId) {
+    // Hide all sections
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+    });
+
+    // Show the selected section
+    document.getElementById(sectionId).classList.add('active');
+}
+
+function logout() {
+    alert("Logging out...");
+    // Add your logout logic here
+    // For example, you can redirect the user to the login page:
+    // window.location.href = 'login.html';
+}
+
+document.getElementById('search').addEventListener('input', function() {
+    console.log('Search query:', this.value);
+    // Add search functionality here
