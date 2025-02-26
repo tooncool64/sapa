@@ -3,4 +3,59 @@
 @attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>Admin Dashboard</PageTitle>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            width: 200px;
+            height: 100vh;
+            background-color: #333;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+        }
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+        .menu-item {
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        .menu-item:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="menu-item" onclick="showSection('dashboard')">Dashboard</div>
+        <div class="menu-item" onclick="showSection('users')">Users</div>
+        <div class="menu-item" onclick="showSection('settings')">Settings</div>
+    </div>
+    <div class="content">
+        <div id="dashboard" class="section">Welcome to the Dashboard</div>
+        <div id="users" class="section" style="display:none;">Manage Users</div>
+        <div id="settings" class="section" style="display:none;">Settings</div>
+    </div>
 
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+    </script>
+</body>
+</html>
