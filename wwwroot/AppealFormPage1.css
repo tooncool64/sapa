@@ -85,3 +85,12 @@ input {
 .lang-toggle:hover {
     text-decoration: none;
 }
+
+/* Add styles for centered checkboxes */
+.checkbox-container {
+    margin-bottom: 15px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 10px;
+}

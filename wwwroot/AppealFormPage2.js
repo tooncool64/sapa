@@ -35,7 +35,22 @@ var translations = {
         "documentation-label": "Official documentation supporting your extenuating circumstance(s):",
         "documentation-description": "The only acceptable forms of documentation are PDF and Word.",
 
-        "final-note": "Note: Appeals submitted for reasons above will be reviewed on a case-by-case basis. Appeals are not automatically approved for any of the above reasons but are reviewed based on circumstances, documented academic history, and academic success potential."
+        "final-note": "Note: Appeals submitted for reasons above will be reviewed on a case-by-case basis. Appeals are not automatically approved for any of the above reasons but are reviewed based on circumstances, documented academic history, and academic success potential.",
+
+        "required-documents-title": "Required Supporting Documents",
+        "required-documents-text": "Supporting documentation can be submitted below.",
+        "medical-condition": "<strong>Medical Condition:</strong> Submit a letter from your health care provider stating whether you are well enough to return.",
+        "medical-note": "**Do NOT send us your medical records.**",
+        "maximum-time-frame": "<strong>Maximum Time Frame:</strong> Submit documentation from your academic advisor confirming your graduation date.",
+        "double-majors": "<strong>Double Majors:</strong> If you are seeking two majors, documentation must come from BOTH advisors.",
+        "other-reasons": "<strong>Other:</strong> Submit documentation that proves each factor as noted as influencing your academics.",
+
+        "important-info-title": "Important Information",
+        "deadline-note": "**DEADLINE** - YOUR appeal must be submitted prior to the mid-point of the term.",
+        "mid-semester-warning": "If your appeal is not received by mid-semester, it will not be reviewed, and you are responsible for paying your balance with out-of-pocket funds.",
+        "additional-info": "The Office of Financial Aid may require additional information.",
+        "processing-warning": "The Office of Financial Aid staff will not continue processing your appeal until the requested information has been received.",
+        "contact-info": "Contact the Office of Financial Aid for further assistance at <strong>finaid@stmartin.edu</strong>"
     },
 
     es: {
@@ -72,7 +87,22 @@ var translations = {
         "documentation-label": "Documentación oficial que respalde sus circunstancias atenuantes:",
         "documentation-description": "Las únicas formas aceptables de documentación son PDF y Word.",
 
-        "final-note": "Nota: Las apelaciones enviadas por las razones anteriores se revisarán caso por caso. Las apelaciones no se aprueban automáticamente por ninguna de las razones anteriores, sino que se revisan en función de las circunstancias, el historial académico documentado y el potencial de éxito académico."
+        "final-note": "Nota: Las apelaciones enviadas por las razones anteriores se revisarán caso por caso. Las apelaciones no se aprueban automáticamente por ninguna de las razones anteriores, sino que se revisan en función de las circunstancias, el historial académico documentado y el potencial de éxito académico.",
+
+        "required-documents-title": "Documentos de Apoyo Requeridos",
+        "required-documents-text": "La documentación de respaldo se puede enviar a continuación.",
+        "medical-condition": "<strong>Condición Médica:</strong> Envíe una carta de su proveedor de atención médica indicando si está en condiciones de regresar.",
+        "medical-note": "**NO nos envíe sus registros médicos.**",
+        "maximum-time-frame": "<strong>Tiempo Máximo de Estudio:</strong> Envíe documentación de su asesor académico que confirme su fecha de graduación.",
+        "double-majors": "<strong>Doble Especialización:</strong> Si está buscando dos especializaciones, la documentación debe provenir de AMBOS asesores.",
+        "other-reasons": "<strong>Otros:</strong> Envíe documentación que demuestre cada factor mencionado como una influencia en su rendimiento académico.",
+
+        "important-info-title": "Información Importante",
+        "deadline-note": "**FECHA LÍMITE** - SU apelación debe enviarse antes del punto medio del período.",
+        "mid-semester-warning": "Si su apelación no se recibe antes de la mitad del semestre, no será revisada y será responsable de pagar su saldo con fondos personales.",
+        "additional-info": "La Oficina de Ayuda Financiera puede requerir información adicional.",
+        "processing-warning": "El personal de la Oficina de Ayuda Financiera no continuará procesando su apelación hasta que se haya recibido la información solicitada.",
+        "contact-info": "Comuníquese con la Oficina de Ayuda Financiera para obtener más ayuda en <strong>finaid@stmartin.edu</strong>"
     }
 };
 
