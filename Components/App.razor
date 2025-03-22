@@ -1,24 +1,36 @@
-﻿﻿@using BlazorApp.Components.Layout
-@using Microsoft.AspNetCore.Components.Authorization
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="/" />
-    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
-    <link rel="stylesheet" href="app.css" />
-    <link rel="stylesheet" href="BlazorApp.styles.css" />
-    <HeadOutlet />
-</head>
-
-<body>
+﻿@using BlazorApp.Components.Layout
 <CascadingAuthenticationState>
-    <Routes @rendermode="InteractiveServer" />
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <base href="/" />
+        <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+        <link rel="stylesheet" href="app.css" />
+        <link rel="stylesheet" href="BlazorApp.styles.css" />
+        <HeadOutlet />
+    </head>
+    <body>
+        <Router AppAssembly="@typeof(App).Assembly" @rendermode="InteractiveServer">
+            <Found Context="routeData">
+                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                    <NotAuthorized>
+                        <p>You are not authorized to access this resource.</p>
+                    </NotAuthorized>
+                    <Authorizing>
+                        <p>Authorization in progress...</p>
+                    </Authorizing>
+                </AuthorizeRouteView>
+            </Found>
+            <NotFound>
+                <PageTitle>Not found</PageTitle>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <p role="alert">Sorry, there's nothing at this address.</p>
+                </LayoutView>
+            </NotFound>
+        </Router>
+        <script src="_framework/blazor.web.js"></script>
+    </body>
+    </html>
 </CascadingAuthenticationState>
-<script src="_framework/blazor.web.js"></script>
-</body>
-
-</html>
