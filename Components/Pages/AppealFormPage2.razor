@@ -7,6 +7,82 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="AppealFormPage2.css"/>
+    <style>
+        .file-upload-container {
+            margin: 20px 0;
+        }
+        
+        .file-input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .selected-files {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .file-thumbnail {
+            position: relative;
+            width: 120px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        
+        .file-icon {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #6c757d;
+        }
+        
+        .file-name {
+            font-size: 12px;
+            word-break: break-word;
+            text-align: center;
+            margin-top: 5px;
+        }
+        
+        .remove-file {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background-color: #dc3545;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            border: none;
+        }
+        
+        .upload-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .upload-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -75,30 +151,65 @@
         </p>
     </div>
 
+    <div class="file-upload-container">
+        <div class="file-input-wrapper">
+            <InputFile OnChange="@SelectFiles" multiple accept=".pdf, .docx" />
+            
+            @if (selectedFiles.Count > 0)
+            {
+                <div class="selected-files">
+                    @foreach (var file in selectedFiles)
+                    {
+                        <div class="file-thumbnail">
+                            <button class="remove-file" @onclick="() => RemoveFile(file)">×</button>
+                            <div class="file-icon">
+                                @if (file.Name.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <span>📄</span>
+                                }
+                                else if (file.Name.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <span>📝</span>
+                                }
+                            </div>
+                            <div class="file-name">@file.Name</div>
+                        </div>
+                    }
+                </div>
+                <button class="upload-btn" @onclick="UploadSelectedFiles" disabled="@isUploading">
+                    @if (isUploading)
+                    {
+                        <span>Uploading...</span>
+                    }
+                    else
+                    {
+                        <span>Upload Selected Files</span>
+                    }
+                </button>
+            }
+        </div>
+    </div>
+
     <div class="card">
         <p id="final-note"><strong>Note:</strong> Appeals submitted for reasons above will be reviewed on a case-by-case basis. Appeals are not automatically approved for any of the above reasons but are reviewed based on circumstances, documented academic history, and academic success potential.</p>
     </div>
 
     <!-- Language Toggle Button -->
     <button id="toggle-button" class="lang-toggle" onclick="toggleLanguage()">Español</button>
-</div>
 
+    <!--Test Div -->
+    <div class="mt-3">
+        @if (_uploadStatus != null)
+        {
+            <div class="@(_uploadStatus.Success ? "text-success" : "text-danger")">
+                @_uploadStatus.Message
+            </div>
+        }
+    </div>
 
-<InputFile OnChange="@UploadFile" multiple accept=".jpg, .jpeg, .png, image/*, .pdf, .docx" />
-
-<!--Test Div -->
-<div class="mt-3">
-    @if (_uploadStatus != null)
-    {
-        <div class="@(_uploadStatus.Success ? "text-success" : "text-danger")">
-            @_uploadStatus.Message
-        </div>
-    }
-</div>
-
-
-<div class="card">
-    <NavLink href="/appeal3"><button>Next Page</button></NavLink>
+    <div class="card">
+        <NavLink href="/appeal3"><button>Next Page</button></NavLink>
+    </div>
 </div>
 
 <script>
@@ -209,6 +320,8 @@ function toggleLanguage() {
 
 @code {
     private UploadStatus? _uploadStatus;
+    private List<IBrowserFile> selectedFiles = new List<IBrowserFile>();
+    private bool isUploading = false;
 
     private class UploadStatus
     {
@@ -216,14 +329,45 @@ function toggleLanguage() {
         public string Message { get; set; } = "";
     }
 
-    private async Task UploadFile(InputFileChangeEventArgs e)
+    private void SelectFiles(InputFileChangeEventArgs e)
     {
+        foreach (var file in e.GetMultipleFiles())
+        {
+            // Check if file type is .pdf or .docx
+            if (file.Name.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) || 
+                file.Name.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
+            {
+                selectedFiles.Add(file);
+            }
+            else
+            {
+                _uploadStatus = new UploadStatus
+                {
+                    Success = false,
+                    Message = $"Invalid file type: {file.Name}. Only PDF and Word documents are accepted."
+                };
+            }
+        }
+        StateHasChanged();
+    }
+
+    private void RemoveFile(IBrowserFile file)
+    {
+        selectedFiles.Remove(file);
+        StateHasChanged();
+    }
+
+    private async Task UploadSelectedFiles()
+    {
+        if (selectedFiles.Count == 0) return;
+
         try
         {
+            isUploading = true;
             _uploadStatus = null;
-            var files = e.GetMultipleFiles();
+            StateHasChanged();
 
-            foreach (var file in files)
+            foreach (var file in selectedFiles.ToList())
             {
                 try
                 {
@@ -248,6 +392,9 @@ function toggleLanguage() {
                         Success = true,
                         Message = $"Successfully uploaded {file.Name}"
                     };
+                    
+                    // Remove the file from the list after successful upload
+                    selectedFiles.Remove(file);
                 }
                 catch (Exception ex)
                 {
@@ -270,6 +417,10 @@ function toggleLanguage() {
                 Success = false,
                 Message = $"Error processing files: {ex.Message}"
             };
+        }
+        finally
+        {
+            isUploading = false;
             StateHasChanged();
         }
     }
