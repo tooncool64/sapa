@@ -153,7 +153,7 @@
 
     <div class="file-upload-container">
         <div class="file-input-wrapper">
-            <InputFile OnChange="@SelectFiles" multiple accept=".pdf, .docx" />
+            <InputFile OnChange="@SelectFiles" multiple accept=".pdf, .docx" id="fileInput" />
             
             @if (selectedFiles.Count > 0)
             {
@@ -331,6 +331,9 @@ function toggleLanguage() {
 
     private void SelectFiles(InputFileChangeEventArgs e)
     {
+        // Clear previous selection to avoid stale file references
+        selectedFiles.Clear();
+        
         foreach (var file in e.GetMultipleFiles())
         {
             // Check if file type is .pdf or .docx
@@ -354,6 +357,13 @@ function toggleLanguage() {
     private void RemoveFile(IBrowserFile file)
     {
         selectedFiles.Remove(file);
+        
+        // Reset the input if all files are removed
+        if (selectedFiles.Count == 0)
+        {
+            _uploadStatus = null;
+        }
+        
         StateHasChanged();
     }
 
@@ -367,7 +377,14 @@ function toggleLanguage() {
             _uploadStatus = null;
             StateHasChanged();
 
-            foreach (var file in selectedFiles.ToList())
+            // Create a snapshot of files to upload
+            var filesToUpload = selectedFiles.ToList();
+
+            // Clear the current selection to avoid stale references
+            var fileNames = selectedFiles.Select(f => f.Name).ToList();
+            selectedFiles.Clear();
+
+            foreach (var file in filesToUpload)
             {
                 try
                 {
@@ -392,9 +409,6 @@ function toggleLanguage() {
                         Success = true,
                         Message = $"Successfully uploaded {file.Name}"
                     };
-                    
-                    // Remove the file from the list after successful upload
-                    selectedFiles.Remove(file);
                 }
                 catch (Exception ex)
                 {
