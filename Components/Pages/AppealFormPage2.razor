@@ -18,6 +18,30 @@
             gap: 10px;
         }
         
+        .hidden-input {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+        
+        .file-select-btn {
+            display: inline-block;
+            background-color: #6c757d;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .file-select-btn:hover {
+            background-color: #5a6268;
+        }
+        
         .selected-files {
             display: flex;
             flex-wrap: wrap;
@@ -153,7 +177,8 @@
 
     <div class="file-upload-container">
         <div class="file-input-wrapper">
-            <InputFile OnChange="@SelectFiles" multiple accept=".pdf, .docx" id="fileInput" />
+            <label for="fileInput" class="file-select-btn">Select PDF or Word documents</label>
+            <InputFile OnChange="@SelectFiles" multiple accept=".pdf, .docx" id="fileInput" class="hidden-input" />
             
             @if (selectedFiles.Count > 0)
             {
@@ -331,16 +356,26 @@ function toggleLanguage() {
 
     private void SelectFiles(InputFileChangeEventArgs e)
     {
-        // Clear previous selection to avoid stale file references
-        selectedFiles.Clear();
-        
+        // Append files instead of clearing previous selections
         foreach (var file in e.GetMultipleFiles())
         {
             // Check if file type is .pdf or .docx
             if (file.Name.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) || 
                 file.Name.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
             {
-                selectedFiles.Add(file);
+                // Check for duplicate file names to avoid confusion
+                if (!selectedFiles.Any(f => f.Name == file.Name))
+                {
+                    selectedFiles.Add(file);
+                }
+                else
+                {
+                    _uploadStatus = new UploadStatus
+                    {
+                        Success = false,
+                        Message = $"File with name '{file.Name}' is already selected."
+                    };
+                }
             }
             else
             {
@@ -379,10 +414,7 @@ function toggleLanguage() {
 
             // Create a snapshot of files to upload
             var filesToUpload = selectedFiles.ToList();
-
-            // Clear the current selection to avoid stale references
-            var fileNames = selectedFiles.Select(f => f.Name).ToList();
-            selectedFiles.Clear();
+            List<IBrowserFile> successfullyUploaded = new List<IBrowserFile>();
 
             foreach (var file in filesToUpload)
             {
@@ -409,6 +441,9 @@ function toggleLanguage() {
                         Success = true,
                         Message = $"Successfully uploaded {file.Name}"
                     };
+                    
+                    // Track successfully uploaded files
+                    successfullyUploaded.Add(file);
                 }
                 catch (Exception ex)
                 {
@@ -422,6 +457,12 @@ function toggleLanguage() {
                 {
                     StateHasChanged();
                 }
+            }
+            
+            // Remove only the successfully uploaded files from selection
+            foreach (var file in successfullyUploaded)
+            {
+                selectedFiles.Remove(file);
             }
         }
         catch (Exception ex)
