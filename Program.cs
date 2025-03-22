@@ -117,8 +117,6 @@ app.UseAntiforgery();
 
 app.UseCors("AllowBlazor");
 app.MapControllers();
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
