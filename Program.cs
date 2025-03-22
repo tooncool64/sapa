@@ -49,7 +49,10 @@ builder.Services.AddLogging(loggingBuilder =>
 
 builder.Services.AddScoped(sp => new HttpClient());
 
-builder.Services.AddServerSideBlazor();
+builder.Services.AddServerSideBlazor(options =>
+{
+    options.DetailedErrors = true;
+});
 
 builder.Services.AddCors(options =>
 {
