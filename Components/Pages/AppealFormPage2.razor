@@ -1,5 +1,6 @@
 ﻿@page "/appeal2"
 @inject HttpClient Http
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Appeal Documentation</PageTitle>
 
@@ -16,30 +17,6 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-        }
-        
-        .hidden-input {
-            width: 0.1px;
-            height: 0.1px;
-            opacity: 0;
-            overflow: hidden;
-            position: absolute;
-            z-index: -1;
-        }
-        
-        .file-select-btn {
-            display: inline-block;
-            background-color: #6c757d;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        
-        .file-select-btn:hover {
-            background-color: #5a6268;
         }
         
         .selected-files {
@@ -105,6 +82,21 @@
         .upload-btn:disabled {
             background-color: #6c757d;
             cursor: not-allowed;
+        }
+        
+        .file-select-btn {
+            display: inline-block;
+            background-color: #6c757d;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .file-select-btn:hover {
+            background-color: #5a6268;
         }
     </style>
 </head>
@@ -177,27 +169,37 @@
 
     <div class="file-upload-container">
         <div class="file-input-wrapper">
-            <label for="fileInput" class="file-select-btn">Select PDF or Word documents</label>
-            <InputFile OnChange="@SelectFiles" multiple accept=".pdf, .docx" id="fileInput" class="hidden-input" />
+            @foreach (var inputFileId in inputFileIds)
+            {
+                <InputFile OnChange="@(e => HandleFileSelection(e, inputFileId))" 
+                    multiple 
+                    accept=".pdf, .docx" 
+                    id="@inputFileId" 
+                    style="display: none;" />
+            }
             
-            @if (selectedFiles.Count > 0)
+            <button @onclick="AddNewFiles" class="file-select-btn">
+                Select PDF or Word documents
+            </button>
+            
+            @if (fileInfos.Count > 0)
             {
                 <div class="selected-files">
-                    @foreach (var file in selectedFiles)
+                    @foreach (var fileInfo in fileInfos)
                     {
                         <div class="file-thumbnail">
-                            <button class="remove-file" @onclick="() => RemoveFile(file)">×</button>
+                            <button class="remove-file" @onclick="() => RemoveFile(fileInfo)">×</button>
                             <div class="file-icon">
-                                @if (file.Name.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                                @if (fileInfo.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
                                 {
                                     <span>📄</span>
                                 }
-                                else if (file.Name.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
+                                else if (fileInfo.FileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
                                 {
                                     <span>📝</span>
                                 }
                             </div>
-                            <div class="file-name">@file.Name</div>
+                            <div class="file-name">@fileInfo.FileName</div>
                         </div>
                     }
                 </div>
@@ -345,8 +347,23 @@ function toggleLanguage() {
 
 @code {
     private UploadStatus? _uploadStatus;
-    private List<IBrowserFile> selectedFiles = new List<IBrowserFile>();
     private bool isUploading = false;
+    private int nextInputId = 0;
+    private List<string> inputFileIds = new List<string>();
+    private List<FileInfo> fileInfos = new List<FileInfo>();
+    
+    private class FileInfo
+    {
+        public string InputId { get; set; } = "";
+        public string FileName { get; set; } = "";
+        public IBrowserFile File { get; set; } = null!;
+    }
+
+    protected override void OnInitialized()
+    {
+        // Create initial input
+        inputFileIds.Add($"file-input-{nextInputId++}");
+    }
 
     private class UploadStatus
     {
@@ -354,19 +371,40 @@ function toggleLanguage() {
         public string Message { get; set; } = "";
     }
 
-    private void SelectFiles(InputFileChangeEventArgs e)
+    private void AddNewFiles()
     {
-        // Append files instead of clearing previous selections
+        // Generate a new unique ID for the input
+        string newInputId = $"file-input-{nextInputId++}";
+        inputFileIds.Add(newInputId);
+        
+        // Force UI to update first
+        StateHasChanged();
+        
+        // Then trigger click on the new input
+        InvokeAsync(async () => 
+        {
+            await Task.Delay(10); // Small delay to ensure DOM is updated
+            await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('{newInputId}').click()");
+        });
+    }
+
+    private void HandleFileSelection(InputFileChangeEventArgs e, string inputId)
+    {
         foreach (var file in e.GetMultipleFiles())
         {
             // Check if file type is .pdf or .docx
             if (file.Name.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) || 
                 file.Name.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
             {
-                // Check for duplicate file names to avoid confusion
-                if (!selectedFiles.Any(f => f.Name == file.Name))
+                // Check for duplicate file names
+                if (!fileInfos.Any(f => f.FileName == file.Name))
                 {
-                    selectedFiles.Add(file);
+                    fileInfos.Add(new FileInfo 
+                    { 
+                        InputId = inputId,
+                        FileName = file.Name,
+                        File = file
+                    });
                 }
                 else
                 {
@@ -386,15 +424,15 @@ function toggleLanguage() {
                 };
             }
         }
+        
         StateHasChanged();
     }
 
-    private void RemoveFile(IBrowserFile file)
+    private void RemoveFile(FileInfo fileInfo)
     {
-        selectedFiles.Remove(file);
+        fileInfos.Remove(fileInfo);
         
-        // Reset the input if all files are removed
-        if (selectedFiles.Count == 0)
+        if (fileInfos.Count == 0)
         {
             _uploadStatus = null;
         }
@@ -404,7 +442,7 @@ function toggleLanguage() {
 
     private async Task UploadSelectedFiles()
     {
-        if (selectedFiles.Count == 0) return;
+        if (fileInfos.Count == 0) return;
 
         try
         {
@@ -412,18 +450,16 @@ function toggleLanguage() {
             _uploadStatus = null;
             StateHasChanged();
 
-            // Create a snapshot of files to upload
-            var filesToUpload = selectedFiles.ToList();
-            List<IBrowserFile> successfullyUploaded = new List<IBrowserFile>();
+            List<FileInfo> successfullyUploaded = new List<FileInfo>();
 
-            foreach (var file in filesToUpload)
+            foreach (var fileInfo in fileInfos.ToList())
             {
                 try
                 {
                     var content = new MultipartFormDataContent();
-                    var stream = file.OpenReadStream(10_000_000);
+                    var stream = fileInfo.File.OpenReadStream(10_000_000);
                     var streamContent = new StreamContent(stream);
-                    content.Add(streamContent, "file", file.Name);
+                    content.Add(streamContent, "file", fileInfo.FileName);
 
                     var response = await Http.PostAsync(
                         "https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/api/upload",
@@ -439,18 +475,18 @@ function toggleLanguage() {
                     _uploadStatus = new UploadStatus
                     {
                         Success = true,
-                        Message = $"Successfully uploaded {file.Name}"
+                        Message = $"Successfully uploaded {fileInfo.FileName}"
                     };
                     
                     // Track successfully uploaded files
-                    successfullyUploaded.Add(file);
+                    successfullyUploaded.Add(fileInfo);
                 }
                 catch (Exception ex)
                 {
                     _uploadStatus = new UploadStatus
                     {
                         Success = false,
-                        Message = $"Failed to upload {file.Name}: {ex.Message}"
+                        Message = $"Failed to upload {fileInfo.FileName}: {ex.Message}"
                     };
                 }
                 finally
@@ -459,10 +495,10 @@ function toggleLanguage() {
                 }
             }
             
-            // Remove only the successfully uploaded files from selection
-            foreach (var file in successfullyUploaded)
+            // Remove only the successfully uploaded files
+            foreach (var fileInfo in successfullyUploaded)
             {
-                selectedFiles.Remove(file);
+                fileInfos.Remove(fileInfo);
             }
         }
         catch (Exception ex)
