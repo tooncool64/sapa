@@ -1,81 +1,223 @@
-﻿@page "/appeal3"
+@page "/appeal3"
 
-<PageTitle>Supporting Documentation</PageTitle>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="AppealFormPage3.css"/>
-</head>
+<PageTitle>Academic Plan</PageTitle>
 <body>
-<div class="container">
-    <h1 id="page-title">Supporting Documentation</h1>
+    <div class="container">
+        <h1>Academic Plan</h1>
+        <form id="academic-plan">
+            <label for="degreeProgram">Degree Program:</label>
+            <input type="text" id="degreeProgram" name="degreeProgram" required>
 
-   
+            <label for="gradDate">Expected Graduation Date:</label>
+            <input type="date" id="gradDate" name="gradDate" required>
 
-    <!-- Language Toggle Button -->
-    <button id="toggle-button" class="lang-toggle" onclick="toggleLanguage()">Español</button>
-</div>
+            <label for="gpa">Current Cumulative GPA:</label>
+            <input type="text" id="gpa" name="gpa" required>
 
-<script>
-    var currentLanguage = "en";
+            <label for="degreeHours">Cumulative Degree Hours:</label>
+            <input type="text" id="degreeHours" name="degreeHours" required>
 
-var translations = {
-    en: {
-        "toggle-button": "Español",
-        "page-title": "Supporting Documentation",
-        
-        "required-documents-title": "Required Supporting Documents",
-        "required-documents-text": "Supporting documentation can be submitted below.",
-        "medical-condition": "<strong>Medical Condition:</strong> Submit a letter from your health care provider stating whether you are well enough to return.",
-        "medical-note": "**Do NOT send us your medical records.**",
-        "maximum-time-frame": "<strong>Maximum Time Frame:</strong> Submit documentation from your academic advisor confirming your graduation date.",
-        "double-majors": "<strong>Double Majors:</strong> If you are seeking two majors, documentation must come from BOTH advisors.",
-        "other-reasons": "<strong>Other:</strong> Submit documentation that proves each factor as noted as influencing your academics.",
+            <label for="changeMajor">Is this a Change of Major?</label>
+            <select id="changeMajor" name="changeMajor">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
 
-        "important-info-title": "Important Information",
-        "deadline-note": "**DEADLINE** - YOUR appeal must be submitted prior to the mid-point of the term.",
-        "mid-semester-warning": "If your appeal is not received by mid-semester, it will not be reviewed, and you are responsible for paying your balance with out-of-pocket funds.",
-        "additional-info": "The Office of Financial Aid may require additional information.",
-        "processing-warning": "The Office of Financial Aid staff will not continue processing your appeal until the requested information has been received.",
-        "contact-info": "Contact the Office of Financial Aid for further assistance at <strong>finaid@stmartin.edu</strong>"
-    },
+            <h2>Semester 1</h2>
+            <table>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Course Number</th>
+                    <th>Credit Hours</th>
+                    <th>Repeat (Y/N)</th>
+                    <th>Required for Major (Y/N)</th>
+                </tr>
+                <tr>
+                    <td><input type="text" name="courseName1" required></td>
+                    <td><input type="text" name="courseNumber1" required></td>
+                    <td><input type="number" name="creditHours1" required></td>
+                    <td>
+                        <select name="repeat1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="requiredMajor1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="courseName1" required></td>
+                    <td><input type="text" name="courseNumber1" required></td>
+                    <td><input type="number" name="creditHours1" required></td>
+                    <td>
+                        <select name="repeat1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="requiredMajor1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="courseName1" required></td>
+                    <td><input type="text" name="courseNumber1" required></td>
+                    <td><input type="number" name="creditHours1" required></td>
+                    <td>
+                        <select name="repeat1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="requiredMajor1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="courseName1" required></td>
+                    <td><input type="text" name="courseNumber1" required></td>
+                    <td><input type="number" name="creditHours1" required></td>
+                    <td>
+                        <select name="repeat1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="requiredMajor1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="courseName1" required></td>
+                    <td><input type="text" name="courseNumber1" required></td>
+                    <td><input type="number" name="creditHours1" required></td>
+                    <td>
+                        <select name="repeat1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="requiredMajor1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                </tr>
+                <!-- Add more rows for other courses -->
+            </table>
 
-    es: {
-        "toggle-button": "English",
-        "page-title": "Documentación de Apoyo",
-        
-        "required-documents-title": "Documentos de Apoyo Requeridos",
-        "required-documents-text": "La documentación de respaldo se puede enviar a continuación.",
-        "medical-condition": "<strong>Condición Médica:</strong> Envíe una carta de su proveedor de atención médica indicando si está en condiciones de regresar.",
-        "medical-note": "**NO nos envíe sus registros médicos.**",
-        "maximum-time-frame": "<strong>Tiempo Máximo de Estudio:</strong> Envíe documentación de su asesor académico que confirme su fecha de graduación.",
-        "double-majors": "<strong>Doble Especialización:</strong> Si está buscando dos especializaciones, la documentación debe provenir de AMBOS asesores.",
-        "other-reasons": "<strong>Otros:</strong> Envíe documentación que demuestre cada factor mencionado como una influencia en su rendimiento académico.",
+            <h2>Semester 2</h2>
+            <table>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Course Number</th>
+                    <th>Credit Hours</th>
+                    <th>Repeat (Y/N)</th>
+                    <th>Required for Major (Y/N)</th>
+                </tr>
+                <tr>
+                    <td><input type="text" name="courseName2" required></td>
+                    <td><input type="text" name="courseNumber2" required></td>
+                    <td><input type="number" name="creditHours2" required></td>
+                    <td>
+                        <select name="repeat2">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="requiredMajor2">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="courseName1" required></td>
+                    <td><input type="text" name="courseNumber1" required></td>
+                    <td><input type="number" name="creditHours1" required></td>
+                    <td>
+                        <select name="repeat1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="requiredMajor1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="courseName1" required></td>
+                    <td><input type="text" name="courseNumber1" required></td>
+                    <td><input type="number" name="creditHours1" required></td>
+                    <td>
+                        <select name="repeat1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="requiredMajor1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="courseName1" required></td>
+                    <td><input type="text" name="courseNumber1" required></td>
+                    <td><input type="number" name="creditHours1" required></td>
+                    <td>
+                        <select name="repeat1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="requiredMajor1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="courseName1" required></td>
+                    <td><input type="text" name="courseNumber1" required></td>
+                    <td><input type="number" name="creditHours1" required></td>
+                    <td>
+                        <select name="repeat1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="requiredMajor1">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </td>
+                </tr>
+                <!-- Add more rows for other courses -->
+            </table>
 
-        "important-info-title": "Información Importante",
-        "deadline-note": "**FECHA LÍMITE** - SU apelación debe enviarse antes del punto medio del período.",
-        "mid-semester-warning": "Si su apelación no se recibe antes de la mitad del semestre, no será revisada y será responsable de pagar su saldo con fondos personales.",
-        "additional-info": "La Oficina de Ayuda Financiera puede requerir información adicional.",
-        "processing-warning": "El personal de la Oficina de Ayuda Financiera no continuará procesando su apelación hasta que se haya recibido la información solicitada.",
-        "contact-info": "Comuníquese con la Oficina de Ayuda Financiera para obtener más ayuda en <strong>finaid@stmartin.edu</strong>"
-    }
-};
-
-function toggleLanguage() {
-    currentLanguage = currentLanguage === "en" ? "es" : "en";
-
-    document.getElementById("toggle-button").innerText = translations[currentLanguage]["toggle-button"];
-
-    Object.keys(translations[currentLanguage]).forEach(function (key) {
-        var element = document.getElementById(key);
-        if (element) {
-            element.innerHTML = translations[currentLanguage][key];  // Use innerHTML to preserve bold elements
-        }
-    });
-}
-
-</script>
+            <button type="submit">Submit Plan</button>
+        </form>
+    </div>
 </body>
-</html>
-
