@@ -14,6 +14,7 @@ using SAPA.Components.PDF.Templates;
 using SAPA.Components.PDF.Data;
 using QuestPDF.Fluent;
 using Microsoft.Identity.Web.UI;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +73,8 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
         options.SignedOutCallbackPath = "/signout-oidc";
         options.SignedOutRedirectUri = "https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/";
     });
+
+builder.Services.AddScoped<AuthenticationStateProvider, BlazorApp.Auth.CustomAuthStateProvider>();
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Admin", policy =>
