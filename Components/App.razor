@@ -1,36 +1,30 @@
-﻿@using BlazorApp.Components.Layout
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="BlazorApp.styles.css" />
+    <HeadOutlet />
+</head>
+<body>
 <CascadingAuthenticationState>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <base href="/" />
-        <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
-        <link rel="stylesheet" href="app.css" />
-        <link rel="stylesheet" href="BlazorApp.styles.css" />
-        <HeadOutlet />
-    </head>
-    <body>
-        <Router AppAssembly="@typeof(App).Assembly" @rendermode="InteractiveServer">
-            <Found Context="routeData">
-                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                    <NotAuthorized>
-                        <p>You are not authorized to access this resource.</p>
-                    </NotAuthorized>
-                    <Authorizing>
-                        <p>Authorization in progress...</p>
-                    </Authorizing>
-                </AuthorizeRouteView>
-            </Found>
-            <NotFound>
-                <PageTitle>Not found</PageTitle>
-                <LayoutView Layout="@typeof(MainLayout)">
-                    <p role="alert">Sorry, there's nothing at this address.</p>
-                </LayoutView>
-            </NotFound>
-        </Router>
-        <script src="_framework/blazor.web.js"></script>
-    </body>
-    </html>
+    <Routes>
+        <Route Path="*" Render="@RenderPage" />
+    </Routes>
 </CascadingAuthenticationState>
+<script src="_framework/blazor.web.js"></script>
+</body>
+</html>
+
+@code {
+    private RenderFragment RenderPage => builder =>
+    {
+        builder.OpenComponent<Router>(0);
+        builder.AddAttribute(1, "AppAssembly", typeof(App).Assembly);
+        builder.AddAttribute(2, "RenderMode", new InteractiveServerRenderMode());
+        builder.CloseComponent();
+    };
+}
