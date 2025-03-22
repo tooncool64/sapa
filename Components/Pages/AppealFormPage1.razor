@@ -6,6 +6,19 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="AppealFormPage1.css"/>
+    <style>
+        /* Add styles for centered checkboxes */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -75,13 +88,31 @@
                                    class="form-control"
                                    id="text-area"
                                    rows="6"
-                                   placeholder="Write your explanation here..."/>
+                                   placeholder="Write your explanation here..."
+                                   onkeyup="wordLimit()"/>
                     <ValidationMessage For="@(() => appealForm1.AppealExplanation)"/>
                 </div>
             </section>
 
+            <section class="card" id="acknowledgements-section">
+                <h2 id="acknowledgements-heading">Acknowledgements</h2>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="checkbox1" required onchange="checkFormValidity()">
+                    <span id="checkbox1-text">
+                        Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.
+                    </span>
+                </div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="checkbox2" required onchange="checkFormValidity()">
+                    <span id="checkbox2-text">
+                        I understand that the decision of the Office of Financial Aid is final.
+                    </span>
+                </div>
+            </section>
+
             <div class="form-actions mt-3">
-                <button type="submit" id="submit-button" class="btn btn-primary" disabled="@_isSubmitting">
+                <button type="submit" id="submit-button" class="btn btn-primary" disabled>
                     @if (_isSubmitting)
                     {
                         <span>Submitting...</span>
@@ -104,41 +135,8 @@
     </main>
 </div>
 
-<section class="card" id="acknowledgements-section">
-    <!-- Changed: Added an id to the heading for language toggling -->
-    <h2 id="acknowledgements-heading">Acknowledgements</h2>
-    <div class="checkbox-container">
-        <input type="checkbox" onclick="myFunction()">
-        <!-- Changed: Added an id to the span for text updating -->
-        <span id="checkbox1-text">
-            Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.
-        </span>
-    </div>
-    <!-- Changed: Paragraph for checked message with an id -->
-    <p id="text1" style="display:none">Checkbox is CHECKED!</p>
-
-    <div class="checkbox-container">
-        <input type="checkbox" onclick="myFunction()">
-        <span id="checkbox2-text">
-            I understand that the decision of the Office of Financial Aid is final.
-        </span>
-    </div>
-    <p id="text2" style="display:none">Checkbox is CHECKED!</p>
-</section>
-
 <script>
-function myFunction() {
-  var checkBox = document.getElementById("myCheck");
-  var text = document.getElementById("text");
-  if (checkBox.checked == true){
-    text.style.display = "block";
-  } else {
-     text.style.display = "none";
-  }
-}
-
 var currentLanguage = "en";
-
 
 var translations = {
   en: {
@@ -183,7 +181,6 @@ var translations = {
   }
 };
 
-
 function toggleLanguage() {
     currentLanguage = currentLanguage === "en" ? "es" : "en";
 
@@ -207,23 +204,43 @@ function toggleLanguage() {
     });
 }
 
-// does not work lol
-
-function wordLimit(){
+function wordLimit() {
+    var textArea = document.getElementById('text-area');
+    var words = textArea.value.split(/\s+/).filter(function(word) { return word.length > 0; });
+    var maxWords = 500;
     
-       var jobValue = document.getElementById('text-area').value
-       var words = jobValue.value.split(/\s+/);
-       var maxWords = 500; 
-       var numWords = words.length;
-       if(numWords > maxWords){
-    		  jobValue.preventDefault(); 
-        }
+    if (words.length > maxWords) {
+        var truncatedText = words.slice(0, maxWords).join(' ');
+        textArea.value = truncatedText;
+        alert("You've reached the maximum word limit of 500 words.");
+    }
+    
+    checkFormValidity();
 }
 
+function checkFormValidity() {
+    var checkbox1 = document.getElementById('checkbox1');
+    var checkbox2 = document.getElementById('checkbox2');
+    var submitButton = document.getElementById('submit-button');
+    var textArea = document.getElementById('text-area');
+    
+    // Enable the submit button only if both checkboxes are checked and text area has content
+    if (checkbox1 && checkbox2 && textArea && 
+        checkbox1.checked && checkbox2.checked && textArea.value.trim() !== '') {
+        submitButton.disabled = false;
+    } else {
+        submitButton.disabled = true;
+    }
+}
+
+// Add event listener to text area
+document.addEventListener('DOMContentLoaded', function() {
+    var textArea = document.getElementById('text-area');
+    if (textArea) {
+        textArea.addEventListener('input', checkFormValidity);
+    }
+});
 </script>
-<!-- <div class="row">
-    <input type="submit" value="Submit">
-</div> -->
 
 <div class="card">
     <NavLink href="/appeal2"><button>Next Page</button></NavLink>
@@ -254,12 +271,12 @@ function wordLimit(){
             _isSubmitting = true;
             StateHasChanged();
 
-    // Simulate API call
+            // Simulate API call
             AppealService.SubmitAppeal(appealForm1);
             
             _submitted = true;
-    // Here you would typically navigate to a success page
-    // or show a success message
+            // Here you would typically navigate to a success page
+            // or show a success message
         }
         catch (Exception ex)
         {
