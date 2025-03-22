@@ -230,9 +230,9 @@
             <ul>
                 <li class="active"><a href="#" onclick="showSection('dashboard')">Dashboard</a></li>
                 <li><a href="#" onclick="showSection('appeals')">Appeals</a></li>
-                <li><a href="#" onclick="showSection('statusUpdate')">Status Update</a></li>
-                <li><a href="#" onclick="showSection('profile')">Profile</a></li>
-                <li><a href="#" onclick="logout()">Logout</a></li>
+                <li><a href="#" onclick="showSection('statusUpdate')">Update Appeal Status</a></li>
+                <li><a href="#" onclick="showSection('statusUpdate')">Update Homepage</a></li>
+                <li><a href="#" onclick="showSection('statusUpdate')">Options</a></li>
             </ul>
         </nav>
         <main class="main-content">
@@ -298,21 +298,6 @@
                     <p>Status update details...</p>
                 </div>
             </section>
-            
-            <section id="profile" class="section">
-                <h1>Profile Settings</h1>
-                <form id="profileForm">
-                    <div>
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" value="user@example.com">
-                    </div>
-                    <div>
-                        <label for="phone">Phone</label>
-                        <input type="tel" id="phone" name="phone" value="123-456-7890">
-                    </div>
-                    <button type="button" onclick="saveProfile()">Save Changes</button>
-                </form>
-            </section>
         </main>
     </div>
 
@@ -358,19 +343,5 @@
             alert('Appeal submitted successfully!');
             this.reset();
         });
-        
-        // Profile save function
-        function saveProfile() {
-            var email = document.getElementById('email').value;
-            var phone = document.getElementById('phone').value;
-            alert('Profile saved! Email: ' + email + ', Phone: ' + phone);
-        }
-        
-        // Logout function
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                alert('Logged out successfully!');
-            }
-        }
     </script>
 </body>
