@@ -43,6 +43,8 @@
         .container {
             display: flex;
             min-height: calc(100vh - 60px);
+            max-width: 1400px;
+            margin: 0 auto; 
         }
 
         /* Sidebar */
@@ -336,12 +338,5 @@
                 }
             });
         }
-        
-        // Form submission handler
-        document.getElementById('appealForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            alert('Appeal submitted successfully!');
-            this.reset();
-        });
     </script>
 </body>
