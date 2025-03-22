@@ -61,7 +61,6 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins("https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net")
             .AllowAnyMethod()
-            .AllowAnyOrigin()
             .AllowAnyHeader();
     });
 });
