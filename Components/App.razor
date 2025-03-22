@@ -1,24 +1,27 @@
 ﻿@using BlazorApp.Components.Layout
 @using Microsoft.AspNetCore.Components.Authorization
 
-<!DOCTYPE html>
-<html lang="en">
+<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <CascadingAuthenticationState>
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    <p>You are not authorized to access this page.</p>
+                </NotAuthorized>
+                <Authorizing>
+                    <p>Authentication in progress...</p>
+                </Authorizing>
+            </AuthorizeRouteView>
+        </CascadingAuthenticationState>
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <p>Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="/" />
-    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
-    <link rel="stylesheet" href="app.css" />
-    <link rel="stylesheet" href="BlazorApp.styles.css" />
-    <HeadOutlet />
-</head>
-
-<body>
-    <CascadingAuthenticationState>
-        <Routes @rendermode="InteractiveServer" />
-    </CascadingAuthenticationState>
-    <script src="_framework/blazor.web.js"></script>
-</body>
-
-</html>
+@code {
+    // Your code here
+}
