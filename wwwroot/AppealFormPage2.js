@@ -108,12 +108,13 @@ var translations = {
 
 function toggleLanguage() {
     currentLanguage = currentLanguage === "en" ? "es" : "en";
+
     document.getElementById("toggle-button").innerText = translations[currentLanguage]["toggle-button"];
 
     Object.keys(translations[currentLanguage]).forEach(function (key) {
         var element = document.getElementById(key);
         if (element) {
-            element.innerText = translations[currentLanguage][key];
+            element.innerHTML = translations[currentLanguage][key];  // Use innerHTML to preserve bold elements
         }
     });
 }
