@@ -1,223 +1,210 @@
 @page "/appeal3"
 
 <PageTitle>Academic Plan</PageTitle>
-<body>
-    <div class="container">
-        <h1>Academic Plan</h1>
-        <form id="academic-plan">
-            <label for="degreeProgram">Degree Program:</label>
-            <input type="text" id="degreeProgram" name="degreeProgram" required>
 
-            <label for="gradDate">Expected Graduation Date:</label>
-            <input type="date" id="gradDate" name="gradDate" required>
+<main>
+    <EditForm Model="@_academicPlan" FormName="AcademicPlan" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator/>
 
-            <label for="gpa">Current Cumulative GPA:</label>
-            <input type="text" id="gpa" name="gpa" required>
+        <section id="academic-info" class="card">
+            <h1>Academic Plan</h1>
+            
+            <div class="form-group">
+                <label id="label-degree-program">
+                    <span class="label-text">Degree Program:</span>
+                    <InputText @bind-Value="_academicPlan.DegreeProgram" class="form-control" placeholder="Your degree program..."/>
+                    <ValidationMessage For="@(() => _academicPlan.DegreeProgram)"/>
+                </label>
+            </div>
 
-            <label for="degreeHours">Cumulative Degree Hours:</label>
-            <input type="text" id="degreeHours" name="degreeHours" required>
+            <div class="form-group">
+                <label id="label-grad-date">
+                    <span class="label-text">Expected Graduation Date:</span>
+                    <InputDate @bind-Value="_academicPlan.GradDate" class="form-control"/>
+                    <ValidationMessage For="@(() => _academicPlan.GradDate)"/>
+                </label>
+            </div>
 
-            <label for="changeMajor">Is this a Change of Major?</label>
-            <select id="changeMajor" name="changeMajor">
-                <option value="no">No</option>
-                <option value="yes">Yes</option>
-            </select>
+            <div class="form-group">
+                <label id="label-gpa">
+                    <span class="label-text">Current Cumulative GPA:</span>
+                    <InputNumber @bind-Value="_academicPlan.GPA" class="form-control" placeholder="0.00"/>
+                    <ValidationMessage For="@(() => _academicPlan.GPA)"/>
+                </label>
+            </div>
 
+            <div class="form-group">
+                <label id="label-degree-hours">
+                    <span class="label-text">Cumulative Degree Hours:</span>
+                    <InputNumber @bind-Value="_academicPlan.DegreeHours" class="form-control" placeholder="0"/>
+                    <ValidationMessage For="@(() => _academicPlan.DegreeHours)"/>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label id="label-change-major">
+                    <span class="label-text">Is this a Change of Major?</span>
+                    <InputSelect @bind-Value="_academicPlan.ChangeMajor" class="form-control">
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
+                    </InputSelect>
+                </label>
+            </div>
+        </section>
+
+        <section id="semester1" class="card">
             <h2>Semester 1</h2>
-            <table>
-                <tr>
-                    <th>Course Name</th>
-                    <th>Course Number</th>
-                    <th>Credit Hours</th>
-                    <th>Repeat (Y/N)</th>
-                    <th>Required for Major (Y/N)</th>
-                </tr>
-                <tr>
-                    <td><input type="text" name="courseName1" required></td>
-                    <td><input type="text" name="courseNumber1" required></td>
-                    <td><input type="number" name="creditHours1" required></td>
-                    <td>
-                        <select name="repeat1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="requiredMajor1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="text" name="courseName1" required></td>
-                    <td><input type="text" name="courseNumber1" required></td>
-                    <td><input type="number" name="creditHours1" required></td>
-                    <td>
-                        <select name="repeat1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="requiredMajor1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="text" name="courseName1" required></td>
-                    <td><input type="text" name="courseNumber1" required></td>
-                    <td><input type="number" name="creditHours1" required></td>
-                    <td>
-                        <select name="repeat1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="requiredMajor1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="text" name="courseName1" required></td>
-                    <td><input type="text" name="courseNumber1" required></td>
-                    <td><input type="number" name="creditHours1" required></td>
-                    <td>
-                        <select name="repeat1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="requiredMajor1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="text" name="courseName1" required></td>
-                    <td><input type="text" name="courseNumber1" required></td>
-                    <td><input type="number" name="creditHours1" required></td>
-                    <td>
-                        <select name="repeat1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="requiredMajor1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                </tr>
-                <!-- Add more rows for other courses -->
-            </table>
+            
+            @for (var i = 0; i < 6; i++)
+            {
+                var index = i;
+                <div class="course-row">
+                    @if (_academicPlan.Semester1Courses.Count <= index)
+                    {
+                        _academicPlan.Semester1Courses.Add(new SemesterCourse());
+                    }
+                    
+                    <div class="form-group">
+                        <label>
+                            <span class="label-text">Course Name:</span>
+                            <InputText @bind-Value="_academicPlan.Semester1Courses[index].CourseName" class="form-control"/>
+                            <ValidationMessage For="@(() => _academicPlan.Semester1Courses[index].CourseName)"/>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <span class="label-text">Course Number:</span>
+                            <InputText @bind-Value="_academicPlan.Semester1Courses[index].CourseNumber" class="form-control"/>
+                            <ValidationMessage For="@(() => _academicPlan.Semester1Courses[index].CourseNumber)"/>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <span class="label-text">Credit Hours:</span>
+                            <InputNumber @bind-Value="_academicPlan.Semester1Courses[index].CreditHours" class="form-control"/>
+                            <ValidationMessage For="@(() => _academicPlan.Semester1Courses[index].CreditHours)"/>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <span class="label-text">Repeat:</span>
+                            <InputSelect @bind-Value="_academicPlan.Semester1Courses[index].IsRepeat" class="form-control">
+                                <option value="false">No</option>
+                                <option value="true">Yes</option>
+                            </InputSelect>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <span class="label-text">Required for Major:</span>
+                            <InputSelect @bind-Value="_academicPlan.Semester1Courses[index].IsRequiredForMajor" class="form-control">
+                                <option value="false">No</option>
+                                <option value="true">Yes</option>
+                            </InputSelect>
+                        </label>
+                    </div>
+                </div>
+            }
+        </section>
 
+        <section id="semester2" class="card">
             <h2>Semester 2</h2>
-            <table>
-                <tr>
-                    <th>Course Name</th>
-                    <th>Course Number</th>
-                    <th>Credit Hours</th>
-                    <th>Repeat (Y/N)</th>
-                    <th>Required for Major (Y/N)</th>
-                </tr>
-                <tr>
-                    <td><input type="text" name="courseName2" required></td>
-                    <td><input type="text" name="courseNumber2" required></td>
-                    <td><input type="number" name="creditHours2" required></td>
-                    <td>
-                        <select name="repeat2">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="requiredMajor2">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="text" name="courseName1" required></td>
-                    <td><input type="text" name="courseNumber1" required></td>
-                    <td><input type="number" name="creditHours1" required></td>
-                    <td>
-                        <select name="repeat1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="requiredMajor1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="text" name="courseName1" required></td>
-                    <td><input type="text" name="courseNumber1" required></td>
-                    <td><input type="number" name="creditHours1" required></td>
-                    <td>
-                        <select name="repeat1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="requiredMajor1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="text" name="courseName1" required></td>
-                    <td><input type="text" name="courseNumber1" required></td>
-                    <td><input type="number" name="creditHours1" required></td>
-                    <td>
-                        <select name="repeat1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="requiredMajor1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="text" name="courseName1" required></td>
-                    <td><input type="text" name="courseNumber1" required></td>
-                    <td><input type="number" name="creditHours1" required></td>
-                    <td>
-                        <select name="repeat1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="requiredMajor1">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </td>
-                </tr>
-                <!-- Add more rows for other courses -->
-            </table>
+            
+            @for (int i = 0; i < 6; i++)
+            {
+                var index = i;
+                <div class="course-row">
+                    @if (_academicPlan.Semester2Courses.Count <= index)
+                    {
+                        _academicPlan.Semester2Courses.Add(new SemesterCourse());
+                    }
+                    
+                    <div class="form-group">
+                        <label>
+                            <span class="label-text">Course Name:</span>
+                            <InputText @bind-Value="_academicPlan.Semester2Courses[index].CourseName" class="form-control"/>
+                            <ValidationMessage For="@(() => _academicPlan.Semester2Courses[index].CourseName)"/>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <span class="label-text">Course Number:</span>
+                            <InputText @bind-Value="_academicPlan.Semester2Courses[index].CourseNumber" class="form-control"/>
+                            <ValidationMessage For="@(() => _academicPlan.Semester2Courses[index].CourseNumber)"/>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <span class="label-text">Credit Hours:</span>
+                            <InputNumber @bind-Value="_academicPlan.Semester2Courses[index].CreditHours" class="form-control"/>
+                            <ValidationMessage For="@(() => _academicPlan.Semester2Courses[index].CreditHours)"/>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <span class="label-text">Repeat:</span>
+                            <InputSelect @bind-Value="_academicPlan.Semester2Courses[index].IsRepeat" class="form-control">
+                                <option value="false">No</option>
+                                <option value="true">Yes</option>
+                            </InputSelect>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <span class="label-text">Required for Major:</span>
+                            <InputSelect @bind-Value="_academicPlan.Semester2Courses[index].IsRequiredForMajor" class="form-control">
+                                <option value="false">No</option>
+                                <option value="true">Yes</option>
+                            </InputSelect>
+                        </label>
+                    </div>
+                </div>
+            }
+        </section>
 
-            <button type="submit">Submit Plan</button>
-        </form>
-    </div>
-</body>
+        <div class="form-actions mt-3">
+            <button type="submit" id="submit-button" class="btn btn-primary">
+                @if (_isSubmitting)
+                {
+                    <span>Submitting...</span>
+                }
+                else
+                {
+                    <span>Submit Plan</span>
+                }
+            </button>
+        </div>
+    </EditForm>
+
+    @if (_submitted)
+    {
+        <div class="alert alert-success mt-3">
+            Academic plan submitted successfully!
+        </div>
+    }
+</main>
+
+@code {
+    private readonly AppealFormModel2 _academicPlan = new();
+    private bool _isSubmitting = false;
+    private bool _submitted = false;
+
+    private async Task HandleValidSubmit()
+    {
+        _isSubmitting = true;
+        
+        // Here you would add code to submit the form data to your backend
+        await Task.Delay(1000); // Simulating API call
+        
+        _isSubmitting = false;
+        _submitted = true;
+    }
+}
