@@ -1,4 +1,7 @@
 ﻿@page "/appeal"
+@inject IAppealFormService FormService
+@inject NavigationManager Navigation
+
 
 <PageTitle>Appeal Form</PageTitle>
 
@@ -14,7 +17,7 @@
         <button id="toggle-button" class="lang-toggle" onclick="toggleLanguage()">Español</button>
     </header>
     <main>
-        <EditForm Model="@appealForm1" FormName="AppealForm1" OnValidSubmit="@HandleValidSubmit">
+        <EditForm Model="@FormService.CurrentForm" FormName="AppealForm1" OnValidSubmit="@HandleValidSubmit">
             <DataAnnotationsValidator/>
 
             <section id="student-info" class="card">
@@ -22,40 +25,40 @@
                 <div class="form-group">
                     <label id="label-name">
                         <span class="label-text">Name:</span>
-                        <InputText @bind-Value="appealForm1.Name" class="form-control" placeholder="Your name.."/>
-                        <ValidationMessage For="@(() => appealForm1.Name)"/>
+                        <InputText @bind-Value="FormService.CurrentForm.Name" class="form-control" placeholder="Your name.."/>
+                        <ValidationMessage For="@(() => FormService.CurrentForm.Name)"/>
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label id="label-student-id">
                         <span class="label-text">Student ID#:</span>
-                        <InputText @bind-Value="appealForm1.StudentId" class="form-control" placeholder="ex: p000.."/>
-                        <ValidationMessage For="@(() => appealForm1.StudentId)"/>
+                        <InputText @bind-Value="FormService.CurrentForm.StudentId" class="form-control" placeholder="ex: p000.."/>
+                        <ValidationMessage For="@(() => FormService.CurrentForm.StudentId)"/>
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label id="label-date">
                         <span class="label-text">Date:</span>
-                        <InputDate @bind-Value="appealForm1.Date" class="form-control"/>
-                        <ValidationMessage For="@(() => appealForm1.Date)"/>
+                        <InputDate @bind-Value="FormService.CurrentForm.Date" class="form-control"/>
+                        <ValidationMessage For="@(() => FormService.CurrentForm.Date)"/>
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label id="email-name">
                         <span class="email-name">Email:</span>
-                        <InputText @bind-Value="appealForm1.Email" class="form-control"/>
-                        <ValidationMessage For="@(() => appealForm1.Email)"/>
+                        <InputText @bind-Value="FormService.CurrentForm.Email" class="form-control"/>
+                        <ValidationMessage For="@(() => FormService.CurrentForm.Email)"/>
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label id="label-major">
                         <span class="label-text">Major:</span>
-                        <InputText @bind-Value="appealForm1.Major" class="form-control" placeholder="Your major.."/>
-                        <ValidationMessage For="@(() => appealForm1.Major)"/>
+                        <InputText @bind-Value="FormService.CurrentForm.Major" class="form-control" placeholder="Your major.."/>
+                        <ValidationMessage For="@(() => FormService.CurrentForm.Major)"/>
                     </label>
                 </div>
             </section>
@@ -72,13 +75,13 @@
                     <li id = "appeal-list-4">Your plan for future academic success.</li>
                 </ol>
                 <div class="form-group">
-                    <InputTextArea @bind-Value="appealForm1.AppealExplanation"
+                    <InputTextArea @bind-Value="FormService.CurrentForm.AppealExplanation"
                                    class="form-control"
                                    id="text-area"
                                    rows="6"
                                    placeholder="Write your explanation here..."
                                    onkeyup="wordLimit()"/>
-                    <ValidationMessage For="@(() => appealForm1.AppealExplanation)"/>
+                    <ValidationMessage For="@(() => FormService.CurrentForm.AppealExplanation)"/>
                 </div>
             </section>
 
@@ -100,72 +103,21 @@
             </section>
 
             <div class="form-actions mt-3">
-                <button type="submit" id="submit-button" class="btn btn-primary" disabled>
-                    @if (_isSubmitting)
-                    {
-                        <span>Submitting...</span>
-                    }
-                    else
-                    {
-                        <span>Submit Appeal</span>
-                    }
-                </button>
+                <button type="submit" id="submit-button" class="btn btn-primary">Next</button>
             </div>
         </EditForm>
-
-        @if (_submitted)
-        {
-            <div class="alert alert-success mt-3">
-                Form submitted successfully!
-            </div>
-        }
-
     </main>
 </div>
 <div class="card">
     <NavLink href="/appeal2"><button>Next Page</button></NavLink>
 </div>
-
 </body>
 </html>
 
 @code {
-    private AppealFormModel1 appealForm1 = new();
-    private bool _isSubmitting;
-    private bool _submitted;
-
-    protected override void OnInitialized()
-    {
-        appealForm1 = new AppealFormModel1
-        {
-            Date = DateTime.Today
-        };
-    }
-
     private void HandleValidSubmit()
     {
-        Console.WriteLine("Form submitted successfully!");
-        
-        try
-        {
-            _isSubmitting = true;
-            StateHasChanged();
-
-            // Simulate API call
-            AppealService.SubmitAppeal(appealForm1);
-            
-            _submitted = true;
-            // Here you would typically navigate to a success page
-            // or show a success message
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-        }
-        finally
-        {
-            _isSubmitting = false;
-            StateHasChanged();
-        }
+    // Navigate to the next page
+        Navigation.NavigateTo("/appeal2");
     }
 }

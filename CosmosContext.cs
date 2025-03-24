@@ -6,6 +6,6 @@ namespace BlazorApp
     {
         public CosmosContext(DbContextOptions<CosmosContext> options) : base(options) { }
         
-        public DbSet<Appeal> Appeals { get; set; }
+        public DbSet<AppealForm> Appeals { get; set; }
     }
 }
