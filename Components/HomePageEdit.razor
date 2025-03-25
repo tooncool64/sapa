@@ -9,182 +9,494 @@
 
 <PageTitle>Homepage Content Options</PageTitle>
 
-<div class="container mt-5">
-    <h1>Manage Homepage Content</h1>
-    <p>Edit the text content that appears on the SAP Appeal Portal homepage. Changes will be applied site-wide.</p>
+<div class="admin-container">
+    <div class="admin-sidebar">
+        <div class="admin-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+            <span>SAP Portal</span>
+        </div>
+        <nav class="admin-nav">
+            <a href="#header-section" class="admin-nav-item active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+                Header
+            </a>
+            <a href="#eligibility-section" class="admin-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Eligibility
+            </a>
+            <a href="#sap-status-section" class="admin-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                SAP Status
+            </a>
+            <a href="#appeal-process-section" class="admin-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                Appeal Process
+            </a>
+            <a href="#final-note-section" class="admin-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                Final Note
+            </a>
+        </nav>
+        <div class="admin-actions">
+            <button type="button" class="btn-reset" @onclick="ResetToDefaults">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6h6"></path><path d="M3 13a9 9 0 1 0 3-7.7L3 8"></path></svg>
+                Reset to Defaults
+            </button>
+        </div>
+    </div>
+    
+    <div class="admin-content">
+        <header class="admin-header">
+            <h1>Manage Homepage Content</h1>
+            <p>Edit the text content that appears on the SAP Appeal Portal homepage. Changes will be applied site-wide.</p>
+        </header>
+        
+        <EditForm Model="@options" OnValidSubmit="SaveOptions" class="admin-form">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
 
-    <EditForm Model="@options" OnValidSubmit="SaveOptions">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-
-        <div class="accordion" id="optionsAccordion">
-            <!-- Header Section -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingHeader">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHeader" aria-expanded="true" aria-controls="collapseHeader">
-                        Header Section
-                    </button>
-                </h2>
-                <div id="collapseHeader" class="accordion-collapse collapse show" aria-labelledby="headingHeader" data-bs-parent="#optionsAccordion">
-                    <div class="accordion-body">
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Page Title</label>
+            <div class="admin-sections">
+                <!-- Header Section -->
+                <section id="header-section" class="admin-section">
+                    <div class="section-header">
+                        <h2>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+                            Header Section
+                        </h2>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label for="title">Page Title</label>
                             <InputText id="title" class="form-control" @bind-Value="options.Title" />
                             <ValidationMessage For="@(() => options.Title)" />
                         </div>
-                        <div class="mb-3">
-                            <label for="introText1" class="form-label">Introduction Text (Part 1)</label>
+                        <div class="form-group">
+                            <label for="introText1">Introduction Text (Part 1)</label>
                             <InputTextArea id="introText1" class="form-control" rows="3" @bind-Value="options.IntroText1" />
                             <ValidationMessage For="@(() => options.IntroText1)" />
                         </div>
-                        <div class="mb-3">
-                            <label for="introText2" class="form-label">Introduction Text (Part 2)</label>
+                        <div class="form-group">
+                            <label for="introText2">Introduction Text (Part 2)</label>
                             <InputTextArea id="introText2" class="form-control" rows="3" @bind-Value="options.IntroText2" />
                             <ValidationMessage For="@(() => options.IntroText2)" />
                         </div>
                     </div>
-                </div>
-            </div>
+                </section>
 
-            <!-- Eligibility Section -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingEligibility">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEligibility" aria-expanded="false" aria-controls="collapseEligibility">
-                        Eligibility Section
-                    </button>
-                </h2>
-                <div id="collapseEligibility" class="accordion-collapse collapse" aria-labelledby="headingEligibility" data-bs-parent="#optionsAccordion">
-                    <div class="accordion-body">
-                        <div class="mb-3">
-                            <label for="eligibilityTitle" class="form-label">Eligibility Title</label>
+                <!-- Eligibility Section -->
+                <section id="eligibility-section" class="admin-section">
+                    <div class="section-header">
+                        <h2>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            Eligibility Section
+                        </h2>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label for="eligibilityTitle">Eligibility Title</label>
                             <InputText id="eligibilityTitle" class="form-control" @bind-Value="options.EligibilityTitle" />
                             <ValidationMessage For="@(() => options.EligibilityTitle)" />
                         </div>
-                        <div class="mb-3">
-                            <label for="eligibilityText" class="form-label">Eligibility Text</label>
+                        <div class="form-group">
+                            <label for="eligibilityText">Eligibility Text</label>
                             <InputTextArea id="eligibilityText" class="form-control" rows="4" @bind-Value="options.EligibilityText" />
                             <ValidationMessage For="@(() => options.EligibilityText)" />
                         </div>
                     </div>
-                </div>
-            </div>
+                </section>
 
-            <!-- SAP Status Section -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingSapStatus">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSapStatus" aria-expanded="false" aria-controls="collapseSapStatus">
-                        SAP Status Section
-                    </button>
-                </h2>
-                <div id="collapseSapStatus" class="accordion-collapse collapse" aria-labelledby="headingSapStatus" data-bs-parent="#optionsAccordion">
-                    <div class="accordion-body">
-                        <div class="mb-3">
-                            <label for="sapStatusTitle" class="form-label">SAP Status Title</label>
+                <!-- SAP Status Section -->
+                <section id="sap-status-section" class="admin-section">
+                    <div class="section-header">
+                        <h2>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                            SAP Status Section
+                        </h2>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label for="sapStatusTitle">SAP Status Title</label>
                             <InputText id="sapStatusTitle" class="form-control" @bind-Value="options.SapStatusTitle" />
                             <ValidationMessage For="@(() => options.SapStatusTitle)" />
                         </div>
-                        <div class="mb-3">
-                            <label for="warningTitle" class="form-label">Warning Title</label>
-                            <InputText id="warningTitle" class="form-control" @bind-Value="options.WarningTitle" />
-                            <ValidationMessage For="@(() => options.WarningTitle)" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="warningText" class="form-label">Warning Text</label>
-                            <InputTextArea id="warningText" class="form-control" rows="3" @bind-Value="options.WarningText" />
-                            <ValidationMessage For="@(() => options.WarningText)" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="mustAppealTitle" class="form-label">Must Appeal Title</label>
-                            <InputText id="mustAppealTitle" class="form-control" @bind-Value="options.MustAppealTitle" />
-                            <ValidationMessage For="@(() => options.MustAppealTitle)" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="mustAppealText" class="form-label">Must Appeal Text</label>
-                            <InputTextArea id="mustAppealText" class="form-control" rows="3" @bind-Value="options.MustAppealText" />
-                            <ValidationMessage For="@(() => options.MustAppealText)" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="mustAppealExtra" class="form-label">Must Appeal Additional Text</label>
-                            <InputTextArea id="mustAppealExtra" class="form-control" rows="3" @bind-Value="options.MustAppealExtra" />
-                            <ValidationMessage For="@(() => options.MustAppealExtra)" />
+                        <div class="status-grid">
+                            <div class="status-card warning">
+                                <div class="form-group">
+                                    <label for="warningTitle">Warning Title</label>
+                                    <InputText id="warningTitle" class="form-control" @bind-Value="options.WarningTitle" />
+                                    <ValidationMessage For="@(() => options.WarningTitle)" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="warningText">Warning Text</label>
+                                    <InputTextArea id="warningText" class="form-control" rows="3" @bind-Value="options.WarningText" />
+                                    <ValidationMessage For="@(() => options.WarningText)" />
+                                </div>
+                            </div>
+                            <div class="status-card must-appeal">
+                                <div class="form-group">
+                                    <label for="mustAppealTitle">Must Appeal Title</label>
+                                    <InputText id="mustAppealTitle" class="form-control" @bind-Value="options.MustAppealTitle" />
+                                    <ValidationMessage For="@(() => options.MustAppealTitle)" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="mustAppealText">Must Appeal Text</label>
+                                    <InputTextArea id="mustAppealText" class="form-control" rows="3" @bind-Value="options.MustAppealText" />
+                                    <ValidationMessage For="@(() => options.MustAppealText)" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="mustAppealExtra">Must Appeal Additional Text</label>
+                                    <InputTextArea id="mustAppealExtra" class="form-control" rows="3" @bind-Value="options.MustAppealExtra" />
+                                    <ValidationMessage For="@(() => options.MustAppealExtra)" />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </section>
 
-            <!-- Appeal Process Section -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingAppealProcess">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAppealProcess" aria-expanded="false" aria-controls="collapseAppealProcess">
-                        Appeal Process Section
-                    </button>
-                </h2>
-                <div id="collapseAppealProcess" class="accordion-collapse collapse" aria-labelledby="headingAppealProcess" data-bs-parent="#optionsAccordion">
-                    <div class="accordion-body">
-                        <div class="mb-3">
-                            <label for="appealProcessTitle" class="form-label">Appeal Process Title</label>
+                <!-- Appeal Process Section -->
+                <section id="appeal-process-section" class="admin-section">
+                    <div class="section-header">
+                        <h2>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            Appeal Process Section
+                        </h2>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label for="appealProcessTitle">Appeal Process Title</label>
                             <InputText id="appealProcessTitle" class="form-control" @bind-Value="options.AppealProcessTitle" />
                             <ValidationMessage For="@(() => options.AppealProcessTitle)" />
                         </div>
-                        <div class="mb-3">
-                            <label for="appealText" class="form-label">Appeal Process Text</label>
+                        <div class="form-group">
+                            <label for="appealText">Appeal Process Text</label>
                             <InputTextArea id="appealText" class="form-control" rows="4" @bind-Value="options.AppealText" />
                             <ValidationMessage For="@(() => options.AppealText)" />
                         </div>
-                        <div class="mb-3">
-                            <label for="approvedAppealsTitle" class="form-label">Approved Appeals Title</label>
-                            <InputText id="approvedAppealsTitle" class="form-control" @bind-Value="options.ApprovedAppealsTitle" />
-                            <ValidationMessage For="@(() => options.ApprovedAppealsTitle)" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="approvedAppealsText" class="form-label">Approved Appeals Text</label>
-                            <InputTextArea id="approvedAppealsText" class="form-control" rows="4" @bind-Value="options.ApprovedAppealsText" />
-                            <ValidationMessage For="@(() => options.ApprovedAppealsText)" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="deniedAppealsTitle" class="form-label">Denied Appeals Title</label>
-                            <InputText id="deniedAppealsTitle" class="form-control" @bind-Value="options.DeniedAppealsTitle" />
-                            <ValidationMessage For="@(() => options.DeniedAppealsTitle)" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="deniedAppealsText" class="form-label">Denied Appeals Text</label>
-                            <InputTextArea id="deniedAppealsText" class="form-control" rows="3" @bind-Value="options.DeniedAppealsText" />
-                            <ValidationMessage For="@(() => options.DeniedAppealsText)" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="deniedExtra" class="form-label">Denied Appeals Additional Text</label>
-                            <InputTextArea id="deniedExtra" class="form-control" rows="3" @bind-Value="options.DeniedExtra" />
-                            <ValidationMessage For="@(() => options.DeniedExtra)" />
+                        
+                        <div class="status-grid">
+                            <div class="status-card approved">
+                                <div class="form-group">
+                                    <label for="approvedAppealsTitle">Approved Appeals Title</label>
+                                    <InputText id="approvedAppealsTitle" class="form-control" @bind-Value="options.ApprovedAppealsTitle" />
+                                    <ValidationMessage For="@(() => options.ApprovedAppealsTitle)" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="approvedAppealsText">Approved Appeals Text</label>
+                                    <InputTextArea id="approvedAppealsText" class="form-control" rows="4" @bind-Value="options.ApprovedAppealsText" />
+                                    <ValidationMessage For="@(() => options.ApprovedAppealsText)" />
+                                </div>
+                            </div>
+                            <div class="status-card denied">
+                                <div class="form-group">
+                                    <label for="deniedAppealsTitle">Denied Appeals Title</label>
+                                    <InputText id="deniedAppealsTitle" class="form-control" @bind-Value="options.DeniedAppealsTitle" />
+                                    <ValidationMessage For="@(() => options.DeniedAppealsTitle)" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="deniedAppealsText">Denied Appeals Text</label>
+                                    <InputTextArea id="deniedAppealsText" class="form-control" rows="3" @bind-Value="options.DeniedAppealsText" />
+                                    <ValidationMessage For="@(() => options.DeniedAppealsText)" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="deniedExtra">Denied Appeals Additional Text</label>
+                                    <InputTextArea id="deniedExtra" class="form-control" rows="3" @bind-Value="options.DeniedExtra" />
+                                    <ValidationMessage For="@(() => options.DeniedExtra)" />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </section>
 
-            <!-- Final Note Section -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingFinalNote">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFinalNote" aria-expanded="false" aria-controls="collapseFinalNote">
-                        Final Note
-                    </button>
-                </h2>
-                <div id="collapseFinalNote" class="accordion-collapse collapse" aria-labelledby="headingFinalNote" data-bs-parent="#optionsAccordion">
-                    <div class="accordion-body">
-                        <div class="mb-3">
-                            <label for="finalNote" class="form-label">Final Note Text</label>
+                <!-- Final Note Section -->
+                <section id="final-note-section" class="admin-section">
+                    <div class="section-header">
+                        <h2>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            Final Note
+                        </h2>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label for="finalNote">Final Note Text</label>
                             <InputTextArea id="finalNote" class="form-control" rows="2" @bind-Value="options.FinalNote" />
                             <ValidationMessage For="@(() => options.FinalNote)" />
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
-        </div>
 
-        <div class="mt-4 mb-5 d-flex justify-content-between">
-            <button type="button" class="btn btn-secondary" @onclick="ResetToDefaults">Reset to Defaults</button>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-        </div>
-    </EditForm>
+            <div class="admin-footer">
+                <button type="submit" class="btn-save">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                    Save Changes
+                </button>
+            </div>
+        </EditForm>
+    </div>
 </div>
+
+<style>
+    /* Reset and base styles */
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        background-color: #f9f9fb;
+        color: #333;
+    }
+
+    /* Layout */
+    .admin-container {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    .admin-sidebar {
+        width: 250px;
+        background-color: white;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        height: 100vh;
+        z-index: 10;
+    }
+
+    .admin-content {
+        flex: 1;
+        margin-left: 250px;
+        padding: 2rem;
+    }
+
+    /* Sidebar */
+    .admin-logo {
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #4361ee;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .admin-nav {
+        flex: 1;
+        padding: 1.5rem 0;
+        overflow-y: auto;
+    }
+
+    .admin-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        color: #666;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border-left: 3px solid transparent;
+        margin-bottom: 0.5rem;
+    }
+
+    .admin-nav-item:hover, .admin-nav-item.active {
+        background-color: #eef2ff;
+        color: #4361ee;
+        border-left-color: #4361ee;
+    }
+
+    .admin-actions {
+        padding: 1.5rem;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    /* Header */
+    .admin-header {
+        margin-bottom: 2rem;
+    }
+
+    .admin-header h1 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.75rem;
+        font-weight: 600;
+    }
+
+    .admin-header p {
+        margin: 0;
+        color: #666;
+    }
+
+    /* Form */
+    .admin-form {
+        max-width: 100%;
+    }
+
+    .admin-sections {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .admin-section {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .section-header {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid #e0e0e0;
+        background-color: #eef2ff;
+    }
+
+    .section-header h2 {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #4361ee;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .section-content {
+        padding: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-group:last-child {
+        margin-bottom: 0;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #4361ee;
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    /* Status cards */
+    .status-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .status-card {
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .status-card.warning {
+        background-color: #fef6e7;
+        border-left: 4px solid #f39c12;
+    }
+
+    .status-card.must-appeal {
+        background-color: #fdeeec;
+        border-left: 4px solid #e74c3c;
+    }
+
+    .status-card.approved {
+        background-color: #e6f9ee;
+        border-left: 4px solid #2ecc71;
+    }
+
+    .status-card.denied {
+        background-color: #fdeeec;
+        border-left: 4px solid #e74c3c;
+    }
+
+    /* Footer */
+    .admin-footer {
+        margin-top: 2rem;
+        padding: 1.5rem 0;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* Buttons */
+    .btn-reset, .btn-save {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-reset {
+        background-color: transparent;
+        color: #666;
+        border: 1px solid #e0e0e0;
+    }
+
+    .btn-reset:hover {
+        background-color: #e0e0e0;
+        color: #333;
+    }
+
+    .btn-save {
+        background-color: #4361ee;
+        color: white;
+    }
+
+    .btn-save:hover {
+        background-color: #3050dd;
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+    }
+
+    /* Validation styles */
+    .validation-message {
+        color: #e74c3c;
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+    }
+
+    .validation-summary {
+        background-color: #fdeeec;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .validation-summary ul {
+        margin: 0;
+        padding-left: 1.5rem;
+    }
+</style>
 
 @code {
     private HomePageOptions options = new();
@@ -298,7 +610,8 @@
             // Write the updated JSON back to appsettings.json
             await File.WriteAllTextAsync(optionsFilePath, updatedJson);
             
-            // Navigate to home page to see changes
+            // Show success notification and navigate
+            ShowSuccessNotification();
             NavigationManager.NavigateTo("/");
         }
         catch (Exception ex)
@@ -306,5 +619,21 @@
             // In a real app, you would log this error and handle it appropriately
             Console.WriteLine($"Error saving options: {ex.Message}");
         }
+    }
+    
+    private bool showNotification = false;
+    private string notificationMessage = "";
+    
+    private void ShowSuccessNotification()
+    {
+        notificationMessage = "Changes saved successfully!";
+        showNotification = true;
+        StateHasChanged();
+        
+        // Auto-hide after 3 seconds
+        Task.Delay(3000).ContinueWith(_ => {
+            showNotification = false;
+            StateHasChanged();
+        });
     }
 }
