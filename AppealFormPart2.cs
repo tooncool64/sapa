@@ -29,6 +29,7 @@ public class AppealFormPart2
 
 public class SemesterCourseValid : CourseBase
 {
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     [Required(ErrorMessage = "Course Name is required")]
     public new string CourseName { get; set; } = string.Empty;
 
@@ -41,4 +42,6 @@ public class SemesterCourseValid : CourseBase
 }
 
 public class SemesterCourse : CourseBase
-{ }
+{
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+}

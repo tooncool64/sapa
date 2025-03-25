@@ -71,18 +71,56 @@ public class AppealFormService : IAppealFormService
     private AppealForm CloneForm(AppealForm original)
     {
         // Create a simple clone for validation
-        return new AppealForm
+        var clone = new AppealForm
         {
+            Id = original.Id,
             Name = original.Name,
             StudentId = original.StudentId,
             Date = original.Date,
             Email = original.Email,
             Major = original.Major,
             AppealExplanation = original.AppealExplanation,
+            DegreeProgram = original.DegreeProgram,
+            GradDate = original.GradDate,
+            GPA = original.GPA,
+            DegreeHours = original.DegreeHours,
+            ChangeMajor = original.ChangeMajor,
             AcknowledgementPayment = original.AcknowledgementPayment,
             AcknowledgementFinal = original.AcknowledgementFinal,
-            Status = original.Status //not changeable by students
+            Status = original.Status
         };
+    
+        // Clone Semester1Courses collection
+        if (original.Semester1Courses != null)
+        {
+            clone.Semester1Courses = original.Semester1Courses.Select(c => new SemesterCourse
+            {
+                Id = c.Id,
+                CourseName = c.CourseName,
+                CourseNumber = c.CourseNumber,
+                CreditHours = c.CreditHours,
+                IsRepeat = c.IsRepeat,
+                IsRequiredForMajor = c.IsRequiredForMajor
+                // Clone any additional properties
+            }).ToList();
+        }
+    
+        // Clone Semester2Courses collection
+        if (original.Semester2Courses != null)
+        {
+            clone.Semester2Courses = original.Semester2Courses.Select(c => new SemesterCourse
+            {
+                Id = c.Id,
+                CourseName = c.CourseName,
+                CourseNumber = c.CourseNumber,
+                CreditHours = c.CreditHours,
+                IsRepeat = c.IsRepeat,
+                IsRequiredForMajor = c.IsRequiredForMajor
+                // Clone any additional properties
+            }).ToList();
+        }
+    
+        return clone;
     }
 // Keep the original method signature to match the interface
     public async Task<bool> SubmitFormAsync()
@@ -140,9 +178,18 @@ public class AppealFormService : IAppealFormService
         _form.Email = string.Empty;
         _form.Major = string.Empty;
         _form.AppealExplanation = string.Empty;
+        _form.DegreeProgram = string.Empty;
+        _form.GradDate = null;
+        _form.GPA = 0;
+        _form.DegreeHours = 0;
+        _form.ChangeMajor = false;
         _form.AcknowledgementPayment = false;
         _form.AcknowledgementFinal = false;
-        
+    
+        // Clear course collections
+        _form.Semester1Courses.Clear();
+        _form.Semester2Courses.Clear();
+    
         // Notify listeners that the form has changed
         OnFormChanged?.Invoke();
     }
