@@ -42,12 +42,6 @@ namespace BlazorApp
                     semesterCourse.HasKey("Id");
                 });
             
-            // Configure AppealComment
-            modelBuilder.Entity<AppealComment>()
-                .ToContainer("Appeals")
-                .HasPartitionKey(e => e.Id)
-                .HasKey(e => e.Id);
-            
             // Configure Comments relationship - use OwnsMany for Cosmos DB
             modelBuilder.Entity<AppealForm>()
                 .OwnsMany(e => e.Comments, comment =>

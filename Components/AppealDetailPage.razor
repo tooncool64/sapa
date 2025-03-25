@@ -221,6 +221,30 @@ else
                 </div>
             </div>
 
+            <!-- Add General Comment Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Add Comment</h3>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="generalComment" class="form-label">Comment</label>
+                        <textarea id="generalComment" class="form-control" rows="3" @bind="newGeneralComment" placeholder="Add a general comment about this appeal"></textarea>
+                    </div>
+                    <button class="btn btn-secondary" @onclick="AddGeneralComment" disabled="@(isSaving)">
+                        @if (isSaving)
+                        {
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span>Saving...</span>
+                        }
+                        else
+                        {
+                            <span>Add Comment</span>
+                        }
+                    </button>
+                </div>
+            </div>
+
             <!-- Comments Section -->
             <div class="card mb-4">
                 <div class="card-header">
@@ -238,7 +262,14 @@ else
                             {
                                 <div class="list-group-item list-group-item-action">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">Status: <span class="badge @GetStatusBadgeClass(comment.Status)">@comment.Status</span></h5>
+                                        @if (!string.IsNullOrEmpty(comment.Status))
+                                        {
+                                            <h5 class="mb-1">Status: <span class="badge @GetStatusBadgeClass(comment.Status)">@comment.Status</span></h5>
+                                        }
+                                        else
+                                        {
+                                            <h5 class="mb-1">General Comment</h5>
+                                        }
                                         <small>@comment.Timestamp.ToLocalTime().ToString("MMM dd, yyyy h:mm tt")</small>
                                     </div>
                                     <p class="mb-1">@comment.Text</p>
@@ -262,6 +293,7 @@ else
     private bool isSaving = false;
     private string newStatus = "";
     private string newComment = "";
+    private string newGeneralComment = ""; // Added for general comments
 
     protected override async Task OnInitializedAsync()
     {
@@ -283,10 +315,10 @@ else
         try
         {
             loading = true;
-    // Create a context instance using the factory
+            // Create a context instance using the factory
             await using var context = await ContextFactory.CreateDbContextAsync();
-        
-    // With Cosmos DB, we don't need to use Include() as nested entities are part of the document
+            
+            // With Cosmos DB, we don't need to use Include() as nested entities are part of the document
             appeal = await context.Appeals
                 .FirstOrDefaultAsync(a => a.Id == AppealId);
 
@@ -297,7 +329,7 @@ else
         }
         catch (Exception ex)
         {
-    // Log the exception
+            // Log the exception
             Console.WriteLine($"Error loading appeal details: {ex.Message}");
         }
         finally
@@ -323,10 +355,10 @@ else
 
             if (appealToUpdate != null)
             {
-    // Update the appeal status
+                // Update the appeal status
                 appealToUpdate.Status = newStatus;
 
-    // Create a new comment
+                // Create a new comment
                 if (!string.IsNullOrWhiteSpace(newComment))
                 {
                     if (appealToUpdate.Comments == null)
@@ -338,7 +370,7 @@ else
                     {
                         Id = Guid.NewGuid().ToString(),
                         Text = newComment,
-                        Status = newStatus,
+                        Status = newStatus, // Status change comment
                         Timestamp = DateTime.UtcNow,
                         AdminId = "current-admin-id", // Replace with actual admin ID from authentication
                         AdminName = "Admin User" // Replace with actual admin name from authentication
@@ -349,16 +381,69 @@ else
 
                 await context.SaveChangesAsync();
 
-    // Reload the appeal to get the latest data
+                // Reload the appeal to get the latest data
                 await LoadAppeal();
 
-    // Clear the comment text field
+                // Clear the comment text field
                 newComment = "";
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error updating appeal status: {ex.Message}");
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    // Added method for adding general comments (without status change)
+    private async Task AddGeneralComment()
+    {
+        if (appeal == null || string.IsNullOrWhiteSpace(newGeneralComment))
+        {
+            return;
+        }
+
+        try
+        {
+            isSaving = true;
+
+            await using var context = await ContextFactory.CreateDbContextAsync();
+            var appealToUpdate = await context.Appeals
+                .FirstOrDefaultAsync(a => a.Id == AppealId);
+
+            if (appealToUpdate != null)
+            {
+                if (appealToUpdate.Comments == null)
+                {
+                    appealToUpdate.Comments = new List<AppealComment>();
+                }
+
+                var comment = new AppealComment
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Text = newGeneralComment,
+                    Status = null, // No status change for general comments
+                    Timestamp = DateTime.UtcNow,
+                    AdminId = "current-admin-id", // Replace with actual admin ID from authentication
+                    AdminName = "Admin User" // Replace with actual admin name from authentication
+                };
+
+                appealToUpdate.Comments.Add(comment);
+                await context.SaveChangesAsync();
+
+                // Reload the appeal to get the latest data
+                await LoadAppeal();
+
+                // Clear the general comment text field
+                newGeneralComment = "";
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error adding general comment: {ex.Message}");
         }
         finally
         {
