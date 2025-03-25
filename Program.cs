@@ -40,7 +40,7 @@ builder.Services.AddDbContext<CosmosContext>(options =>
 {
     var endpointUri = Environment.GetEnvironmentVariable("DATABASE_URI");
     var primaryKey = Environment.GetEnvironmentVariable("DATABASE_PRIMARY_KEY");
-    options.UseCosmos(endpointUri, primaryKey, databaseName: "Appeals");
+    options.UseCosmos(endpointUri, primaryKey, databaseName: "AppealSystem");
 });
 
 builder.Services.AddLogging(loggingBuilder =>

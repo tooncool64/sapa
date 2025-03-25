@@ -8,6 +8,13 @@
     <EditForm Model="@_page3Model" FormName="AcademicPlan" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator/>
 
+        @if (!string.IsNullOrEmpty(_errorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                <strong>Error:</strong> @_errorMessage
+            </div>
+        }
+
         <section id="academic-info" class="card">
             <h1>Academic Plan</h1>
             
@@ -172,12 +179,26 @@
             }
         </section>
         
-    <button type="submit" class="btn btn-primary">Submit Appeal</button>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">
+                @if (_isSubmitting)
+                {
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span> Submitting...</span>
+                }
+                else
+                {
+                    <span>Submit Appeal</span>
+                }
+            </button>
+        </div>
     </EditForm>
 </main>
 
 @code {
     private AppealFormPart2 _page3Model = new();
+    private string _errorMessage = string.Empty;
+    private bool _isSubmitting = false;
 
     protected override void OnInitialized()
     {
@@ -232,48 +253,72 @@
 
     private async void HandleValidSubmit()
     {
-        FormService.UpdateForm(form =>
+        try
         {
-            form.DegreeProgram = _page3Model.DegreeProgram;
-            form.GradDate = _page3Model.GradDate;
-            form.GPA = _page3Model.GPA;
-            form.DegreeHours = _page3Model.DegreeHours;
-            form.ChangeMajor = _page3Model.ChangeMajor;
-
-            // Convert SemesterCourseValid objects back to SemesterCourse objects
-            form.Semester1Courses = _page3Model.Semester1Courses.Select(vc => new SemesterCourse
+            // Clear any previous error messages
+            _errorMessage = string.Empty;
+            
+            // Set submitting state to show loading indicator
+            _isSubmitting = true;
+            StateHasChanged();
+            
+            FormService.UpdateForm(form =>
             {
-                CourseName = vc.CourseName,
-                CourseNumber = vc.CourseNumber,
-                CreditHours = vc.CreditHours,
-                IsRepeat = vc.IsRepeat,
-                IsRequiredForMajor = vc.IsRequiredForMajor
-            }).ToList();
+                form.DegreeProgram = _page3Model.DegreeProgram;
+                form.GradDate = _page3Model.GradDate;
+                form.GPA = _page3Model.GPA;
+                form.DegreeHours = _page3Model.DegreeHours;
+                form.ChangeMajor = _page3Model.ChangeMajor;
 
-            form.Semester2Courses = _page3Model.Semester2Courses.Select(vc => new SemesterCourse
-            {
-                CourseName = vc.CourseName,
-                CourseNumber = vc.CourseNumber,
-                CreditHours = vc.CreditHours,
-                IsRepeat = vc.IsRepeat,
-                IsRequiredForMajor = vc.IsRequiredForMajor
-            }).ToList();
-        });
+                // Convert SemesterCourseValid objects back to SemesterCourse objects
+                form.Semester1Courses = _page3Model.Semester1Courses.Select(vc => new SemesterCourse
+                {
+                    CourseName = vc.CourseName,
+                    CourseNumber = vc.CourseNumber,
+                    CreditHours = vc.CreditHours,
+                    IsRepeat = vc.IsRepeat,
+                    IsRequiredForMajor = vc.IsRequiredForMajor
+                }).ToList();
+
+                form.Semester2Courses = _page3Model.Semester2Courses.Select(vc => new SemesterCourse
+                {
+                    CourseName = vc.CourseName,
+                    CourseNumber = vc.CourseNumber,
+                    CreditHours = vc.CreditHours,
+                    IsRepeat = vc.IsRepeat,
+                    IsRequiredForMajor = vc.IsRequiredForMajor
+                }).ToList();
+            });
         
-    // At this point, the FormService.CurrentForm contains all the data from all pages
-        var success =  await FormService.SubmitFormAsync();
+            // At this point, the FormService.CurrentForm contains all the data from all pages
+            var success = await FormService.SubmitFormAsync();
 
-        if (success)
-        {
-    // Reset the form for future use
-            FormService.ResetForm();
+            if (success)
+            {
+                // Reset the form for future use
+                FormService.ResetForm();
 
-    // Navigate to a confirmation page
-            Navigation.NavigateTo("/confirmation");
+                // Navigate to a confirmation page
+                Navigation.NavigateTo("/confirmation");
+            }
+            else
+            {
+                // Display the error message on the page
+                _errorMessage = FormService.GetLastErrorMessage() ?? "An unexpected error occurred while submitting your appeal. Please try again later.";
+                StateHasChanged();
+            }
         }
-        else
+        catch (Exception ex)
         {
-    // Handle submission error
+            // Handle any unexpected exceptions
+            _errorMessage = $"An error occurred: {ex.Message}";
+            StateHasChanged();
+        }
+        finally
+        {
+            // Reset submitting state
+            _isSubmitting = false;
+            StateHasChanged();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace BlazorApp;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace BlazorApp;
 
 using System.ComponentModel.DataAnnotations;
 
@@ -10,12 +12,14 @@ public interface IAppealFormService
     void ResetForm();
     event Action OnFormChanged;
     Task<bool> UpdateStatusAsync(string id, string newStatus);
+    string GetLastErrorMessage();
 }
 
 public class AppealFormService : IAppealFormService
 {
     private readonly AppealForm _form = new AppealForm();
     private readonly CosmosContext _dbContext;
+    private string _lastErrorMessage;
     
     public event Action OnFormChanged;
     
@@ -24,6 +28,11 @@ public class AppealFormService : IAppealFormService
         _dbContext = dbContext;
         // Initialize default values
         _form.Date = DateTime.Today;
+    }
+    
+    public string GetLastErrorMessage()
+    {
+        return _lastErrorMessage;
     }
     
     public AppealForm CurrentForm => _form;
@@ -75,20 +84,27 @@ public class AppealFormService : IAppealFormService
             Status = original.Status //not changeable by students
         };
     }
-    
+// Keep the original method signature to match the interface
     public async Task<bool> SubmitFormAsync()
     {
         try
         {
+            // Clear any previous error message
+            _lastErrorMessage = null;
+        
             // Validate before submission
             if (!ValidateForm(_form))
             {
+                _lastErrorMessage = "Form validation failed. Please ensure all required fields are completed correctly.";
                 return false;
             }
+        
             // default for status
             if (string.IsNullOrWhiteSpace(_form.Status))
-            _form.Status = "Pending";
-            
+            {
+                _form.Status = "Pending";
+            }
+        
             // Check if this form is already being tracked
             if (string.IsNullOrWhiteSpace(_form.Id)) // Assuming Id is null or empty for new forms
             {
@@ -98,14 +114,19 @@ public class AppealFormService : IAppealFormService
             {
                 _dbContext.Appeals.Update(_form);
             }
-            
+        
             // Save to the database
             await _dbContext.SaveChangesAsync();
             return true;
         }
-        catch (Exception ex)
+        catch (DbUpdateException dbEx)
         {
-            Console.WriteLine($"Error submitting form: {ex.Message}");
+            _lastErrorMessage = $"A database error occurred while saving your appeal:{dbEx.Message} Please try again later.";
+            return false;
+        }
+        catch (Exception ex) 
+        {
+            _lastErrorMessage = $"An error occurred while saving your appeal:{ex.Message} Please try again later.";
             return false;
         }
     }
