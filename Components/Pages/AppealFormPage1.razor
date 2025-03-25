@@ -17,7 +17,7 @@
         <button id="toggle-button" class="lang-toggle" onclick="toggleLanguage()">Español</button>
     </header>
     <main>
-        <EditForm Model="@FormService.CurrentForm" FormName="AppealForm1" OnValidSubmit="@HandleValidSubmit">
+        <EditForm Model="@FormService.CurrentForm" FormName="AppealForm1" OnSubmit="@HandleValidSubmit">
             <DataAnnotationsValidator/>
 
             <section id="student-info" class="card">
@@ -139,6 +139,6 @@
     private void HandleValidSubmit()
     {
         // Simply navigate to the next page since form is already bound to FormService.CurrentForm
-        Navigation.NavigateTo("appeal2");
+        Navigation.NavigateTo("/appeal2");
     }
 }
