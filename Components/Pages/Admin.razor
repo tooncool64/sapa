@@ -34,21 +34,7 @@
     <main class="main-content">
         <section id="dashboard" class="section active">
             <h1>Dashboard</h1>
-            <div class="cards">
-                <div class="card">
-                    <h2>@totalAppeals</h2>
-                    <p>Appeals Submitted</p>
-                </div>
-                <div class="card">
-                    <h2>25</h2>
-                    <p>Comments</p>
-                </div>
-                <div class="card">
-                    <h2>@pendingAppeals</h2>
-                    <p>Pending</p>
-                </div>
-            </div>
-                
+            <AppealCardInfo></AppealCardInfo>
             <h2>Recent Submissions</h2>
             <!-- Filter Dropdown -->
             <label for="filterStatus"><strong>Filter by Status:</strong></label>
@@ -190,33 +176,3 @@
     }
     </script>
 </body>
-
-@code {
-    private int totalAppeals = 0;
-    private int pendingAppeals = 0;
-
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadAppealCounts();
-    }
-
-    private async Task LoadAppealCounts()
-    {
-        try
-        {
-    // Get all appeals
-            var appeals = await CosmosDb.Appeals.ToListAsync();
-            
-    // Calculate counts
-            totalAppeals = appeals.Count;
-            pendingAppeals = appeals.Count(a => a.Status == "Pending");
-        }
-        catch (Exception ex)
-        {
-    // Log the exception
-            Console.WriteLine($"Error loading appeal counts: {ex.Message}");
-        }
-
-        await CosmosDb.SaveChangesAsync();
-    }
-}

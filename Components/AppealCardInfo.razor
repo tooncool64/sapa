@@ -1,0 +1,46 @@
+﻿@using BlazorApp
+@inject AppealCardService AppealCardService
+
+<div class="cards">
+    <div class="card">
+        <h2>@appealCounts["Total"]</h2>
+        <p>Appeals Submitted</p>
+    </div>
+    <div class="card">
+        <h2>25</h2>
+        <p>Comments</p>
+    </div>
+    <div class="card">
+        <h2>@appealCounts["Pending"]</h2>
+        <p>Pending</p>
+    </div>
+</div>
+
+@code {
+    private Dictionary<string, int> appealCounts = new Dictionary<string, int>
+    {
+        { "Total", 0 },
+        { "Pending", 0 },
+        { "Approved", 0 },
+        { "Rejected", 0 }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAppealCounts();
+    }
+
+    private async Task LoadAppealCounts()
+    {
+        try
+        {
+            appealCounts = await AppealCardService.GetAppealCountsAsync();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+    // Log the exception
+            Console.WriteLine($"Error loading appeal counts: {ex.Message}");
+        }
+    }
+}
