@@ -43,6 +43,13 @@ builder.Services.AddDbContext<CosmosContext>(options =>
     options.UseCosmos(endpointUri, primaryKey, databaseName: "sapapp");
 });
 
+builder.Services.AddDbContextFactory<CosmosContext>(options =>
+{
+    var endpointUri = Environment.GetEnvironmentVariable("DATABASE_URI");
+    var primaryKey = Environment.GetEnvironmentVariable("DATABASE_PRIMARY_KEY");
+    options.UseCosmos(endpointUri, primaryKey, databaseName: "sapapp");
+});
+
 builder.Services.AddLogging(loggingBuilder =>
 {
     loggingBuilder.AddConsole();
