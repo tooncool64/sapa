@@ -18,14 +18,14 @@ public interface IAppealFormService
 public class AppealFormService : IAppealFormService
 {
     private readonly AppealForm _form = new AppealForm();
-    private readonly CosmosContext _dbContext;
+    private readonly IDbContextFactory<CosmosContext> _contextFactory;
     private string _lastErrorMessage;
     
     public event Action OnFormChanged;
     
-    public AppealFormService(CosmosContext dbContext)
+    public AppealFormService(IDbContextFactory<CosmosContext> contextFactory)
     {
-        _dbContext = dbContext;
+        _contextFactory = contextFactory;
         // Initialize default values
         _form.Date = DateTime.Today;
     }
@@ -122,7 +122,7 @@ public class AppealFormService : IAppealFormService
     
         return clone;
     }
-// Keep the original method signature to match the interface
+
     public async Task<bool> SubmitFormAsync()
     {
         try
@@ -155,9 +155,10 @@ public class AppealFormService : IAppealFormService
                 formSemester2Course.Id = Guid.NewGuid().ToString();
             }
             
-            _dbContext.Appeals.Add(_form);
-            
-            await _dbContext.SaveChangesAsync();
+            // Create and use a context instance
+            using var dbContext = await _contextFactory.CreateDbContextAsync();
+            dbContext.Appeals.Add(_form);
+            await dbContext.SaveChangesAsync();
             return true;
         }
         catch (DbUpdateException dbEx)
@@ -196,13 +197,16 @@ public class AppealFormService : IAppealFormService
         // Notify listeners that the form has changed
         OnFormChanged?.Invoke();
     }
+    
     public async Task<bool> UpdateStatusAsync(string id, string newStatus)
     {
-        var appeal = await _dbContext.Appeals.FindAsync(id);
+        // Create and use a context instance
+        using var dbContext = await _contextFactory.CreateDbContextAsync();
+        var appeal = await dbContext.Appeals.FindAsync(id);
         if (appeal == null) return false;
 
         appeal.Status = newStatus;
-        await _dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
         return true;
     }
 }
