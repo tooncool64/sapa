@@ -142,16 +142,9 @@ public class AppealFormService : IAppealFormService
             {
                 _form.Status = "Pending";
             }
-        
-            // Check if this form is already being tracked
-            if (string.IsNullOrWhiteSpace(_form.Id)) // Assuming Id is null or empty for new forms
-            {
-                _dbContext.Appeals.Add(_form);
-            }
-            else
-            {
-                _dbContext.Appeals.Update(_form);
-            }
+            
+            _dbContext.Appeals.Add(_form);
+     
         
             // Save to the database
             await _dbContext.SaveChangesAsync();
