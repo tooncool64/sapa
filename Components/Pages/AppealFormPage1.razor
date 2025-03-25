@@ -25,7 +25,7 @@
                 <div class="form-group">
                     <label id="label-name">
                         <span class="label-text">Name:</span>
-                        <InputText @bind-Value="FormService.CurrentForm.Name" class="form-control" placeholder="Your name.."/>
+                        <InputText @bind-Value="FormService.CurrentForm.Name" class="form-control" placeholder="Your name..."/>
                         <ValidationMessage For="@(() => FormService.CurrentForm.Name)"/>
                     </label>
                 </div>
@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <label id="label-student-id">
                         <span class="label-text">Student ID#:</span>
-                        <InputText @bind-Value="FormService.CurrentForm.StudentId" class="form-control" placeholder="ex: p000.."/>
+                        <InputText @bind-Value="FormService.CurrentForm.StudentId" class="form-control" placeholder="ex: p000..."/>
                         <ValidationMessage For="@(() => FormService.CurrentForm.StudentId)"/>
                     </label>
                 </div>
@@ -48,8 +48,8 @@
 
                 <div class="form-group">
                     <label id="email-name">
-                        <span class="email-name">Email:</span>
-                        <InputText @bind-Value="FormService.CurrentForm.Email" class="form-control"/>
+                        <span class="label-text">Email:</span>
+                        <InputText @bind-Value="FormService.CurrentForm.Email" class="form-control" placeholder="Your email..."/>
                         <ValidationMessage For="@(() => FormService.CurrentForm.Email)"/>
                     </label>
                 </div>
@@ -57,7 +57,7 @@
                 <div class="form-group">
                     <label id="label-major">
                         <span class="label-text">Major:</span>
-                        <InputText @bind-Value="FormService.CurrentForm.Major" class="form-control" placeholder="Your major.."/>
+                        <InputText @bind-Value="FormService.CurrentForm.Major" class="form-control" placeholder="Your major..."/>
                         <ValidationMessage For="@(() => FormService.CurrentForm.Major)"/>
                     </label>
                 </div>
@@ -103,7 +103,7 @@
                     <span id="checkbox2-text">
                         I understand that the decision of the Office of Financial Aid is final.
                     </span>
-                    <ValidationMessage For="@(() => FormService.CurrentForm.AcknowledgementPayment)"/>
+                    <ValidationMessage For="@(() => FormService.CurrentForm.AcknowledgementFinal)"/>
                 </div>
             </section>
             
