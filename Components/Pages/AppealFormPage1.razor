@@ -80,10 +80,10 @@
                                                   id="text-area"
                                                   rows="6"
                                                   placeholder="Write your explanation here..."
-                                                  @onkeyup="UpdateWordCount"/>
-                                   <div class="word-count @(isOverLimit ? "text-danger" : "text-muted")">
-                                       @wordCountMessage
-                                   </div>
+                                                  onkeyup="UpdateWordCount"/>
+                                   <!--- <div class="word-count (isOverLimit ? "text-danger" : "text-muted")">
+                                       wordCountMessage
+                                   </div> --->
                                    <ValidationMessage For="@(() => FormService.CurrentForm.AppealExplanation)"/>
                    </div>
             </section>
@@ -95,6 +95,7 @@
                     <span id="checkbox1-text">
                         Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.
                     </span>
+                    <ValidationMessage For="@(() => FormService.CurrentForm.AcknowledgementPayment)"/>
                 </div>
                 
                 <div class="checkbox-container">
@@ -102,6 +103,7 @@
                     <span id="checkbox2-text">
                         I understand that the decision of the Office of Financial Aid is final.
                     </span>
+                    <ValidationMessage For="@(() => FormService.CurrentForm.AcknowledgementPayment)"/>
                 </div>
             </section>
             
@@ -118,43 +120,35 @@
 </html>
 
 @code {
-    private void HandleValidSubmit()
+    // Create a local copy of the form for this page
+    private AppealForm _localForm = new AppealForm();
+    
+    protected override void OnInitialized()
     {
-        // Check if the explanation is over the word limit
-        UpdateWordCount();
-        
-        if (!isOverLimit)
-        {
-            // Only navigate if the word count is within the limit
-            Navigation.NavigateTo("/appeal2");
-        }
-        // If over limit, the form won't submit due to the error message being displayed
+    // Load existing data from the service when page initializes
+        _localForm.Name = FormService.CurrentForm.Name;
+        _localForm.StudentId = FormService.CurrentForm.StudentId;
+        _localForm.Date = FormService.CurrentForm.Date;
+        _localForm.Email = FormService.CurrentForm.Email;
+        _localForm.Major = FormService.CurrentForm.Major;
+        _localForm.AcknowledgementPayment = FormService.CurrentForm.AcknowledgementPayment;
+        _localForm.AcknowledgementFinal = FormService.CurrentForm.AcknowledgementFinal;
     }
     
-    private int maxWords = 500;
-    private int currentWordCount = 0;
-    private string wordCountMessage = "";
-    private bool isOverLimit = false;
-
-    private void UpdateWordCount()
+    private void HandleValidSubmit()
     {
-        if (string.IsNullOrWhiteSpace(FormService.CurrentForm.AppealExplanation))
-        {
-            currentWordCount = 0;
-        }
-        else
-        {
-            // Count words by splitting on whitespace and filtering out empty entries
-            var words = FormService.CurrentForm.AppealExplanation
-                .Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-            currentWordCount = words.Length;
-        }
-
-        // Update word count message
-        isOverLimit = currentWordCount > maxWords;
+    // Save data back to the service before navigating
+        FormService.UpdateForm(form => {
+                                           form.Name = _localForm.Name;
+                                           form.StudentId = _localForm.StudentId;
+                                           form.Date = _localForm.Date;
+                                           form.Email = _localForm.Email;
+                                           form.Major = _localForm.Major;
+                                           form.AcknowledgementPayment = _localForm.AcknowledgementPayment;
+                                           form.AcknowledgementFinal = _localForm.AcknowledgementFinal;
+        });
         
-        wordCountMessage = isOverLimit ? $"Word count: {currentWordCount}/{maxWords} - Please limit your explanation to {maxWords} words." : $"Word count: {currentWordCount}/{maxWords}";
-        
-        StateHasChanged();
+    // Now navigate to the next page
+        Navigation.NavigateTo("/appeal/page2");
     }
 }
