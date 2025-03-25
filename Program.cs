@@ -103,6 +103,8 @@ builder.Services.AddScoped<AppealCardService>();
 builder.Services.Configure<HomePageOptions>(
     builder.Configuration.GetSection("HomePageOptions"));
 
+builder.Services.AddScoped<IAppealClosingDateService, JsonAppealClosingDateService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

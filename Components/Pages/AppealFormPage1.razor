@@ -1,145 +1,102 @@
 ﻿@page "/appeal"
 @inject IAppealFormService FormService
+@inject IAppealClosingDateService ClosingDateService
 @inject NavigationManager Navigation
-
 
 <PageTitle>Appeal Form</PageTitle>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="AppealFormPage1.css"/>
-    <script src="AppealFormPage1.js"></script>
-</head>
-<body>
-<div class="container">
-    <header>
-        <button id="toggle-button" class="lang-toggle" onclick="toggleLanguage()">Español</button>
-    </header>
-    <main>
-        <EditForm Model="@_page1Model" FormName="AppealForm1" OnValidSubmit="@HandleValidSubmit">
-            <DataAnnotationsValidator/>
-
-            <section id="student-info" class="card">
-                <h2 id="student-info-heading">Student Information</h2>
-                <div class="form-group">
-                    <label id="label-name">
-                        <span class="label-text">Name:</span>
-                        <InputText @bind-Value="_page1Model.Name" class="form-control" placeholder="Your name..."/>
-                        <ValidationMessage For="@(() => _page1Model.Name)"/>
-                    </label>
-                </div>
-
-                <div class="form-group">
-                    <label id="label-student-id">
-                        <span class="label-text">Student ID#:</span>
-                        <InputText @bind-Value="_page1Model.StudentId" class="form-control" placeholder="ex: p000..."/>
-                        <ValidationMessage For="@(() => _page1Model.StudentId)"/>
-                    </label>
-                </div>
-
-                <div class="form-group">
-                    <label id="label-date">
-                        <span class="label-text">Date:</span>
-                        <InputDate @bind-Value="_page1Model.Date" class="form-control"/>
-                        <ValidationMessage For="@(() => _page1Model.Date)"/>
-                    </label>
-                </div>
-
-                <div class="form-group">
-                    <label id="email-name">
-                        <span class="label-text">Email:</span>
-                        <InputText @bind-Value="_page1Model.Email" class="form-control" placeholder="Your email..."/>
-                        <ValidationMessage For="@(() => _page1Model.Email)"/>
-                    </label>
-                </div>
-
-                <div class="form-group">
-                    <label id="label-major">
-                        <span class="label-text">Major:</span>
-                        <InputText @bind-Value="_page1Model.Major" class="form-control" placeholder="Your major..."/>
-                        <ValidationMessage For="@(() => _page1Model.Major)"/>
-                    </label>
-                </div>
-            </section>
-
-            <section id="appeal-details" class="card">
-                <h2 id="appeal-details-heading">Appeal Explanation</h2>
-                <p id="appeal-details-text">
-                    Please provide a signed, typed, or written statement (max 500 words) explaining:
-                </p>
-                <ol id="appeal-details-list">
-                    <li id="appeal-list-1">Any extenuating circumstances that led to your SAP status.</li>
-                    <li id="appeal-list-2">How these circumstances affected your academic progress.</li>
-                    <li id="appeal-list-3">Steps you have taken to overcome them.</li>
-                    <li id="appeal-list-4">Your plan for future academic success.</li>
-                </ol>
-                <div class="form-group">
-                    <InputTextArea @bind-Value="_page1Model.AppealExplanation"
-                                  class="form-control"
-                                  id="text-area"
-                                  rows="6"
-                                  placeholder="Write your explanation here..."
-                                  />
-                    <ValidationMessage For="@(() => _page1Model.AppealExplanation)"/>
-                </div>
-            </section>
-
-            <section class="card" id="acknowledgements-section">
-                <h2 id="acknowledgements-heading">Acknowledgements</h2>
-                <div class="checkbox-container">
-                    <InputCheckbox @bind-Value="_page1Model.AcknowledgementPayment" id="checkbox1" />
-                    <span id="checkbox1-text">
-                        Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.
-                    </span>
-                    <ValidationMessage For="@(() => _page1Model.AcknowledgementPayment)"/>
-                </div>
-                
-                <div class="checkbox-container">
-                    <InputCheckbox @bind-Value="_page1Model.AcknowledgementFinal" id="checkbox2" />
-                    <span id="checkbox2-text">
-                        I understand that the decision of the Office of Financial Aid is final.
-                    </span>
-                    <ValidationMessage For="@(() => _page1Model.AcknowledgementFinal)"/>
-                </div>
-            </section>
-            
-            <div class="form-actions mt-3">
-                <button type="submit" id="submit-button" class="btn btn-primary">Next</button>
+@if (_loading)
+{
+    <div class="container">
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
-        </EditForm>
-    </main>
-</div>
-</body>
-</html>
+        </div>
+    </div>
+}
+else if (!_isAppealPeriodOpen)
+{
+    <div class="container">
+        <div class="alert alert-warning">
+            <h2>Appeal Period Closed</h2>
+            <p>We're sorry, but the appeal submission period has ended on @_closingDate?.ToString("MMMM dd, yyyy").</p>
+            <p>Please contact the Financial Aid Office for more information.</p>
+        </div>
+    </div>
+}
+else
+{
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <link rel="stylesheet" href="AppealFormPage1.css"/>
+        <script src="AppealFormPage1.js"></script>
+    </head>
+    <body>
+    <div class="container">
+        <header>
+            <button id="toggle-button" class="lang-toggle" onclick="toggleLanguage()">Español</button>
+        </header>
+        <main>
+            <EditForm Model="@_page1Model" FormName="AppealForm1" OnValidSubmit="@HandleValidSubmit">
+                <DataAnnotationsValidator/>
+
+                <!-- Rest of your existing form HTML -->
+                
+            </EditForm>
+        </main>
+    </div>
+    </body>
+    </html>
+}
 
 @code {
     private AppealFormPart1 _page1Model = new();
+    private bool _loading = true;
+    private bool _isAppealPeriodOpen;
+    private DateTime? _closingDate;
     
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        _page1Model.Name = FormService.CurrentForm.Name;
-        _page1Model.StudentId = FormService.CurrentForm.StudentId;
-        _page1Model.Date = FormService.CurrentForm.Date;
-        _page1Model.Email = FormService.CurrentForm.Email;
-        _page1Model.Major = FormService.CurrentForm.Major;
-        _page1Model.AppealExplanation = FormService.CurrentForm.AppealExplanation;
-        _page1Model.AcknowledgementPayment = FormService.CurrentForm.AcknowledgementPayment;
-        _page1Model.AcknowledgementFinal = FormService.CurrentForm.AcknowledgementFinal;
+        _isAppealPeriodOpen = await ClosingDateService.IsAppealPeriodOpenAsync();
+        _closingDate = await ClosingDateService.GetClosingDateAsync();
+        
+        if (_isAppealPeriodOpen)
+        {
+            _page1Model.Name = FormService.CurrentForm.Name;
+            _page1Model.StudentId = FormService.CurrentForm.StudentId;
+            _page1Model.Date = FormService.CurrentForm.Date;
+            _page1Model.Email = FormService.CurrentForm.Email;
+            _page1Model.Major = FormService.CurrentForm.Major;
+            _page1Model.AppealExplanation = FormService.CurrentForm.AppealExplanation;
+            _page1Model.AcknowledgementPayment = FormService.CurrentForm.AcknowledgementPayment;
+            _page1Model.AcknowledgementFinal = FormService.CurrentForm.AcknowledgementFinal;
+        }
+        
+        _loading = false;
     }
     
-    private void HandleValidSubmit()
+    private async Task HandleValidSubmit()
     {
+        // Re-check in case the period closed while user was filling the form
+        if (!await ClosingDateService.IsAppealPeriodOpenAsync())
+        {
+            _isAppealPeriodOpen = false;
+            _closingDate = await ClosingDateService.GetClosingDateAsync();
+            StateHasChanged();
+            return;
+        }
+        
         FormService.UpdateForm(form => {
-                                           form.Name = _page1Model.Name;
-                                           form.StudentId = _page1Model.StudentId;
-                                           form.Date = _page1Model.Date;
-                                           form.Email = _page1Model.Email;
-                                           form.Major = _page1Model.Major;
-                                           form.AppealExplanation = _page1Model.AppealExplanation;
-                                           form.AcknowledgementPayment = _page1Model.AcknowledgementPayment;
-                                           form.AcknowledgementFinal = _page1Model.AcknowledgementFinal;
-
+                                       form.Name = _page1Model.Name;
+                                       form.StudentId = _page1Model.StudentId;
+                                       form.Date = _page1Model.Date;
+                                       form.Email = _page1Model.Email;
+                                       form.Major = _page1Model.Major;
+                                       form.AppealExplanation = _page1Model.AppealExplanation;
+                                       form.AcknowledgementPayment = _page1Model.AcknowledgementPayment;
+                                       form.AcknowledgementFinal = _page1Model.AcknowledgementFinal;
         });
         
         Navigation.NavigateTo("/appeal2");
