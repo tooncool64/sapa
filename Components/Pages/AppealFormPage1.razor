@@ -74,34 +74,37 @@
                     <li id = "appeal-list-3">Steps you have taken to overcome them.</li>
                     <li id = "appeal-list-4">Your plan for future academic success.</li>
                 </ol>
-                <div class="form-group">
-                    <InputTextArea @bind-Value="FormService.CurrentForm.AppealExplanation"
-                                   class="form-control"
-                                   id="text-area"
-                                   rows="6"
-                                   placeholder="Write your explanation here..."
-                                   onkeyup="wordLimit()"/>
-                    <ValidationMessage For="@(() => FormService.CurrentForm.AppealExplanation)"/>
-                </div>
+               <div class="form-group">
+                                   <InputTextArea @bind-Value="FormService.CurrentForm.AppealExplanation"
+                                                  class="form-control"
+                                                  id="text-area"
+                                                  rows="6"
+                                                  placeholder="Write your explanation here..."
+                                                  @onkeyup="UpdateWordCount"/>
+                                   <div class="word-count @(isOverLimit ? "text-danger" : "text-muted")">
+                                       @wordCountMessage
+                                   </div>
+                                   <ValidationMessage For="@(() => FormService.CurrentForm.AppealExplanation)"/>
+                   </div>
             </section>
 
-            <section class="card" id="acknowledgements-section">
+ <section class="card" id="acknowledgements-section">
                 <h2 id="acknowledgements-heading">Acknowledgements</h2>
                 <div class="checkbox-container">
-                    <input type="checkbox" id="checkbox1" required onchange="checkFormValidity()">
+                    <InputCheckbox @bind-Value="FormService.CurrentForm.AcknowledgementPayment" id="checkbox1" />
                     <span id="checkbox1-text">
                         Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.
                     </span>
                 </div>
                 
                 <div class="checkbox-container">
-                    <input type="checkbox" id="checkbox2" required onchange="checkFormValidity()">
+                    <InputCheckbox @bind-Value="FormService.CurrentForm.AcknowledgementFinal" id="checkbox2" />
                     <span id="checkbox2-text">
                         I understand that the decision of the Office of Financial Aid is final.
                     </span>
                 </div>
             </section>
-
+            
             <div class="form-actions mt-3">
                 <button type="submit" id="submit-button" class="btn btn-primary">Next</button>
             </div>
@@ -117,7 +120,41 @@
 @code {
     private void HandleValidSubmit()
     {
-    // Navigate to the next page
-        Navigation.NavigateTo("/appeal2");
+        // Check if the explanation is over the word limit
+        UpdateWordCount();
+        
+        if (!isOverLimit)
+        {
+            // Only navigate if the word count is within the limit
+            Navigation.NavigateTo("/appeal2");
+        }
+        // If over limit, the form won't submit due to the error message being displayed
+    }
+    
+    private int maxWords = 500;
+    private int currentWordCount = 0;
+    private string wordCountMessage = "";
+    private bool isOverLimit = false;
+
+    private void UpdateWordCount()
+    {
+        if (string.IsNullOrWhiteSpace(FormService.CurrentForm.AppealExplanation))
+        {
+            currentWordCount = 0;
+        }
+        else
+        {
+            // Count words by splitting on whitespace and filtering out empty entries
+            var words = FormService.CurrentForm.AppealExplanation
+                .Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            currentWordCount = words.Length;
+        }
+
+        // Update word count message
+        isOverLimit = currentWordCount > maxWords;
+        
+        wordCountMessage = isOverLimit ? $"Word count: {currentWordCount}/{maxWords} - Please limit your explanation to {maxWords} words." : $"Word count: {currentWordCount}/{maxWords}";
+        
+        StateHasChanged();
     }
 }
