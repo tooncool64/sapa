@@ -45,10 +45,10 @@ public class AppealForm
     [Required(ErrorMessage = "At least one course is required per semester")]
     public List<SemesterCourse> Semester2Courses { get; set; } = new();
     
-    [Required(ErrorMessage = "You must acknowledge this statement")]
+    //[Required(ErrorMessage = "You must acknowledge this statement")]
     [Range(typeof(bool), "true", "true", ErrorMessage = "You must acknowledge this statement")]
     public bool AcknowledgementPayment { get; set; }
-    [Required(ErrorMessage = "You must acknowledge this statement")]
+    //[Required(ErrorMessage = "You must acknowledge this statement")]
     [Range(typeof(bool), "true", "true", ErrorMessage = "You must acknowledge this statement")]
     public bool AcknowledgementFinal { get; set; }
 }
