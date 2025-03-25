@@ -1,9 +1,5 @@
 ﻿@page "/admin"
-@using Microsoft.AspNetCore.Authorization
 @inject NavigationManager NavManager
-@using Microsoft.EntityFrameworkCore
-@using System.Linq
-@inject CosmosContext CosmosDb
 
 <!--- Remove below before user tests --->
 @attribute [Authorize(Roles = "Admin")]

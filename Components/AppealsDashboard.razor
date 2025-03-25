@@ -81,7 +81,7 @@ else
 
 @code {
     [Inject]
-    private CosmosContext CosmosDb { get; set; }
+    private IDbContextFactory<CosmosContext> ContextFactory { get; set; }
 
     [Parameter]
     public EventCallback<string> OnAppealSelected { get; set; }
@@ -102,7 +102,9 @@ else
         try
         {
             loading = true;
-            appeals = await CosmosDb.Appeals.ToListAsync();
+            // Create a new context instance
+            using var context = await ContextFactory.CreateDbContextAsync();
+            appeals = await context.Appeals.ToListAsync();
             ApplyFilters();
         }
         catch (Exception ex)
