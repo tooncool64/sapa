@@ -125,7 +125,7 @@ public class AppealFormService : IAppealFormService
         // Notify listeners that the form has changed
         OnFormChanged?.Invoke();
     }
-    public async Task<bool> UpdateStatusAsync(int id, string newStatus)
+    public async Task<bool> UpdateStatusAsync(string id, string newStatus)
     {
         var appeal = await _dbContext.Appeals.FindAsync(id);
         if (appeal == null) return false;
