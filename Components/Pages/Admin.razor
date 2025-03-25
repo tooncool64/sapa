@@ -261,11 +261,11 @@
     <div class="container">
         <nav class="sidebar">
             <ul>
-                <li class="active"><a href="#" onclick="showSection('dashboard')">Dashboard</a></li>
-                <li><a href="#" onclick="showSection('appeals')">Appeals</a></li>
-                <li><a href="#" onclick="showSection('statusUpdate')">Update Appeal Status</a></li>
-                <li><a href="#" onclick="showSection('statusUpdate')">Update Homepage</a></li>
-                <li><a href="#" onclick="showSection('statusUpdate')">Options</a></li>
+                <li class="active"><a href="#" onclick="event.preventDefault(); showSection('dashboard')">Dashboard</a></li>
+                <li><a href="#" onclick="event.preventDefault(); showSection('appeals')">Appeals</a></li>
+                <li><a href="#" onclick="event.preventDefault(); showSection('statusUpdate')">Update Appeal Status</a></li>
+                <li><a href="#" onclick="event.preventDefault(); showSection('statusUpdate')">Update Homepage</a></li>
+                <li><a href="#" onclick="event.preventDefault(); showSection('statusUpdate')">Options</a></li>
             </ul>
         </nav>
         <main class="main-content">
@@ -291,7 +291,7 @@
             <label for="filterStatus"><strong>Filter by Status:</strong></label>
             <select id="filterStatus" onchange="filterAppealsByStatus()">
                 <option value="All">All</option>
-                <option value="Pending">Open</option>
+                <option value="Pending">Pending</option>
                 <option value="Closed">Closed</option>
             </select>
 
@@ -304,20 +304,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-status="Pending">
+                        <tr data-status="Pending" data-id="0">
                             <td>Appeal 1</td>
                             <td>0</td>
                             <td>
                                 <span class="status-label">Pending</span>
                                 <button onclick="toggleAppealStatus(this)" class="close-btn">Close</button>
-                            </td>
-                        </tr>
-                        <tr data-status="Closed">
-                            <td>Appeal 2</td>
-                            <td>1</td>
-                            <td>
-                                <span class="status-label" style="color:red;">Closed</span>
-                                <button class="close-btn" disabled>Closed</button>
                             </td>
                         </tr>
                     </tbody>
@@ -389,29 +381,42 @@
             });
         }
 
-        // collapse thead appeal
-        function toggleAppealStatus(button) {
+        // toggle appeal
+        async function toggleAppealStatus(button) {
             const row = button.closest("tr");
             const statusSpan = row.querySelector(".status-label");
             const currentStatus = row.getAttribute("data-status");
+            const appealId = row.getAttribute("data-id");
 
-            if (currentStatus === "Pending") {
-                // Close the appeal
-                statusSpan.innerText = "Closed";
-                statusSpan.style.color = "red";
-                button.innerText = "Reopen";
-                row.setAttribute("data-status", "Closed");
-            } else {
-                // Reopen the appeal
-                statusSpan.innerText = "Pending";
-                statusSpan.style.color = "black";
-                button.innerText = "Close";
-                row.setAttribute("data-status", "Pending");
+            const newStatus = currentStatus === "Pending" ? "Closed" : "Pending";
+
+            // Update UI 
+            statusSpan.innerText = newStatus;
+            statusSpan.style.color = newStatus === "Closed" ? "red" : "black";
+            button.innerText = newStatus === "Closed" ? "Reopen" : "Close";
+            button.classList.toggle("reopen-btn", newStatus === "Closed");
+            row.setAttribute("data-status", newStatus);
+
+            // Send to backend
+            try {
+                const response = await fetch(`/api/appeal/${appealId}/status`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to update appeal status");
+                }
+            } catch (err) {
+                alert("Error saving status. Try again.");
+                console.error(err);
             }
 
-            filterAppealsByStatus(); // Keep filtering active
+            filterAppealsByStatus(); // Optional: refresh the filtered view
         }
-
     //filter by open or close
     function filterAppealsByStatus() {
         const selected = document.getElementById("filterStatus").value;

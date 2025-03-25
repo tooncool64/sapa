@@ -4,7 +4,7 @@ namespace BlazorApp;
 
 public class AppealForm
 {
-    public int Id { get; set; }
+    public string Id { get; set; }
     [Required(ErrorMessage = "Name is required")]
     public string Name { get; set; } = string.Empty;
 
@@ -51,6 +51,8 @@ public class AppealForm
     //[Required(ErrorMessage = "You must acknowledge this statement")]
     [Range(typeof(bool), "true", "true", ErrorMessage = "You must acknowledge this statement")]
     public bool AcknowledgementFinal { get; set; }
+    // open or close
+    public string Status { get; set; } = "Pending"; // default for students
 }
 
 public class SemesterCourse
