@@ -216,5 +216,7 @@
     // Log the exception
             Console.WriteLine($"Error loading appeal counts: {ex.Message}");
         }
+
+        await CosmosDb.SaveChangesAsync();
     }
 }
