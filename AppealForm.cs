@@ -1,7 +1,10 @@
-﻿namespace BlazorApp;
+﻿using Newtonsoft.Json;
+
+namespace BlazorApp;
 
 public class AppealForm
 {
+    [JsonProperty(PropertyName = "id")]
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = string.Empty;
     public string StudentId { get; set; } = string.Empty;
@@ -24,6 +27,7 @@ public class AppealForm
 
 public class CourseBase
 {
+    [JsonProperty(PropertyName = "id")]
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string CourseName { get; set; } = string.Empty;
     public string CourseNumber { get; set; } = string.Empty;
