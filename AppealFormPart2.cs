@@ -7,23 +7,23 @@ public class AppealFormPart2
     [Required(ErrorMessage = "Degree Program is required")]
     public string DegreeProgram { get; set; } = string.Empty;
 
-    //[Required(ErrorMessage = "Graduation Date is required")]
+    [Required(ErrorMessage = "Graduation Date is required")]
     public DateTime? GradDate { get; set; }
 
-    // [Required(ErrorMessage = "GPA is required")]
+    [Required(ErrorMessage = "GPA is required")]
     [Range(0, 4.0, ErrorMessage = "GPA must be between 0 and 4.0")]
     public decimal GPA { get; set; }
 
-    //[Required(ErrorMessage = "Cumulative Degree Hours is required")]
+    [Required(ErrorMessage = "Cumulative Degree Hours is required")]
     [Range(0, 200, ErrorMessage = "Degree hours must be between 0 and 200")]
     public int DegreeHours { get; set; }
 
     public bool ChangeMajor { get; set; } = false;
 
-    // [Required(ErrorMessage = "At least one course is required per semester")]
+    [Required(ErrorMessage = "At least one course is required per semester")]
     public List<SemesterCourseValid> Semester1Courses { get; set; } = new();
 
-    //[Required(ErrorMessage = "At least one course is required per semester")]
+    [Required(ErrorMessage = "At least one course is required per semester")]
     public List<SemesterCourseValid> Semester2Courses { get; set; } = new();
 }
 
