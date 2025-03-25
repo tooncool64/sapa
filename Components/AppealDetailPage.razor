@@ -5,284 +5,427 @@
 @inject NavigationManager NavManager
 @attribute [Authorize(Roles = "Admin")]
 
-<div class="mb-3">
-    <button class="btn btn-secondary" @onclick="GoBack">
-        <i class="oi oi-arrow-left"></i> Back to Appeals List
-    </button>
-</div>
+<div class="container-fluid p-4">
+    <div class="d-flex align-items-center mb-4">
+        <button class="btn btn-outline-secondary rounded-pill shadow-sm me-3" @onclick="GoBack">
+            <i class="oi oi-arrow-left me-1"></i> Back
+        </button>
+        <h2 class="mb-0 flex-grow-1">Appeal Management</h2>
+    </div>
 
-@if (loading)
-{
-    <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-}
-else if (appeal == null)
-{
-    <div class="alert alert-danger">
-        Appeal not found or has been removed.
-    </div>
-}
-else
-{
-    <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h2>Appeal Details</h2>
-            <div>
-                <span class="badge @GetStatusBadgeClass(appeal.Status) me-2">@appeal.Status</span>
+    @if (loading)
+    {
+        <div class="d-flex justify-content-center my-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
         </div>
-        <div class="card-body">
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <h3>Student Information</h3>
-                    <table class="table table-borderless">
-                        <tbody>
-                            <tr>
-                                <th style="width: 30%">Name:</th>
-                                <td>@appeal.Name</td>
-                            </tr>
-                            <tr>
-                                <th>Student ID:</th>
-                                <td>@appeal.StudentId</td>
-                            </tr>
-                            <tr>
-                                <th>Email:</th>
-                                <td>@appeal.Email</td>
-                            </tr>
-                            <tr>
-                                <th>Date Submitted:</th>
-                                <td>@(appeal.Date?.ToShortDateString() ?? "Not specified")</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-md-6">
-                    <h3>Academic Information</h3>
-                    <table class="table table-borderless">
-                        <tbody>
-                            <tr>
-                                <th style="width: 30%">Major:</th>
-                                <td>@appeal.Major</td>
-                            </tr>
-                            <tr>
-                                <th>Degree Program:</th>
-                                <td>@appeal.DegreeProgram</td>
-                            </tr>
-                            <tr>
-                                <th>GPA:</th>
-                                <td>@appeal.GPA.ToString("0.00")</td>
-                            </tr>
-                            <tr>
-                                <th>Degree Hours:</th>
-                                <td>@appeal.DegreeHours</td>
-                            </tr>
-                            <tr>
-                                <th>Graduation Date:</th>
-                                <td>@(appeal.GradDate?.ToShortDateString() ?? "Not specified")</td>
-                            </tr>
-                            <tr>
-                                <th>Change Major:</th>
-                                <td>@(appeal.ChangeMajor ? "Yes" : "No")</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="mb-4">
-                <h3>Appeal Explanation</h3>
-                <div class="card">
+    }
+    else if (appeal == null)
+    {
+        <div class="alert alert-danger shadow-sm rounded-3">
+            <i class="oi oi-warning me-2"></i> Appeal not found or has been removed.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <!-- Left column -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm rounded-3 mb-4 border-0">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                        <h3 class="mb-0 fs-4">Appeal Details</h3>
+                        <span class="badge @GetStatusBadgeClass(appeal.Status) rounded-pill px-3 py-2">@appeal.Status</span>
+                    </div>
                     <div class="card-body">
-                        <pre style="white-space: pre-wrap;">@appeal.AppealExplanation</pre>
-                    </div>
-                </div>
-            </div>
+                        <div class="row g-4">
+                            <!-- Student Info Card -->
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 bg-light rounded-3">
+                                    <div class="card-body">
+                                        <h4 class="fs-5 mb-3 d-flex align-items-center">
+                                            <i class="oi oi-person me-2 text-primary"></i> Student Information
+                                        </h4>
+                                        <div class="mb-3">
+                                            <label class="text-muted small mb-1">Name</label>
+                                            <p class="fw-medium mb-2">@appeal.Name</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="text-muted small mb-1">Student ID</label>
+                                            <p class="fw-medium mb-2">@appeal.StudentId</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="text-muted small mb-1">Email</label>
+                                            <p class="fw-medium mb-2">@appeal.Email</p>
+                                        </div>
+                                        <div>
+                                            <label class="text-muted small mb-1">Date Submitted</label>
+                                            <p class="fw-medium mb-0">@(appeal.Date?.ToShortDateString() ?? "Not specified")</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <h3>Semester 1 Courses</h3>
-                    @if (appeal.Semester1Courses.Count == 0)
-                    {
-                        <p>No courses added for Semester 1.</p>
-                    }
-                    else
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Course Name</th>
-                                        <th>Course #</th>
-                                        <th>Hours</th>
-                                        <th>Repeat</th>
-                                        <th>Required</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var course in appeal.Semester1Courses)
-                                    {
-                                        <tr>
-                                            <td>@course.CourseName</td>
-                                            <td>@course.CourseNumber</td>
-                                            <td>@course.CreditHours</td>
-                                            <td>@(course.IsRepeat ? "Yes" : "No")</td>
-                                            <td>@(course.IsRequiredForMajor ? "Yes" : "No")</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
-                </div>
-                <div class="col-md-6">
-                    <h3>Semester 2 Courses</h3>
-                    @if (appeal.Semester2Courses.Count == 0)
-                    {
-                        <p>No courses added for Semester 2.</p>
-                    }
-                    else
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Course Name</th>
-                                        <th>Course #</th>
-                                        <th>Hours</th>
-                                        <th>Repeat</th>
-                                        <th>Required</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var course in appeal.Semester2Courses)
-                                    {
-                                        <tr>
-                                            <td>@course.CourseName</td>
-                                            <td>@course.CourseNumber</td>
-                                            <td>@course.CreditHours</td>
-                                            <td>@(course.IsRepeat ? "Yes" : "No")</td>
-                                            <td>@(course.IsRequiredForMajor ? "Yes" : "No")</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
-                </div>
-            </div>
-
-            <div class="mb-4">
-                <h3>Acknowledgements</h3>
-                <table class="table table-borderless">
-                    <tbody>
-                        <tr>
-                            <th style="width: 50%">Payment Acknowledgement:</th>
-                            <td>@(appeal.AcknowledgementPayment ? "Acknowledged" : "Not Acknowledged")</td>
-                        </tr>
-                        <tr>
-                            <th>Final Acknowledgement:</th>
-                            <td>@(appeal.AcknowledgementFinal ? "Acknowledged" : "Not Acknowledged")</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Status Update Section -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h3>Update Appeal Status</h3>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label for="statusSelect" class="form-label">Appeal Status</label>
-                        <select id="statusSelect" class="form-select" @bind="newStatus">
-                            <option value="Pending">Pending</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Rejected">Rejected</option>
-                            <option value="More Information Needed">More Information Needed</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="statusComment" class="form-label">Status Comment</label>
-                        <textarea id="statusComment" class="form-control" rows="3" @bind="newComment" placeholder="Add a comment about this status change"></textarea>
-                    </div>
-                    <button class="btn btn-primary" @onclick="UpdateAppealStatus" disabled="@(isSaving)">
-                        @if (isSaving)
-                        {
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            <span>Saving...</span>
-                        }
-                        else
-                        {
-                            <span>Update Status</span>
-                        }
-                    </button>
-                </div>
-            </div>
-
-            <!-- Add General Comment Section -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h3>Add Comment</h3>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label for="generalComment" class="form-label">Comment</label>
-                        <textarea id="generalComment" class="form-control" rows="3" @bind="newGeneralComment" placeholder="Add a general comment about this appeal"></textarea>
-                    </div>
-                    <button class="btn btn-secondary" @onclick="AddGeneralComment" disabled="@(isSaving)">
-                        @if (isSaving)
-                        {
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            <span>Saving...</span>
-                        }
-                        else
-                        {
-                            <span>Add Comment</span>
-                        }
-                    </button>
-                </div>
-            </div>
-
-            <!-- Comments Section -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h3>Appeal Comments</h3>
-                </div>
-                <div class="card-body">
-                    @if (appeal.Comments == null || appeal.Comments.Count == 0)
-                    {
-                        <p>No comments have been added to this appeal.</p>
-                    }
-                    else
-                    {
-                        <div class="list-group">
-                            @foreach (var comment in appeal.Comments.OrderByDescending(c => c.Timestamp))
-                            {
-                                <div class="list-group-item list-group-item-action">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        @if (!string.IsNullOrEmpty(comment.Status))
+                            <!-- Academic Info Card -->
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 bg-light rounded-3">
+                                    <div class="card-body">
+                                        <h4 class="fs-5 mb-3 d-flex align-items-center">
+                                            <i class="oi oi-book me-2 text-primary"></i> Academic Information
+                                        </h4>
+                                        <div class="row">
+                                            <div class="col-6 mb-3">
+                                                <label class="text-muted small mb-1">Major</label>
+                                                <p class="fw-medium mb-0">@appeal.Major</p>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <label class="text-muted small mb-1">Degree Program</label>
+                                                <p class="fw-medium mb-0">@appeal.DegreeProgram</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 mb-3">
+                                                <label class="text-muted small mb-1">GPA</label>
+                                                <p class="fw-medium mb-0">@appeal.GPA.ToString("0.00")</p>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <label class="text-muted small mb-1">Degree Hours</label>
+                                                <p class="fw-medium mb-0">@appeal.DegreeHours</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 mb-3">
+                                                <label class="text-muted small mb-1">Graduation Date</label>
+                                                <p class="fw-medium mb-0">@(appeal.GradDate?.ToShortDateString() ?? "Not specified")</p>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <label class="text-muted small mb-1">Change Major</label>
+                                                <p class="fw-medium mb-0">@(appeal.ChangeMajor ? "Yes" : "No")</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Explanation Card -->
+                            <div class="col-12">
+                                <div class="card border-0 bg-light rounded-3">
+                                    <div class="card-body">
+                                        <h4 class="fs-5 mb-3 d-flex align-items-center">
+                                            <i class="oi oi-document me-2 text-primary"></i> Appeal Explanation
+                                        </h4>
+                                        <div class="bg-white p-3 rounded-3">
+                                            <p class="mb-0" style="white-space: pre-wrap;">@appeal.AppealExplanation</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Courses Section -->
+                            <div class="col-md-6">
+                                <div class="card border-0 bg-light rounded-3 h-100">
+                                    <div class="card-body">
+                                        <h4 class="fs-5 mb-3 d-flex align-items-center">
+                                            <i class="oi oi-list me-2 text-primary"></i> Semester 1 Courses
+                                        </h4>
+                                        @if (appeal.Semester1Courses.Count == 0)
                                         {
-                                            <h5 class="mb-1">Status: <span class="badge @GetStatusBadgeClass(comment.Status)">@comment.Status</span></h5>
+                                            <div class="alert alert-light mb-0">No courses added for Semester 1.</div>
                                         }
                                         else
                                         {
-                                            <h5 class="mb-1">General Comment</h5>
+                                            <div class="table-responsive">
+                                                <table class="table table-sm table-hover bg-white rounded-3 overflow-hidden">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Course</th>
+                                                            <th>Number</th>
+                                                            <th>Hours</th>
+                                                            <th class="text-center">Repeat</th>
+                                                            <th class="text-center">Required</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var course in appeal.Semester1Courses)
+                                                        {
+                                                            <tr>
+                                                                <td>@course.CourseName</td>
+                                                                <td>@course.CourseNumber</td>
+                                                                <td>@course.CreditHours</td>
+                                                                <td class="text-center">
+                                                                    @if (course.IsRepeat)
+                                                                    {
+                                                                        <i class="oi oi-check text-success"></i>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i class="oi oi-x text-danger"></i>
+                                                                    }
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    @if (course.IsRequiredForMajor)
+                                                                    {
+                                                                        <i class="oi oi-check text-success"></i>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i class="oi oi-x text-danger"></i>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         }
-                                        <small>@comment.Timestamp.ToLocalTime().ToString("MMM dd, yyyy h:mm tt")</small>
                                     </div>
-                                    <p class="mb-1">@comment.Text</p>
-                                    <small>By: @comment.AdminName</small>
                                 </div>
-                            }
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card border-0 bg-light rounded-3 h-100">
+                                    <div class="card-body">
+                                        <h4 class="fs-5 mb-3 d-flex align-items-center">
+                                            <i class="oi oi-list me-2 text-primary"></i> Semester 2 Courses
+                                        </h4>
+                                        @if (appeal.Semester2Courses.Count == 0)
+                                        {
+                                            <div class="alert alert-light mb-0">No courses added for Semester 2.</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="table-responsive">
+                                                <table class="table table-sm table-hover bg-white rounded-3 overflow-hidden">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Course</th>
+                                                            <th>Number</th>
+                                                            <th>Hours</th>
+                                                            <th class="text-center">Repeat</th>
+                                                            <th class="text-center">Required</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var course in appeal.Semester2Courses)
+                                                        {
+                                                            <tr>
+                                                                <td>@course.CourseName</td>
+                                                                <td>@course.CourseNumber</td>
+                                                                <td>@course.CreditHours</td>
+                                                                <td class="text-center">
+                                                                    @if (course.IsRepeat)
+                                                                    {
+                                                                        <i class="oi oi-check text-success"></i>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i class="oi oi-x text-danger"></i>
+                                                                    }
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    @if (course.IsRequiredForMajor)
+                                                                    {
+                                                                        <i class="oi oi-check text-success"></i>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i class="oi oi-x text-danger"></i>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Acknowledgements Card -->
+                            <div class="col-12">
+                                <div class="card border-0 bg-light rounded-3">
+                                    <div class="card-body">
+                                        <h4 class="fs-5 mb-3 d-flex align-items-center">
+                                            <i class="oi oi-check me-2 text-primary"></i> Acknowledgements
+                                        </h4>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="d-flex align-items-center p-3 bg-white rounded-3 mb-3 mb-md-0">
+                                                    <div class="me-3">
+                                                        @if (appeal.AcknowledgementPayment)
+                                                        {
+                                                            <span class="badge bg-success rounded-circle p-2">
+                                                                <i class="oi oi-check"></i>
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-danger rounded-circle p-2">
+                                                                <i class="oi oi-x"></i>
+                                                            </span>
+                                                        }
+                                                    </div>
+                                                    <div>
+                                                        <h5 class="mb-0 fs-6">Payment Acknowledgement</h5>
+                                                        <small class="text-muted">@(appeal.AcknowledgementPayment ? "Acknowledged" : "Not Acknowledged")</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="d-flex align-items-center p-3 bg-white rounded-3">
+                                                    <div class="me-3">
+                                                        @if (appeal.AcknowledgementFinal)
+                                                        {
+                                                            <span class="badge bg-success rounded-circle p-2">
+                                                                <i class="oi oi-check"></i>
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-danger rounded-circle p-2">
+                                                                <i class="oi oi-x"></i>
+                                                            </span>
+                                                        }
+                                                    </div>
+                                                    <div>
+                                                        <h5 class="mb-0 fs-6">Final Acknowledgement</h5>
+                                                        <small class="text-muted">@(appeal.AcknowledgementFinal ? "Acknowledged" : "Not Acknowledged")</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    }
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right column - Admin Actions -->
+            <div class="col-lg-4">
+                <!-- Status Update Card -->
+                <div class="card shadow-sm rounded-3 mb-4 border-0">
+                    <div class="card-header bg-white py-3">
+                        <h4 class="mb-0 fs-5">Update Status</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="statusSelect" class="form-label small text-muted">Appeal Status</label>
+                            <select id="statusSelect" class="form-select rounded-pill" @bind="newStatus">
+                                <option value="Pending">Pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Rejected">Rejected</option>
+                                <option value="More Information Needed">More Information Needed</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="statusComment" class="form-label small text-muted">Status Comment</label>
+                            <textarea id="statusComment" class="form-control rounded-3" rows="3" @bind="newComment" placeholder="Add a comment about this status change"></textarea>
+                        </div>
+                        <button class="btn btn-primary rounded-pill w-100" @onclick="UpdateAppealStatus" disabled="@(isSaving)">
+                            @if (isSaving)
+                            {
+                                <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                                <span>Saving...</span>
+                            }
+                            else
+                            {
+                                <i class="oi oi-pencil me-1"></i> <span>Update Status</span>
+                            }
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Add Comment Card -->
+                <div class="card shadow-sm rounded-3 mb-4 border-0">
+                    <div class="card-header bg-white py-3">
+                        <h4 class="mb-0 fs-5">Add Comment</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="generalComment" class="form-label small text-muted">Comment</label>
+                            <textarea id="generalComment" class="form-control rounded-3" rows="3" @bind="newGeneralComment" placeholder="Add a general comment about this appeal"></textarea>
+                        </div>
+                        <button class="btn btn-outline-primary rounded-pill w-100" @onclick="AddGeneralComment" disabled="@(isSaving)">
+                            @if (isSaving)
+                            {
+                                <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                                <span>Saving...</span>
+                            }
+                            else
+                            {
+                                <i class="oi oi-comment-square me-1"></i> <span>Add Comment</span>
+                            }
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Comments Timeline Card -->
+                <div class="card shadow-sm rounded-3 mb-4 border-0">
+                    <div class="card-header bg-white py-3">
+                        <h4 class="mb-0 fs-5">Comments Timeline</h4>
+                    </div>
+                    <div class="card-body px-0 py-0">
+                        @if (appeal.Comments == null || appeal.Comments.Count == 0)
+                        {
+                            <div class="p-4 text-center text-muted">
+                                <i class="oi oi-comment-square d-block mb-2" style="font-size: 24px;"></i>
+                                <p class="mb-0">No comments have been added to this appeal.</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="timeline p-3">
+                                @foreach (var comment in appeal.Comments.OrderByDescending(c => c.Timestamp))
+                                {
+                                    <div class="timeline-item mb-4">
+                                        <div class="timeline-item-header d-flex align-items-center mb-2">
+                                            <div class="timeline-icon me-2">
+                                                @if (!string.IsNullOrEmpty(comment.Status))
+                                                {
+                                                    <span class="badge @GetStatusBadgeClass(comment.Status) rounded-circle p-2">
+                                                        <i class="oi oi-pencil"></i>
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary rounded-circle p-2">
+                                                        <i class="oi oi-comment-square"></i>
+                                                    </span>
+                                                }
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <h5 class="mb-0 fs-6">
+                                                    @if (!string.IsNullOrEmpty(comment.Status))
+                                                    {
+                                                        <span>Status: <span class="badge @GetStatusBadgeClass(comment.Status) rounded-pill">@comment.Status</span></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>General Comment</span>
+                                                    }
+                                                </h5>
+                                                <small class="text-muted">@comment.Timestamp.ToLocalTime().ToString("MMM dd, yyyy h:mm tt")</small>
+                                            </div>
+                                        </div>
+                                        <div class="timeline-item-body ms-4 ps-2 border-start border-light">
+                                            <div class="p-3 bg-light rounded-3">
+                                                <p class="mb-2">@comment.Text</p>
+                                                <small class="text-muted">By: @comment.AdminName</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-}
+    }
+</div>
 
 @code {
     [Parameter]
@@ -293,7 +436,7 @@ else
     private bool isSaving = false;
     private string newStatus = "";
     private string newComment = "";
-    private string newGeneralComment = ""; // Added for general comments
+    private string newGeneralComment = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -315,10 +458,8 @@ else
         try
         {
             loading = true;
-            // Create a context instance using the factory
             await using var context = await ContextFactory.CreateDbContextAsync();
             
-            // With Cosmos DB, we don't need to use Include() as nested entities are part of the document
             appeal = await context.Appeals
                 .FirstOrDefaultAsync(a => a.Id == AppealId);
 
@@ -329,7 +470,6 @@ else
         }
         catch (Exception ex)
         {
-            // Log the exception
             Console.WriteLine($"Error loading appeal details: {ex.Message}");
         }
         finally
@@ -355,10 +495,8 @@ else
 
             if (appealToUpdate != null)
             {
-                // Update the appeal status
                 appealToUpdate.Status = newStatus;
 
-                // Create a new comment
                 if (!string.IsNullOrWhiteSpace(newComment))
                 {
                     if (appealToUpdate.Comments == null)
@@ -370,7 +508,7 @@ else
                     {
                         Id = Guid.NewGuid().ToString(),
                         Text = newComment,
-                        Status = newStatus, // Status change comment
+                        Status = newStatus,
                         Timestamp = DateTime.UtcNow,
                         AdminId = "current-admin-id", // Replace with actual admin ID from authentication
                         AdminName = "Admin User" // Replace with actual admin name from authentication
@@ -380,11 +518,7 @@ else
                 }
 
                 await context.SaveChangesAsync();
-
-                // Reload the appeal to get the latest data
                 await LoadAppeal();
-
-                // Clear the comment text field
                 newComment = "";
             }
         }
@@ -398,7 +532,6 @@ else
         }
     }
 
-    // Added method for adding general comments (without status change)
     private async Task AddGeneralComment()
     {
         if (appeal == null || string.IsNullOrWhiteSpace(newGeneralComment))
@@ -425,7 +558,7 @@ else
                 {
                     Id = Guid.NewGuid().ToString(),
                     Text = newGeneralComment,
-                    Status = null, // No status change for general comments
+                    Status = null,
                     Timestamp = DateTime.UtcNow,
                     AdminId = "current-admin-id", // Replace with actual admin ID from authentication
                     AdminName = "Admin User" // Replace with actual admin name from authentication
@@ -433,11 +566,7 @@ else
 
                 appealToUpdate.Comments.Add(comment);
                 await context.SaveChangesAsync();
-
-                // Reload the appeal to get the latest data
                 await LoadAppeal();
-
-                // Clear the general comment text field
                 newGeneralComment = "";
             }
         }
@@ -462,9 +591,24 @@ else
         {
             "Approved" => "bg-success",
             "Rejected" => "bg-danger",
-            "Pending" => "bg-warning",
-            "More Information Needed" => "bg-info",
+            "Pending" => "bg-warning text-dark",
+            "More Information Needed" => "bg-info text-dark",
             _ => "bg-secondary"
         };
     }
 }
+
+<style>
+    /* Custom CSS for the timeline */
+    .timeline {
+        position: relative;
+    }
+    
+    .timeline-item {
+        position: relative;
+    }
+    
+    .timeline-icon {
+        min-width: 32px;
+    }
+</style>
