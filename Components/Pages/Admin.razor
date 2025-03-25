@@ -228,6 +228,10 @@
             border-radius: 4px;
         }
 
+        .close-btn.reopen {
+            background-color: #27ae60; /* Green */
+        }
+
         .close-btn:disabled {
             background-color: #aaa;
             cursor: not-allowed;
@@ -305,7 +309,7 @@
                             <td>0</td>
                             <td>
                                 <span class="status-label">Pending</span>
-                                <button onclick="closeAppeal(this)" class="close-btn">Close</button>
+                                <button onclick="toggleAppealStatus(this)" class="close-btn">Close</button>
                             </td>
                         </tr>
                         <tr data-status="Closed">
@@ -386,19 +390,27 @@
         }
 
         // collapse thead appeal
-        function closeAppeal(button) {
-        const row = button.closest("tr");
-        const statusSpan = row.querySelector(".status-label");
+        function toggleAppealStatus(button) {
+            const row = button.closest("tr");
+            const statusSpan = row.querySelector(".status-label");
+            const currentStatus = row.getAttribute("data-status");
 
-        statusSpan.innerText = "Closed";
-        statusSpan.style.color = "red";
-        row.setAttribute("data-status", "Closed");
+            if (currentStatus === "Pending") {
+                // Close the appeal
+                statusSpan.innerText = "Closed";
+                statusSpan.style.color = "red";
+                button.innerText = "Reopen";
+                row.setAttribute("data-status", "Closed");
+            } else {
+                // Reopen the appeal
+                statusSpan.innerText = "Pending";
+                statusSpan.style.color = "black";
+                button.innerText = "Close";
+                row.setAttribute("data-status", "Pending");
+            }
 
-        button.disabled = true;
-        button.innerText = "Closed";
-
-        filterAppealsByStatus(); // Refresh filtering
-    }
+            filterAppealsByStatus(); // Keep filtering active
+        }
 
     //filter by open or close
     function filterAppealsByStatus() {
