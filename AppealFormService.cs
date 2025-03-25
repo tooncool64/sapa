@@ -155,6 +155,8 @@ public class AppealFormService : IAppealFormService
                 formSemester2Course.Id = Guid.NewGuid().ToString();
             }
             
+            _dbContext.Appeals.Add(_form);
+            
             await _dbContext.SaveChangesAsync();
             return true;
         }
