@@ -16,6 +16,8 @@ namespace BlazorApp
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultContainer("Appeals");
+            
             // Configure AppealForm
             modelBuilder.Entity<AppealForm>()
                 .ToContainer("Appeals")
