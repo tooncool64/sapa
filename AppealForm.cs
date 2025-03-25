@@ -2,12 +2,8 @@
 
 public class AppealForm
 {
-<<<<<<< HEAD
     public string Id { get; set; }
     [Required(ErrorMessage = "Name is required")]
-=======
-    public int Id { get; set; }
->>>>>>> d5927faf5ac87ef64cb22bcc9f19891d22efb867
     public string Name { get; set; } = string.Empty;
     public string StudentId { get; set; } = string.Empty;
     public DateTime? Date { get; set; } = DateTime.Now;

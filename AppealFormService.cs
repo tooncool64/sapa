@@ -70,7 +70,7 @@ public class AppealFormService : IAppealFormService
             Major = original.Major,
             AppealExplanation = original.AppealExplanation,
             AcknowledgementPayment = original.AcknowledgementPayment,
-            AcknowledgementFinal = original.AcknowledgementFinal
+            AcknowledgementFinal = original.AcknowledgementFinal,
             Status = original.Status //not changeable by students
         };
     }

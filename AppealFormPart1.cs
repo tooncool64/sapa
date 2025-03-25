@@ -4,7 +4,7 @@ namespace BlazorApp;
 
 public class AppealFormPart1
 {
-    public int Id { get; set; }
+    public string Id { get; set; }
 
     [Required(ErrorMessage = "Name is required")]
     public string Name { get; set; } = string.Empty;
