@@ -1,9 +1,6 @@
-﻿@page "/admin/appeals"
+﻿@namespace BlazorApp.Components
 @using BlazorApp
 @using Microsoft.EntityFrameworkCore
-@inject CosmosContext CosmosDb
-@inject NavigationManager NavManager
-@attribute [Authorize(Roles = "Admin")]
 
 <h1>Appeals Dashboard</h1>
 
@@ -69,7 +66,7 @@ else
                                 <td>@appeal.DegreeProgram</td>
                                 <td>
                                     <button class="btn btn-primary btn-sm" 
-                                            @onclick="() => ViewAppealDetails(appeal.Id)">
+                                            @onclick="() => OnAppealSelected.InvokeAsync(appeal.Id)">
                                         View Details
                                     </button>
                                 </td>
@@ -83,6 +80,12 @@ else
 }
 
 @code {
+    [Inject]
+    private CosmosContext CosmosDb { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnAppealSelected { get; set; }
+
     private bool loading = true;
     private List<AppealForm> appeals = new();
     private List<AppealForm> filteredAppeals = new();
@@ -149,8 +152,25 @@ else
         };
     }
 
-    private void ViewAppealDetails(string appealId)
+    [Parameter]
+    public string Title { get; set; } = "Appeals Dashboard";
+
+    // Optional parameter to filter appeals by a certain property
+    [Parameter]
+    public Func<AppealForm, bool> CustomFilter { get; set; }
+
+    // Method to apply custom filtering if provided
+    public void ApplyCustomFilter()
     {
-        NavManager.NavigateTo($"/admin/appeals/{appealId}");
+        if (CustomFilter != null)
+        {
+            filteredAppeals = filteredAppeals.Where(CustomFilter).ToList();
+        }
+    }
+
+    // Public method to refresh the data
+    public async Task RefreshData()
+    {
+        await LoadAppeals();
     }
 }

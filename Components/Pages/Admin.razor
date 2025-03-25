@@ -1,5 +1,6 @@
 ﻿@page "/admin"
 @using Microsoft.AspNetCore.Authorization
+@inject NavigationManager NavManager
 <!--- Remove below before user tests --->
 @attribute [Authorize(Roles = "Admin")]
 
@@ -317,18 +318,16 @@
             </section>
             
             <section id="appeals" class="section">
-                <h1>Submit Appeal</h1>
-                <form id="appealForm">
-                    <div>
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div>
-                        <label for="appeal">Your Appeal</label>
-                        <textarea id="appeal" name="appeal" required></textarea>
-                    </div>
-                    <button type="submit">Submit Appeal</button>
-                </form>
+                <AppealsDashboard 
+                    Title="Student Appeals Dashboard" 
+                    OnAppealSelected="ViewAppealDetails" />
+
+                    @code {
+                    private void ViewAppealDetails(string appealId)
+                    {
+                        NavManager.NavigateTo($"/admin/appeals/{appealId}");
+                    }
+                }
             </section>
             
             <section id="statusUpdate" class="section">
