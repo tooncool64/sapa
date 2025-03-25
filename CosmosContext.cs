@@ -13,6 +13,7 @@ namespace BlazorApp
         }
         
         public DbSet<AppealForm> Appeals { get; set; }
+        public DbSet<AppealComment> Comments { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,7 +33,7 @@ namespace BlazorApp
                     semesterCourse.Property(c => c.Id);
                     semesterCourse.HasKey("Id");
                 });
-    
+            
             // Configure Semester2Courses as owned entity collection
             modelBuilder.Entity<AppealForm>()
                 .OwnsMany(e => e.Semester2Courses, semesterCourse =>
@@ -41,7 +42,22 @@ namespace BlazorApp
                     semesterCourse.Property(c => c.Id);
                     semesterCourse.HasKey("Id");
                 });
-    
+            
+            // Configure AppealComment
+            modelBuilder.Entity<AppealComment>()
+                .ToContainer("Appeals")
+                .HasPartitionKey(e => e.Id)
+                .HasKey(e => e.Id);
+            
+            // Configure Comments relationship - use OwnsMany for Cosmos DB
+            modelBuilder.Entity<AppealForm>()
+                .OwnsMany(e => e.Comments, comment =>
+                {
+                    comment.WithOwner().HasForeignKey("AppealFormId");
+                    comment.Property(c => c.Id);
+                    comment.HasKey("Id");
+                });
+            
             base.OnModelCreating(modelBuilder);
         }
     }

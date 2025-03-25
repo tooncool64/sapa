@@ -23,6 +23,8 @@ public class AppealForm
     public bool AcknowledgementFinal { get; set; }
     // open or close
     public string Status { get; set; } = "Pending"; // default for students
+    
+    public virtual List<AppealComment> Comments { get; set; } = new List<AppealComment>();
 }
 
 public class CourseBase

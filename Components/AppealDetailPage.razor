@@ -28,6 +28,9 @@ else
     <div class="card mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h2>Appeal Details</h2>
+            <div>
+                <span class="badge @GetStatusBadgeClass(appeal.Status) me-2">@appeal.Status</span>
+            </div>
         </div>
         <div class="card-body">
             <div class="row mb-4">
@@ -184,6 +187,68 @@ else
                     </tbody>
                 </table>
             </div>
+
+            <!-- Status Update Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Update Appeal Status</h3>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="statusSelect" class="form-label">Appeal Status</label>
+                        <select id="statusSelect" class="form-select" @bind="newStatus">
+                            <option value="Pending">Pending</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="More Information Needed">More Information Needed</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="statusComment" class="form-label">Status Comment</label>
+                        <textarea id="statusComment" class="form-control" rows="3" @bind="newComment" placeholder="Add a comment about this status change"></textarea>
+                    </div>
+                    <button class="btn btn-primary" @onclick="UpdateAppealStatus" disabled="@(isSaving)">
+                        @if (isSaving)
+                        {
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span>Saving...</span>
+                        }
+                        else
+                        {
+                            <span>Update Status</span>
+                        }
+                    </button>
+                </div>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Appeal Comments</h3>
+                </div>
+                <div class="card-body">
+                    @if (appeal.Comments == null || appeal.Comments.Count == 0)
+                    {
+                        <p>No comments have been added to this appeal.</p>
+                    }
+                    else
+                    {
+                        <div class="list-group">
+                            @foreach (var comment in appeal.Comments.OrderByDescending(c => c.Timestamp))
+                            {
+                                <div class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">Status: <span class="badge @GetStatusBadgeClass(comment.Status)">@comment.Status</span></h5>
+                                        <small>@comment.Timestamp.ToLocalTime().ToString("MMM dd, yyyy h:mm tt")</small>
+                                    </div>
+                                    <p class="mb-1">@comment.Text</p>
+                                    <small>By: @comment.AdminName</small>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 }
@@ -194,6 +259,9 @@ else
 
     private AppealForm appeal;
     private bool loading = true;
+    private bool isSaving = false;
+    private string newStatus = "";
+    private string newComment = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -215,18 +283,86 @@ else
         try
         {
             loading = true;
-            // Create a context instance using the factory
+    // Create a context instance using the factory
             await using var context = await ContextFactory.CreateDbContextAsync();
-            appeal = await context.Appeals.FirstOrDefaultAsync(a => a.Id == AppealId);
+        
+    // With Cosmos DB, we don't need to use Include() as nested entities are part of the document
+            appeal = await context.Appeals
+                .FirstOrDefaultAsync(a => a.Id == AppealId);
+
+            if (appeal != null && string.IsNullOrEmpty(newStatus))
+            {
+                newStatus = appeal.Status ?? "Pending";
+            }
         }
         catch (Exception ex)
         {
-            // Log the exception
+    // Log the exception
             Console.WriteLine($"Error loading appeal details: {ex.Message}");
         }
         finally
         {
             loading = false;
+        }
+    }
+
+    private async Task UpdateAppealStatus()
+    {
+        if (appeal == null || string.IsNullOrWhiteSpace(newStatus))
+        {
+            return;
+        }
+
+        try
+        {
+            isSaving = true;
+
+            await using var context = await ContextFactory.CreateDbContextAsync();
+            var appealToUpdate = await context.Appeals
+                .FirstOrDefaultAsync(a => a.Id == AppealId);
+
+            if (appealToUpdate != null)
+            {
+    // Update the appeal status
+                appealToUpdate.Status = newStatus;
+
+    // Create a new comment
+                if (!string.IsNullOrWhiteSpace(newComment))
+                {
+                    if (appealToUpdate.Comments == null)
+                    {
+                        appealToUpdate.Comments = new List<AppealComment>();
+                    }
+
+                    var comment = new AppealComment
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Text = newComment,
+                        Status = newStatus,
+                        Timestamp = DateTime.UtcNow,
+                        AdminId = "current-admin-id", // Replace with actual admin ID from authentication
+                        AdminName = "Admin User" // Replace with actual admin name from authentication
+                    };
+
+                    appealToUpdate.Comments.Add(comment);
+                }
+
+                await context.SaveChangesAsync();
+
+    // Reload the appeal to get the latest data
+                await LoadAppeal();
+
+    // Clear the comment text field
+                newComment = "";
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating appeal status: {ex.Message}");
+        }
+        finally
+        {
+            isSaving = false;
         }
     }
 
@@ -242,6 +378,7 @@ else
             "Approved" => "bg-success",
             "Rejected" => "bg-danger",
             "Pending" => "bg-warning",
+            "More Information Needed" => "bg-info",
             _ => "bg-secondary"
         };
     }
