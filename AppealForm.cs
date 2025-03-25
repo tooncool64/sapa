@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BlazorApp;
+﻿namespace BlazorApp;
 
 public class AppealForm
 {

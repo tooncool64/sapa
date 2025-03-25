@@ -25,7 +25,7 @@
                 <div class="form-group">
                     <label id="label-name">
                         <span class="label-text">Name:</span>
-                        <InputText @bind-Value="FormService.CurrentForm.Name" class="form-control" placeholder="Your name..."/>
+                        <InputText @bind-Value="_page1Model.Name" class="form-control" placeholder="Your name..."/>
                         <ValidationMessage For="@(() => _page1Model.Name)"/>
                     </label>
                 </div>
@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <label id="label-student-id">
                         <span class="label-text">Student ID#:</span>
-                        <InputText @bind-Value="FormService.CurrentForm.StudentId" class="form-control" placeholder="ex: p000..."/>
+                        <InputText @bind-Value="_page1Model.StudentId" class="form-control" placeholder="ex: p000..."/>
                         <ValidationMessage For="@(() => _page1Model.StudentId)"/>
                     </label>
                 </div>
@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <label id="label-date">
                         <span class="label-text">Date:</span>
-                        <InputDate @bind-Value="FormService.CurrentForm.Date" class="form-control"/>
+                        <InputDate @bind-Value="_page1Model.Date" class="form-control"/>
                         <ValidationMessage For="@(() => _page1Model.Date)"/>
                     </label>
                 </div>
@@ -49,7 +49,7 @@
                 <div class="form-group">
                     <label id="email-name">
                         <span class="label-text">Email:</span>
-                        <InputText @bind-Value="FormService.CurrentForm.Email" class="form-control" placeholder="Your email..."/>
+                        <InputText @bind-Value="_page1Model.Email" class="form-control" placeholder="Your email..."/>
                         <ValidationMessage For="@(() => _page1Model.Email)"/>
                     </label>
                 </div>
@@ -57,7 +57,7 @@
                 <div class="form-group">
                     <label id="label-major">
                         <span class="label-text">Major:</span>
-                        <InputText @bind-Value="FormService.CurrentForm.Major" class="form-control" placeholder="Your major..."/>
+                        <InputText @bind-Value="_page1Model.Major" class="form-control" placeholder="Your major..."/>
                         <ValidationMessage For="@(() => _page1Model.Major)"/>
                     </label>
                 </div>
@@ -75,7 +75,7 @@
                     <li id="appeal-list-4">Your plan for future academic success.</li>
                 </ol>
                 <div class="form-group">
-                    <InputTextArea @bind-Value="FormService.CurrentForm.AppealExplanation"
+                    <InputTextArea @bind-Value="_page1Model.AppealExplanation"
                                   class="form-control"
                                   id="text-area"
                                   rows="6"
@@ -88,7 +88,7 @@
             <section class="card" id="acknowledgements-section">
                 <h2 id="acknowledgements-heading">Acknowledgements</h2>
                 <div class="checkbox-container">
-                    <InputCheckbox @bind-Value="FormService.CurrentForm.AcknowledgementPayment" id="checkbox1" />
+                    <InputCheckbox @bind-Value="_page1Model.AcknowledgementPayment" id="checkbox1" />
                     <span id="checkbox1-text">
                         Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.
                     </span>
@@ -96,7 +96,7 @@
                 </div>
                 
                 <div class="checkbox-container">
-                    <InputCheckbox @bind-Value="FormService.CurrentForm.AcknowledgementFinal" id="checkbox2" />
+                    <InputCheckbox @bind-Value="_page1Model.AcknowledgementFinal" id="checkbox2" />
                     <span id="checkbox2-text">
                         I understand that the decision of the Office of Financial Aid is final.
                     </span>
@@ -118,7 +118,6 @@
     
     protected override void OnInitialized()
     {
-    // Copy from main model to page model
         _page1Model.Name = FormService.CurrentForm.Name;
         _page1Model.StudentId = FormService.CurrentForm.StudentId;
         _page1Model.Date = FormService.CurrentForm.Date;
@@ -131,7 +130,6 @@
     
     private void HandleValidSubmit()
     {
-    // Copy back to the main model
         FormService.UpdateForm(form => {
                                            form.Name = _page1Model.Name;
                                            form.StudentId = _page1Model.StudentId;
