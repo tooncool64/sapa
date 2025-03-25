@@ -100,9 +100,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IAppealFormService, AppealFormService>();
 builder.Services.AddScoped<AppealCardService>();
 
-builder.Services.Configure<HomePageOptions>(
-    builder.Configuration.GetSection("HomePageOptions"));
-
 builder.Services.AddScoped<IAppealClosingDateService, JsonAppealClosingDateService>();
 
 var app = builder.Build();
