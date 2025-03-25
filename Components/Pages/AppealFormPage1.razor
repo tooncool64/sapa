@@ -80,10 +80,7 @@
                                   id="text-area"
                                   rows="6"
                                   placeholder="Write your explanation here..."
-                                  @onkeyup="UpdateWordCount" />
-                    <div class="word-count @(isOverLimit ? "text-danger" : "text-muted")">
-                        @wordCountMessage
-                    </div>
+                                  />
                     <ValidationMessage For="@(() => FormService.CurrentForm.AppealExplanation)"/>
                 </div>
             </section>
@@ -117,28 +114,8 @@
 </html>
 
 @code {
-    private string wordCountMessage = "0/500 words";
-    private bool isOverLimit = false;
-    
-    private void UpdateWordCount(KeyboardEventArgs e)
-    {
-        if (FormService.CurrentForm.AppealExplanation != null)
-        {
-            string text = FormService.CurrentForm.AppealExplanation.Trim();
-            int wordCount = text.Split(new[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length;
-            isOverLimit = wordCount > 500;
-            wordCountMessage = $"{wordCount}/500 words";
-        }
-        else
-        {
-            wordCountMessage = "0/500 words";
-            isOverLimit = false;
-        }
-    }
-    
     private void HandleValidSubmit()
     {
-        // Simply navigate to the next page since form is already bound to FormService.CurrentForm
         Navigation.NavigateTo("/appeal2");
     }
 }
