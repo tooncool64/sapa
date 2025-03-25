@@ -144,9 +144,7 @@ public class AppealFormService : IAppealFormService
             }
             
             _dbContext.Appeals.Add(_form);
-     
-        
-            // Save to the database
+            
             await _dbContext.SaveChangesAsync();
             return true;
         }
