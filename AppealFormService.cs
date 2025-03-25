@@ -9,6 +9,7 @@ public interface IAppealFormService
     Task<bool> SubmitFormAsync();
     void ResetForm();
     event Action OnFormChanged;
+    Task<bool> UpdateStatusAsync(string id, string newStatus);
 }
 
 public class AppealFormService : IAppealFormService
