@@ -34,6 +34,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddRazorPages();
+
 builder.Services.AddDbContext<CosmosContext>(options =>
 {
     var endpointUri = Environment.GetEnvironmentVariable("DATABASE_URI");
@@ -119,6 +121,7 @@ app.UseAntiforgery();
 
 app.UseCors("AllowBlazor");
 app.MapControllers();
+app.MapRazorPages();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
