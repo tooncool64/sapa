@@ -100,6 +100,9 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IAppealFormService, AppealFormService>();
 builder.Services.AddScoped<AppealCardService>();
 
+builder.Services.Configure<HomePageOptions>(
+    builder.Configuration.GetSection("HomePageOptions"));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,0 +1,310 @@
+﻿@page "/admin/homepage-options"
+@using Microsoft.AspNetCore.Components
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.Extensions.Options
+@using System.Text.Json
+@inject IOptionsSnapshot<HomePageOptions> CurrentOptions
+@inject IWebHostEnvironment Environment
+@inject NavigationManager NavigationManager
+
+<PageTitle>Homepage Content Options</PageTitle>
+
+<div class="container mt-5">
+    <h1>Manage Homepage Content</h1>
+    <p>Edit the text content that appears on the SAP Appeal Portal homepage. Changes will be applied site-wide.</p>
+
+    <EditForm Model="@options" OnValidSubmit="SaveOptions">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="accordion" id="optionsAccordion">
+            <!-- Header Section -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingHeader">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHeader" aria-expanded="true" aria-controls="collapseHeader">
+                        Header Section
+                    </button>
+                </h2>
+                <div id="collapseHeader" class="accordion-collapse collapse show" aria-labelledby="headingHeader" data-bs-parent="#optionsAccordion">
+                    <div class="accordion-body">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Page Title</label>
+                            <InputText id="title" class="form-control" @bind-Value="options.Title" />
+                            <ValidationMessage For="@(() => options.Title)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="introText1" class="form-label">Introduction Text (Part 1)</label>
+                            <InputTextArea id="introText1" class="form-control" rows="3" @bind-Value="options.IntroText1" />
+                            <ValidationMessage For="@(() => options.IntroText1)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="introText2" class="form-label">Introduction Text (Part 2)</label>
+                            <InputTextArea id="introText2" class="form-control" rows="3" @bind-Value="options.IntroText2" />
+                            <ValidationMessage For="@(() => options.IntroText2)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Eligibility Section -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingEligibility">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEligibility" aria-expanded="false" aria-controls="collapseEligibility">
+                        Eligibility Section
+                    </button>
+                </h2>
+                <div id="collapseEligibility" class="accordion-collapse collapse" aria-labelledby="headingEligibility" data-bs-parent="#optionsAccordion">
+                    <div class="accordion-body">
+                        <div class="mb-3">
+                            <label for="eligibilityTitle" class="form-label">Eligibility Title</label>
+                            <InputText id="eligibilityTitle" class="form-control" @bind-Value="options.EligibilityTitle" />
+                            <ValidationMessage For="@(() => options.EligibilityTitle)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="eligibilityText" class="form-label">Eligibility Text</label>
+                            <InputTextArea id="eligibilityText" class="form-control" rows="4" @bind-Value="options.EligibilityText" />
+                            <ValidationMessage For="@(() => options.EligibilityText)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAP Status Section -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSapStatus">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSapStatus" aria-expanded="false" aria-controls="collapseSapStatus">
+                        SAP Status Section
+                    </button>
+                </h2>
+                <div id="collapseSapStatus" class="accordion-collapse collapse" aria-labelledby="headingSapStatus" data-bs-parent="#optionsAccordion">
+                    <div class="accordion-body">
+                        <div class="mb-3">
+                            <label for="sapStatusTitle" class="form-label">SAP Status Title</label>
+                            <InputText id="sapStatusTitle" class="form-control" @bind-Value="options.SapStatusTitle" />
+                            <ValidationMessage For="@(() => options.SapStatusTitle)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="warningTitle" class="form-label">Warning Title</label>
+                            <InputText id="warningTitle" class="form-control" @bind-Value="options.WarningTitle" />
+                            <ValidationMessage For="@(() => options.WarningTitle)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="warningText" class="form-label">Warning Text</label>
+                            <InputTextArea id="warningText" class="form-control" rows="3" @bind-Value="options.WarningText" />
+                            <ValidationMessage For="@(() => options.WarningText)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="mustAppealTitle" class="form-label">Must Appeal Title</label>
+                            <InputText id="mustAppealTitle" class="form-control" @bind-Value="options.MustAppealTitle" />
+                            <ValidationMessage For="@(() => options.MustAppealTitle)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="mustAppealText" class="form-label">Must Appeal Text</label>
+                            <InputTextArea id="mustAppealText" class="form-control" rows="3" @bind-Value="options.MustAppealText" />
+                            <ValidationMessage For="@(() => options.MustAppealText)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="mustAppealExtra" class="form-label">Must Appeal Additional Text</label>
+                            <InputTextArea id="mustAppealExtra" class="form-control" rows="3" @bind-Value="options.MustAppealExtra" />
+                            <ValidationMessage For="@(() => options.MustAppealExtra)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appeal Process Section -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingAppealProcess">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAppealProcess" aria-expanded="false" aria-controls="collapseAppealProcess">
+                        Appeal Process Section
+                    </button>
+                </h2>
+                <div id="collapseAppealProcess" class="accordion-collapse collapse" aria-labelledby="headingAppealProcess" data-bs-parent="#optionsAccordion">
+                    <div class="accordion-body">
+                        <div class="mb-3">
+                            <label for="appealProcessTitle" class="form-label">Appeal Process Title</label>
+                            <InputText id="appealProcessTitle" class="form-control" @bind-Value="options.AppealProcessTitle" />
+                            <ValidationMessage For="@(() => options.AppealProcessTitle)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="appealText" class="form-label">Appeal Process Text</label>
+                            <InputTextArea id="appealText" class="form-control" rows="4" @bind-Value="options.AppealText" />
+                            <ValidationMessage For="@(() => options.AppealText)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="approvedAppealsTitle" class="form-label">Approved Appeals Title</label>
+                            <InputText id="approvedAppealsTitle" class="form-control" @bind-Value="options.ApprovedAppealsTitle" />
+                            <ValidationMessage For="@(() => options.ApprovedAppealsTitle)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="approvedAppealsText" class="form-label">Approved Appeals Text</label>
+                            <InputTextArea id="approvedAppealsText" class="form-control" rows="4" @bind-Value="options.ApprovedAppealsText" />
+                            <ValidationMessage For="@(() => options.ApprovedAppealsText)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="deniedAppealsTitle" class="form-label">Denied Appeals Title</label>
+                            <InputText id="deniedAppealsTitle" class="form-control" @bind-Value="options.DeniedAppealsTitle" />
+                            <ValidationMessage For="@(() => options.DeniedAppealsTitle)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="deniedAppealsText" class="form-label">Denied Appeals Text</label>
+                            <InputTextArea id="deniedAppealsText" class="form-control" rows="3" @bind-Value="options.DeniedAppealsText" />
+                            <ValidationMessage For="@(() => options.DeniedAppealsText)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="deniedExtra" class="form-label">Denied Appeals Additional Text</label>
+                            <InputTextArea id="deniedExtra" class="form-control" rows="3" @bind-Value="options.DeniedExtra" />
+                            <ValidationMessage For="@(() => options.DeniedExtra)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Note Section -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFinalNote">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFinalNote" aria-expanded="false" aria-controls="collapseFinalNote">
+                        Final Note
+                    </button>
+                </h2>
+                <div id="collapseFinalNote" class="accordion-collapse collapse" aria-labelledby="headingFinalNote" data-bs-parent="#optionsAccordion">
+                    <div class="accordion-body">
+                        <div class="mb-3">
+                            <label for="finalNote" class="form-label">Final Note Text</label>
+                            <InputTextArea id="finalNote" class="form-control" rows="2" @bind-Value="options.FinalNote" />
+                            <ValidationMessage For="@(() => options.FinalNote)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 mb-5 d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" @onclick="ResetToDefaults">Reset to Defaults</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private HomePageOptions options = new();
+    private HomePageOptions defaultOptions = new();
+    private string optionsFilePath;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Clone the current options
+        options = CloneOptions(CurrentOptions.Value);
+        
+        // Set up default options (this would be from a constant or embedded resource in a real app)
+        defaultOptions = new HomePageOptions
+        {
+            Title = "Satisfactory Academic Progress (SAP) Appeal Portal",
+            IntroText1 = "If you are a student seeking information on maintaining eligibility or need to submit an appeal, please log in using your Saint Martin's credentials.",
+            IntroText2 = "If you are an advisor here to approve a student's appeal, or an administrator reviewing SAP appeals, log in with your Saint Martin's credentials as well.",
+            
+            EligibilityTitle = "Maintaining Eligibility",
+            EligibilityText = "In order to maintain your eligibility for financial aid, you must demonstrate academic progress towards a degree program. We utilize both qualitative and quantitative measures to determine Satisfactory Academic Progress (SAP). Please note that SAP is a process completed strictly to determine your financial aid eligibility and NOT your academic eligibility.",
+            
+            SapStatusTitle = "SAP Status",
+            WarningTitle = "Warning",
+            WarningText = "Students who do not meet the GPA or pace of completion requirements for the first time will be placed in a warning status.",
+            MustAppealTitle = "Must Appeal",
+            MustAppealText = "Students who do not meet the GPA or pace of completion requirements following a warning status semester are not eligible to receive federal, state, or institutional aid and are placed on a must appeal status. In addition, students for whom it is mathematically impossible to complete their degree within the maximum timeframe provided above will be placed on a must appeal status immediately.",
+            MustAppealExtra = "Some alternative loan and scholarship programs require students to be in good standing under SAP guidelines. You may submit a completed appeal to the Office of Financial Aid which documents extenuating circumstances that interfered with your academic performance.",
+            
+            AppealProcessTitle = "Appeal Process",
+            AppealText = "Students on \"must appeal\" status have the opportunity to appeal their aid eligibility. Appeals must be submitted by mid-semester. Appeals submitted after the deadline will be reviewed but late petitions may result in the loss of funding for the term. Appeals must include a written statement, academic plan, and documentation of extenuating circumstances.",
+            ApprovedAppealsTitle = "Approved Appeals",
+            ApprovedAppealsText = "Students will be notified of an approved appeal and placed in probation status with their aid reinstated for one semester. Students may be asked to submit a new academic plan for each semester of probation status until they reach good standing. If the student does not pass the credits or earn the GPA given in an academic plan, they will be placed in must appeal status again.",
+            DeniedAppealsTitle = "Denied Appeals",
+            DeniedAppealsText = "If an appeal is denied, aid will be removed from the following semester, and the student is required to find other financial options to apply towards the student balance.",
+            DeniedExtra = "If the original appeal did not include information that may have been helpful for the Office of Financial Aid to know when evaluating the appeal, the student may submit additional information to provide clarity to be reviewed again.",
+            
+            FinalNote = "All decisions by the Office of Financial Aid are final."
+        };
+
+        // Set the path to the options file
+        optionsFilePath = Path.Combine(Environment.ContentRootPath, "appsettings.json");
+    }
+
+    private HomePageOptions CloneOptions(HomePageOptions source)
+    {
+        return new HomePageOptions
+        {
+            Title = source.Title,
+            IntroText1 = source.IntroText1,
+            IntroText2 = source.IntroText2,
+            EligibilityTitle = source.EligibilityTitle,
+            EligibilityText = source.EligibilityText,
+            SapStatusTitle = source.SapStatusTitle,
+            WarningTitle = source.WarningTitle,
+            WarningText = source.WarningText,
+            MustAppealTitle = source.MustAppealTitle,
+            MustAppealText = source.MustAppealText,
+            MustAppealExtra = source.MustAppealExtra,
+            AppealProcessTitle = source.AppealProcessTitle,
+            AppealText = source.AppealText,
+            ApprovedAppealsTitle = source.ApprovedAppealsTitle,
+            ApprovedAppealsText = source.ApprovedAppealsText,
+            DeniedAppealsTitle = source.DeniedAppealsTitle,
+            DeniedAppealsText = source.DeniedAppealsText,
+            DeniedExtra = source.DeniedExtra,
+            FinalNote = source.FinalNote
+        };
+    }
+
+    private void ResetToDefaults()
+    {
+        options = CloneOptions(defaultOptions);
+    }
+
+    private async Task SaveOptions()
+    {
+        try
+        {
+            // Read the current appsettings.json
+            string json = await File.ReadAllTextAsync(optionsFilePath);
+            
+            // Deserialize to JSON document
+            using JsonDocument document = JsonDocument.Parse(json);
+            
+            // Create a new mutable JSON document
+            var jsonObject = new Dictionary<string, JsonElement>();
+            foreach (JsonProperty property in document.RootElement.EnumerateObject())
+            {
+                jsonObject[property.Name] = property.Value.Clone();
+            }
+
+            // Serialize our options
+            string optionsJson = JsonSerializer.Serialize(options, new JsonSerializerOptions { WriteIndented = true });
+            
+            // Update the HomePageOptions section
+            var optionsElement = JsonDocument.Parse(optionsJson).RootElement;
+            
+            // Check if HomePageOptions section exists or needs to be added
+            if (jsonObject.ContainsKey("HomePageOptions"))
+            {
+                jsonObject["HomePageOptions"] = optionsElement.Clone();
+            }
+            else
+            {
+                jsonObject.Add("HomePageOptions", optionsElement.Clone());
+            }
+            
+            // Reconstruct the JSON document
+            var updatedJson = JsonSerializer.Serialize(jsonObject, new JsonSerializerOptions { WriteIndented = true });
+            
+            // Write the updated JSON back to appsettings.json
+            await File.WriteAllTextAsync(optionsFilePath, updatedJson);
+            
+            // Navigate to home page to see changes
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            // In a real app, you would log this error and handle it appropriately
+            Console.WriteLine($"Error saving options: {ex.Message}");
+        }
+    }
+}
