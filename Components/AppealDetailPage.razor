@@ -1,7 +1,7 @@
 ﻿@page "/admin/appeals/{AppealId}"
 @using BlazorApp
 @using Microsoft.EntityFrameworkCore
-@inject CosmosContext CosmosDb
+@inject IDbContextFactory<CosmosContext> ContextFactory
 @inject NavigationManager NavManager
 @attribute [Authorize(Roles = "Admin")]
 
@@ -215,7 +215,9 @@ else
         try
         {
             loading = true;
-            appeal = await CosmosDb.Appeals.FirstOrDefaultAsync(a => a.Id == AppealId);
+            // Create a context instance using the factory
+            await using var context = await ContextFactory.CreateDbContextAsync();
+            appeal = await context.Appeals.FirstOrDefaultAsync(a => a.Id == AppealId);
         }
         catch (Exception ex)
         {
