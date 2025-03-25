@@ -26,7 +26,7 @@ namespace BlazorApp
             modelBuilder.Entity<AppealForm>()
                 .OwnsMany(e => e.Semester1Courses, semesterCourse =>
                 {
-                    semesterCourse.WithOwner().HasForeignKey("AppealFormId");
+                    semesterCourse.WithOwner().HasForeignKey("Id");
                     semesterCourse.Property(c => c.Id);
                     semesterCourse.HasKey("Id");
                 });
@@ -35,7 +35,7 @@ namespace BlazorApp
             modelBuilder.Entity<AppealForm>()
                 .OwnsMany(e => e.Semester2Courses, semesterCourse =>
                 {
-                    semesterCourse.WithOwner().HasForeignKey("AppealFormId");
+                    semesterCourse.WithOwner().HasForeignKey("Id");
                     semesterCourse.Property(c => c.Id);
                     semesterCourse.HasKey("Id");
                 });
