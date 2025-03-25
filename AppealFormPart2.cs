@@ -27,19 +27,18 @@ public class AppealFormPart2
     public List<SemesterCourseValid> Semester2Courses { get; set; } = new();
 }
 
-public class SemesterCourseValid
+public class SemesterCourseValid : CourseBase
 {
     [Required(ErrorMessage = "Course Name is required")]
-    public string CourseName { get; set; } = string.Empty;
+    public new string CourseName { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Course Number is required")]
-    public string CourseNumber { get; set; } = string.Empty;
+    public new string CourseNumber { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Credit Hours is required")]
     [Range(1, 6, ErrorMessage = "Credit Hours must be between 1 and 6")]
-    public int CreditHours { get; set; }
-
-    public bool IsRepeat { get; set; } = false;
-
-    public bool IsRequiredForMajor { get; set; } = false;
+    public new int CreditHours { get; set; }
 }
+
+public class SemesterCourse : CourseBase
+{ }

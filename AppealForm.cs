@@ -20,7 +20,7 @@ public class AppealForm
     public bool AcknowledgementFinal { get; set; }
 }
 
-public class SemesterCourse
+public class CourseBase
 {
     public string CourseName { get; set; } = string.Empty;
     public string CourseNumber { get; set; } = string.Empty;

@@ -5,7 +5,7 @@
 <PageTitle>Academic Plan</PageTitle>
 
 <main>
-    <EditForm Model="@FormService.CurrentForm" FormName="AcademicPlan" OnValidSubmit="@HandleSubmit">
+    <EditForm Model="@_page3Model" FormName="AcademicPlan" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator/>
 
         <section id="academic-info" class="card">
@@ -14,39 +14,39 @@
             <div class="form-group">
                 <label id="label-degree-program">
                     <span class="label-text">Degree Program:</span>
-                    <InputText @bind-Value="FormService.CurrentForm.DegreeProgram" class="form-control" placeholder="Your degree program..."/>
-                    <ValidationMessage For="@(() => FormService.CurrentForm.DegreeProgram)"/>
+                    <InputText @bind-Value="_page3Model.DegreeProgram" class="form-control" placeholder="Your degree program..."/>
+                    <ValidationMessage For="@(() => _page3Model.DegreeProgram)"/>
                 </label>
             </div>
 
             <div class="form-group">
                 <label id="label-grad-date">
                     <span class="label-text">Expected Graduation Date:</span>
-                    <InputDate @bind-Value="FormService.CurrentForm.GradDate" class="form-control"/>
-                    <ValidationMessage For="@(() => FormService.CurrentForm.GradDate)"/>
+                    <InputDate @bind-Value="_page3Model.GradDate" class="form-control"/>
+                    <ValidationMessage For="@(() => _page3Model.GradDate)"/>
                 </label>
             </div>
 
             <div class="form-group">
                 <label id="label-gpa">
                     <span class="label-text">Current Cumulative GPA:</span>
-                    <InputNumber @bind-Value="FormService.CurrentForm.GPA" class="form-control" placeholder="0.00"/>
-                    <ValidationMessage For="@(() => FormService.CurrentForm.GPA)"/>
+                    <InputNumber @bind-Value="_page3Model.GPA" class="form-control" placeholder="0.00"/>
+                    <ValidationMessage For="@(() => _page3Model.GPA)"/>
                 </label>
             </div>
 
             <div class="form-group">
                 <label id="label-degree-hours">
                     <span class="label-text">Cumulative Degree Hours:</span>
-                    <InputNumber @bind-Value="FormService.CurrentForm.DegreeHours" class="form-control" placeholder="0"/>
-                    <ValidationMessage For="@(() => FormService.CurrentForm.DegreeHours)"/>
+                    <InputNumber @bind-Value="_page3Model.DegreeHours" class="form-control" placeholder="0"/>
+                    <ValidationMessage For="@(() => _page3Model.DegreeHours)"/>
                 </label>
             </div>
 
             <div class="form-group">
                 <label id="label-change-major">
                     <span class="label-text">Is this a Change of Major?</span>
-                    <InputSelect @bind-Value="FormService.CurrentForm.ChangeMajor" class="form-control">
+                    <InputSelect @bind-Value="_page3Model.ChangeMajor" class="form-control">
                         <option value="false">No</option>
                         <option value="true">Yes</option>
                     </InputSelect>
@@ -61,39 +61,39 @@
             {
                 var index = i;
                 <div class="course-row">
-                    @if (FormService.CurrentForm.Semester1Courses.Count <= index)
+                    @if (_page3Model.Semester1Courses.Count <= index)
                     {
-                        FormService.CurrentForm.Semester1Courses.Add(new SemesterCourse());
+                        _page3Model.Semester1Courses.Add(new SemesterCourseValid());
                     }
                     
                     <div class="form-group">
                         <label>
                             <span class="label-text">Course Name:</span>
-                            <InputText @bind-Value="FormService.CurrentForm.Semester1Courses[index].CourseName" class="form-control"/>
-                            <ValidationMessage For="@(() => FormService.CurrentForm.Semester1Courses[index].CourseName)"/>
+                            <InputText @bind-Value="_page3Model.Semester1Courses[index].CourseName" class="form-control"/>
+                            <ValidationMessage For="@(() => _page3Model.Semester1Courses[index].CourseName)"/>
                         </label>
                     </div>
                     
                     <div class="form-group">
                         <label>
                             <span class="label-text">Course Number:</span>
-                            <InputText @bind-Value="FormService.CurrentForm.Semester1Courses[index].CourseNumber" class="form-control"/>
-                            <ValidationMessage For="@(() => FormService.CurrentForm.Semester1Courses[index].CourseNumber)"/>
+                            <InputText @bind-Value="_page3Model.Semester1Courses[index].CourseNumber" class="form-control"/>
+                            <ValidationMessage For="@(() => _page3Model.Semester1Courses[index].CourseNumber)"/>
                         </label>
                     </div>
                     
                     <div class="form-group">
                         <label>
                             <span class="label-text">Credit Hours:</span>
-                            <InputNumber @bind-Value="FormService.CurrentForm.Semester1Courses[index].CreditHours" class="form-control"/>
-                            <ValidationMessage For="@(() => FormService.CurrentForm.Semester1Courses[index].CreditHours)"/>
+                            <InputNumber @bind-Value="_page3Model.Semester1Courses[index].CreditHours" class="form-control"/>
+                            <ValidationMessage For="@(() => _page3Model.Semester1Courses[index].CreditHours)"/>
                         </label>
                     </div>
                     
                     <div class="form-group">
                         <label>
                             <span class="label-text">Repeat:</span>
-                            <InputSelect @bind-Value="FormService.CurrentForm.Semester1Courses[index].IsRepeat" class="form-control">
+                            <InputSelect @bind-Value="_page3Model.Semester1Courses[index].IsRepeat" class="form-control">
                                 <option value="false">No</option>
                                 <option value="true">Yes</option>
                             </InputSelect>
@@ -103,7 +103,7 @@
                     <div class="form-group">
                         <label>
                             <span class="label-text">Required for Major:</span>
-                            <InputSelect @bind-Value="FormService.CurrentForm.Semester1Courses[index].IsRequiredForMajor" class="form-control">
+                            <InputSelect @bind-Value="_page3Model.Semester1Courses[index].IsRequiredForMajor" class="form-control">
                                 <option value="false">No</option>
                                 <option value="true">Yes</option>
                             </InputSelect>
@@ -120,39 +120,39 @@
             {
                 var index = i;
                 <div class="course-row">
-                    @if (FormService.CurrentForm.Semester2Courses.Count <= index)
+                    @if (_page3Model.Semester2Courses.Count <= index)
                     {
-                        FormService.CurrentForm.Semester2Courses.Add(new SemesterCourse());
+                        _page3Model.Semester2Courses.Add(new SemesterCourseValid());
                     }
                     
                     <div class="form-group">
                         <label>
                             <span class="label-text">Course Name:</span>
-                            <InputText @bind-Value="FormService.CurrentForm.Semester2Courses[index].CourseName" class="form-control"/>
-                            <ValidationMessage For="@(() => FormService.CurrentForm.Semester2Courses[index].CourseName)"/>
+                            <InputText @bind-Value="_page3Model.Semester2Courses[index].CourseName" class="form-control"/>
+                            <ValidationMessage For="@(() => _page3Model.Semester2Courses[index].CourseName)"/>
                         </label>
                     </div>
                     
                     <div class="form-group">
                         <label>
                             <span class="label-text">Course Number:</span>
-                            <InputText @bind-Value="FormService.CurrentForm.Semester2Courses[index].CourseNumber" class="form-control"/>
-                            <ValidationMessage For="@(() => FormService.CurrentForm.Semester2Courses[index].CourseNumber)"/>
+                            <InputText @bind-Value="_page3Model.Semester2Courses[index].CourseNumber" class="form-control"/>
+                            <ValidationMessage For="@(() => _page3Model.Semester2Courses[index].CourseNumber)"/>
                         </label>
                     </div>
                     
                     <div class="form-group">
                         <label>
                             <span class="label-text">Credit Hours:</span>
-                            <InputNumber @bind-Value="FormService.CurrentForm.Semester2Courses[index].CreditHours" class="form-control"/>
-                            <ValidationMessage For="@(() => FormService.CurrentForm.Semester2Courses[index].CreditHours)"/>
+                            <InputNumber @bind-Value="_page3Model.Semester2Courses[index].CreditHours" class="form-control"/>
+                            <ValidationMessage For="@(() => _page3Model.Semester2Courses[index].CreditHours)"/>
                         </label>
                     </div>
                     
                     <div class="form-group">
                         <label>
                             <span class="label-text">Repeat:</span>
-                            <InputSelect @bind-Value="FormService.CurrentForm.Semester2Courses[index].IsRepeat" class="form-control">
+                            <InputSelect @bind-Value="_page3Model.Semester2Courses[index].IsRepeat" class="form-control">
                                 <option value="false">No</option>
                                 <option value="true">Yes</option>
                             </InputSelect>
@@ -162,7 +162,7 @@
                     <div class="form-group">
                         <label>
                             <span class="label-text">Required for Major:</span>
-                            <InputSelect @bind-Value="FormService.CurrentForm.Semester2Courses[index].IsRequiredForMajor" class="form-control">
+                            <InputSelect @bind-Value="_page3Model.Semester2Courses[index].IsRequiredForMajor" class="form-control">
                                 <option value="false">No</option>
                                 <option value="true">Yes</option>
                             </InputSelect>
@@ -177,22 +177,106 @@
 </main>
 
 @code {
+    private AppealFormPart2 _page3Model = new();
+
+    protected override void OnInitialized()
+    {
+        // Copy primitive properties
+        _page3Model.DegreeProgram = FormService.CurrentForm.DegreeProgram;
+        _page3Model.GradDate = FormService.CurrentForm.GradDate;
+        _page3Model.GPA = FormService.CurrentForm.GPA;
+        _page3Model.DegreeHours = FormService.CurrentForm.DegreeHours;
+        _page3Model.ChangeMajor = FormService.CurrentForm.ChangeMajor;
+
+        // Initialize course lists with at least one empty item if needed
+        if (FormService.CurrentForm.Semester1Courses.Count == 0)
+        {
+            _page3Model.Semester1Courses.Add(new SemesterCourseValid());
+        }
+        else
+        {
+            // Convert each SemesterCourse to SemesterCourseValid
+            foreach (var course in FormService.CurrentForm.Semester1Courses)
+            {
+                _page3Model.Semester1Courses.Add(new SemesterCourseValid
+                {
+                    CourseName = course.CourseName,
+                    CourseNumber = course.CourseNumber,
+                    CreditHours = course.CreditHours,
+                    IsRepeat = course.IsRepeat,
+                    IsRequiredForMajor = course.IsRequiredForMajor
+                });
+            }
+        }
+        
+        if (FormService.CurrentForm.Semester2Courses.Count == 0)
+        {
+            _page3Model.Semester2Courses.Add(new SemesterCourseValid());
+        }
+        else
+        {
+            // Convert each SemesterCourse to SemesterCourseValid
+            foreach (var course in FormService.CurrentForm.Semester2Courses)
+            {
+                _page3Model.Semester2Courses.Add(new SemesterCourseValid
+                {
+                    CourseName = course.CourseName,
+                    CourseNumber = course.CourseNumber,
+                    CreditHours = course.CreditHours,
+                    IsRepeat = course.IsRepeat,
+                    IsRequiredForMajor = course.IsRequiredForMajor
+                });
+            }
+        }
+    }
+
+    private void HandleValidSubmit()
+    {
+        FormService.UpdateForm(form =>
+        {
+            form.DegreeProgram = _page3Model.DegreeProgram;
+            form.GradDate = _page3Model.GradDate;
+            form.GPA = _page3Model.GPA;
+            form.DegreeHours = _page3Model.DegreeHours;
+            form.ChangeMajor = _page3Model.ChangeMajor;
+
+            // Convert SemesterCourseValid objects back to SemesterCourse objects
+            form.Semester1Courses = _page3Model.Semester1Courses.Select(vc => new SemesterCourse
+            {
+                CourseName = vc.CourseName,
+                CourseNumber = vc.CourseNumber,
+                CreditHours = vc.CreditHours,
+                IsRepeat = vc.IsRepeat,
+                IsRequiredForMajor = vc.IsRequiredForMajor
+            }).ToList();
+
+            form.Semester2Courses = _page3Model.Semester2Courses.Select(vc => new SemesterCourse
+            {
+                CourseName = vc.CourseName,
+                CourseNumber = vc.CourseNumber,
+                CreditHours = vc.CreditHours,
+                IsRepeat = vc.IsRepeat,
+                IsRequiredForMajor = vc.IsRequiredForMajor
+            }).ToList();
+        });
+    }
+
     private async Task HandleSubmit()
     {
-    // At this point, the FormService.CurrentForm contains all the data from all pages
+        // At this point, the FormService.CurrentForm contains all the data from all pages
         bool success = await FormService.SubmitFormAsync();
-        
+
         if (success)
         {
-    // Reset the form for future use
+            // Reset the form for future use
             FormService.ResetForm();
-            
-    // Navigate to a confirmation page
+
+            // Navigate to a confirmation page
             Navigation.NavigateTo("/confirmation");
         }
         else
         {
-    // Handle submission error
+            // Handle submission error
         }
     }
 }
