@@ -17,7 +17,7 @@
         <button id="toggle-button" class="lang-toggle" onclick="toggleLanguage()">Español</button>
     </header>
     <main>
-        <EditForm Model="@FormService.CurrentForm" FormName="AppealForm1" OnValidSubmit="@HandleValidSubmit">
+        <EditForm Model="@_page1Model" FormName="AppealForm1" OnValidSubmit="@HandleValidSubmit">
             <DataAnnotationsValidator/>
 
             <section id="student-info" class="card">
@@ -25,40 +25,40 @@
                 <div class="form-group">
                     <label id="label-name">
                         <span class="label-text">Name:</span>
-                        <InputText @bind-Value="FormService.CurrentForm.Name" class="form-control" placeholder="Your name..."/>
-                        <ValidationMessage For="@(() => FormService.CurrentForm.Name)"/>
+                        <InputText @bind-Value="_page1Model.Name" class="form-control" placeholder="Your name..."/>
+                        <ValidationMessage For="@(() => _page1Model.Name)"/>
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label id="label-student-id">
                         <span class="label-text">Student ID#:</span>
-                        <InputText @bind-Value="FormService.CurrentForm.StudentId" class="form-control" placeholder="ex: p000..."/>
-                        <ValidationMessage For="@(() => FormService.CurrentForm.StudentId)"/>
+                        <InputText @bind-Value="_page1Model.StudentId" class="form-control" placeholder="ex: p000..."/>
+                        <ValidationMessage For="@(() => _page1Model.StudentId)"/>
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label id="label-date">
                         <span class="label-text">Date:</span>
-                        <InputDate @bind-Value="FormService.CurrentForm.Date" class="form-control"/>
-                        <ValidationMessage For="@(() => FormService.CurrentForm.Date)"/>
+                        <InputDate @bind-Value="_page1Model.Date" class="form-control"/>
+                        <ValidationMessage For="@(() => _page1Model.Date)"/>
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label id="email-name">
                         <span class="label-text">Email:</span>
-                        <InputText @bind-Value="FormService.CurrentForm.Email" class="form-control" placeholder="Your email..."/>
-                        <ValidationMessage For="@(() => FormService.CurrentForm.Email)"/>
+                        <InputText @bind-Value="_page1Model.Email" class="form-control" placeholder="Your email..."/>
+                        <ValidationMessage For="@(() => _page1Model.Email)"/>
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label id="label-major">
                         <span class="label-text">Major:</span>
-                        <InputText @bind-Value="FormService.CurrentForm.Major" class="form-control" placeholder="Your major..."/>
-                        <ValidationMessage For="@(() => FormService.CurrentForm.Major)"/>
+                        <InputText @bind-Value="_page1Model.Major" class="form-control" placeholder="Your major..."/>
+                        <ValidationMessage For="@(() => _page1Model.Major)"/>
                     </label>
                 </div>
             </section>
@@ -75,32 +75,32 @@
                     <li id="appeal-list-4">Your plan for future academic success.</li>
                 </ol>
                 <div class="form-group">
-                    <InputTextArea @bind-Value="FormService.CurrentForm.AppealExplanation"
+                    <InputTextArea @bind-Value="_page1Model.AppealExplanation"
                                   class="form-control"
                                   id="text-area"
                                   rows="6"
                                   placeholder="Write your explanation here..."
                                   />
-                    <ValidationMessage For="@(() => FormService.CurrentForm.AppealExplanation)"/>
+                    <ValidationMessage For="@(() => _page1Model.AppealExplanation)"/>
                 </div>
             </section>
 
             <section class="card" id="acknowledgements-section">
                 <h2 id="acknowledgements-heading">Acknowledgements</h2>
                 <div class="checkbox-container">
-                    <InputCheckbox @bind-Value="FormService.CurrentForm.AcknowledgementPayment" id="checkbox1" />
+                    <InputCheckbox @bind-Value="_page1Model.AcknowledgementPayment" id="checkbox1" />
                     <span id="checkbox1-text">
                         Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.
                     </span>
-                    <ValidationMessage For="@(() => FormService.CurrentForm.AcknowledgementPayment)"/>
+                    <ValidationMessage For="@(() => _page1Model.AcknowledgementPayment)"/>
                 </div>
                 
                 <div class="checkbox-container">
-                    <InputCheckbox @bind-Value="FormService.CurrentForm.AcknowledgementFinal" id="checkbox2" />
+                    <InputCheckbox @bind-Value="_page1Model.AcknowledgementFinal" id="checkbox2" />
                     <span id="checkbox2-text">
                         I understand that the decision of the Office of Financial Aid is final.
                     </span>
-                    <ValidationMessage For="@(() => FormService.CurrentForm.AcknowledgementFinal)"/>
+                    <ValidationMessage For="@(() => _page1Model.AcknowledgementFinal)"/>
                 </div>
             </section>
             
@@ -114,8 +114,34 @@
 </html>
 
 @code {
+    private AppealFormPart1 _page1Model = new();
+    
+    protected override void OnInitialized()
+    {
+        _page1Model.Name = FormService.CurrentForm.Name;
+        _page1Model.StudentId = FormService.CurrentForm.StudentId;
+        _page1Model.Date = FormService.CurrentForm.Date;
+        _page1Model.Email = FormService.CurrentForm.Email;
+        _page1Model.Major = FormService.CurrentForm.Major;
+        _page1Model.AppealExplanation = FormService.CurrentForm.AppealExplanation;
+        _page1Model.AcknowledgementPayment = FormService.CurrentForm.AcknowledgementPayment;
+        _page1Model.AcknowledgementFinal = FormService.CurrentForm.AcknowledgementFinal;
+    }
+    
     private void HandleValidSubmit()
     {
+        FormService.UpdateForm(form => {
+                                           form.Name = _page1Model.Name;
+                                           form.StudentId = _page1Model.StudentId;
+                                           form.Date = _page1Model.Date;
+                                           form.Email = _page1Model.Email;
+                                           form.Major = _page1Model.Major;
+                                           form.AppealExplanation = _page1Model.AppealExplanation;
+                                           form.AcknowledgementPayment = _page1Model.AcknowledgementPayment;
+                                           form.AcknowledgementFinal = _page1Model.AcknowledgementFinal;
+
+        });
+        
         Navigation.NavigateTo("/appeal2");
     }
 }
