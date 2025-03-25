@@ -142,8 +142,18 @@ public class AppealFormService : IAppealFormService
             {
                 _form.Status = "Pending";
             }
+
+            _form.Id = Guid.NewGuid().ToString();
             
-            _dbContext.Appeals.Add(_form);
+            foreach (var formSemester1Course in _form.Semester1Courses)
+            {
+                formSemester1Course.Id = Guid.NewGuid().ToString();
+            }
+            
+            foreach (var formSemester2Course in _form.Semester2Courses)
+            {
+                formSemester2Course.Id = Guid.NewGuid().ToString();
+            }
             
             await _dbContext.SaveChangesAsync();
             return true;
