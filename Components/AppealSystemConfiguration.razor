@@ -1,0 +1,147 @@
+﻿@page "/admin/appeals"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Administrator")]
+@inject IAppealClosingDateService ClosingDateService
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>Manage Appeals</PageTitle>
+
+<div class="container">
+    <h1>Appeal Settings</h1>
+    
+    @if (_loading)
+    {
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-header">
+                <h2>Appeal Closing Date</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group mb-3">
+                    <label>Current Status:</label>
+                    <div class="alert @(_isAppealPeriodOpen ? "alert-success" : "alert-warning")">
+                        @if (_isAppealPeriodOpen)
+                        {
+                            @if (_closingDate.HasValue)
+                            {
+                                <span>Open until @_closingDate.Value.ToString("MMMM dd, yyyy")</span>
+                            }
+                            else
+                            {
+                                <span>Open indefinitely (no closing date set)</span>
+                            }
+                        }
+                        else
+                        {
+                            <span>Closed since @_closingDate?.ToString("MMMM dd, yyyy")</span>
+                        }
+                    </div>
+                </div>
+                
+                <EditForm Model="@_model" OnValidSubmit="@SaveClosingDate">
+                    <DataAnnotationsValidator />
+                    
+                    <div class="form-group mb-3">
+                        <label>Set Closing Date:</label>
+                        <InputDate @bind-Value="_model.ClosingDate" class="form-control" />
+                        <ValidationMessage For="@(() => _model.ClosingDate)" />
+                    </div>
+                    
+                    <div class="form-check mb-3">
+                        <InputCheckbox @bind-Value="_model.RemoveClosingDate" id="removeDate" class="form-check-input" />
+                        <label for="removeDate" class="form-check-label">Remove closing date</label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" disabled="@_saving">
+                        @if (_saving)
+                        {
+                            <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                            <span>Saving...</span>
+                        }
+                        else
+                        {
+                            <span>Save Changes</span>
+                        }
+                    </button>
+                </EditForm>
+                
+                @if (!string.IsNullOrEmpty(_errorMessage))
+                {
+                    <div class="alert alert-danger mt-3">@_errorMessage</div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private bool _loading = true;
+    private bool _saving = false;
+    private bool _isAppealPeriodOpen;
+    private DateTime? _closingDate;
+    private ClosingDateModel _model = new();
+    private string _errorMessage;
+    private string _username;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        try {
+            // Get current username
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            _username = authState.User.Identity.Name;
+            
+            // Load data
+            _isAppealPeriodOpen = await ClosingDateService.IsAppealPeriodOpenAsync();
+            _closingDate = await ClosingDateService.GetClosingDateAsync();
+            
+            // Set default date
+            _model.ClosingDate = _closingDate ?? DateTime.Now.AddDays(1);
+        }
+        catch (Exception ex) {
+            _errorMessage = $"Error: {ex.Message}";
+        }
+        finally {
+            _loading = false;
+        }
+    }
+    
+    private async Task SaveClosingDate()
+    {
+        try {
+            _saving = true;
+            _errorMessage = string.Empty;
+            
+            if (_model.RemoveClosingDate) {
+                await ClosingDateService.RemoveClosingDateAsync(_username);
+                _closingDate = null;
+                _isAppealPeriodOpen = true;
+            }
+            else {
+                await ClosingDateService.SetClosingDateAsync(_model.ClosingDate, _username);
+                _closingDate = _model.ClosingDate;
+                _isAppealPeriodOpen = DateTime.Now < _model.ClosingDate;
+            }
+        }
+        catch (Exception ex) {
+            _errorMessage = $"Error: {ex.Message}";
+        }
+        finally {
+            _saving = false;
+        }
+    }
+    
+    private class ClosingDateModel
+    {
+        [Required(ErrorMessage = "Closing date is required")]
+        public DateTime ClosingDate { get; set; }
+        
+        public bool RemoveClosingDate { get; set; }
+    }
+}

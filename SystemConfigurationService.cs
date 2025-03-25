@@ -57,7 +57,6 @@ namespace BlazorApp
                 WriteIndented = true
             });
 
-            // Use a lock to prevent concurrent file access issues
             lock (_fileLock)
             {
                 File.WriteAllText(_settingsFilePath, json);
