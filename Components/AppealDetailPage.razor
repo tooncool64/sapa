@@ -1,0 +1,246 @@
+﻿@page "/admin/appeals/{AppealId}"
+@using BlazorApp
+@using Microsoft.EntityFrameworkCore
+@inject CosmosContext CosmosDb
+@inject NavigationManager NavManager
+@attribute [Authorize(Roles = "Admin")]
+
+<div class="mb-3">
+    <button class="btn btn-secondary" @onclick="GoBack">
+        <i class="oi oi-arrow-left"></i> Back to Appeals List
+    </button>
+</div>
+
+@if (loading)
+{
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+}
+else if (appeal == null)
+{
+    <div class="alert alert-danger">
+        Appeal not found or has been removed.
+    </div>
+}
+else
+{
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Appeal Details</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h3>Student Information</h3>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <th style="width: 30%">Name:</th>
+                                <td>@appeal.Name</td>
+                            </tr>
+                            <tr>
+                                <th>Student ID:</th>
+                                <td>@appeal.StudentId</td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td>@appeal.Email</td>
+                            </tr>
+                            <tr>
+                                <th>Date Submitted:</th>
+                                <td>@(appeal.Date?.ToShortDateString() ?? "Not specified")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h3>Academic Information</h3>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <th style="width: 30%">Major:</th>
+                                <td>@appeal.Major</td>
+                            </tr>
+                            <tr>
+                                <th>Degree Program:</th>
+                                <td>@appeal.DegreeProgram</td>
+                            </tr>
+                            <tr>
+                                <th>GPA:</th>
+                                <td>@appeal.GPA.ToString("0.00")</td>
+                            </tr>
+                            <tr>
+                                <th>Degree Hours:</th>
+                                <td>@appeal.DegreeHours</td>
+                            </tr>
+                            <tr>
+                                <th>Graduation Date:</th>
+                                <td>@(appeal.GradDate?.ToShortDateString() ?? "Not specified")</td>
+                            </tr>
+                            <tr>
+                                <th>Change Major:</th>
+                                <td>@(appeal.ChangeMajor ? "Yes" : "No")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h3>Appeal Explanation</h3>
+                <div class="card">
+                    <div class="card-body">
+                        <pre style="white-space: pre-wrap;">@appeal.AppealExplanation</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h3>Semester 1 Courses</h3>
+                    @if (appeal.Semester1Courses.Count == 0)
+                    {
+                        <p>No courses added for Semester 1.</p>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Course Name</th>
+                                        <th>Course #</th>
+                                        <th>Hours</th>
+                                        <th>Repeat</th>
+                                        <th>Required</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var course in appeal.Semester1Courses)
+                                    {
+                                        <tr>
+                                            <td>@course.CourseName</td>
+                                            <td>@course.CourseNumber</td>
+                                            <td>@course.CreditHours</td>
+                                            <td>@(course.IsRepeat ? "Yes" : "No")</td>
+                                            <td>@(course.IsRequiredForMajor ? "Yes" : "No")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-6">
+                    <h3>Semester 2 Courses</h3>
+                    @if (appeal.Semester2Courses.Count == 0)
+                    {
+                        <p>No courses added for Semester 2.</p>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Course Name</th>
+                                        <th>Course #</th>
+                                        <th>Hours</th>
+                                        <th>Repeat</th>
+                                        <th>Required</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var course in appeal.Semester2Courses)
+                                    {
+                                        <tr>
+                                            <td>@course.CourseName</td>
+                                            <td>@course.CourseNumber</td>
+                                            <td>@course.CreditHours</td>
+                                            <td>@(course.IsRepeat ? "Yes" : "No")</td>
+                                            <td>@(course.IsRequiredForMajor ? "Yes" : "No")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h3>Acknowledgements</h3>
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <th style="width: 50%">Payment Acknowledgement:</th>
+                            <td>@(appeal.AcknowledgementPayment ? "Acknowledged" : "Not Acknowledged")</td>
+                        </tr>
+                        <tr>
+                            <th>Final Acknowledgement:</th>
+                            <td>@(appeal.AcknowledgementFinal ? "Acknowledged" : "Not Acknowledged")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string AppealId { get; set; }
+
+    private AppealForm appeal;
+    private bool loading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAppeal();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadAppeal();
+    }
+
+    private async Task LoadAppeal()
+    {
+        if (string.IsNullOrEmpty(AppealId))
+        {
+            return;
+        }
+
+        try
+        {
+            loading = true;
+            appeal = await CosmosDb.Appeals.FirstOrDefaultAsync(a => a.Id == AppealId);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception
+            Console.WriteLine($"Error loading appeal details: {ex.Message}");
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private void GoBack()
+    {
+        NavManager.NavigateTo("/admin/appeals");
+    }
+
+    private string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Approved" => "bg-success",
+            "Rejected" => "bg-danger",
+            "Pending" => "bg-warning",
+            _ => "bg-secondary"
+        };
+    }
+}
