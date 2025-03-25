@@ -1,7 +1,10 @@
-﻿namespace BlazorApp
+﻿using Newtonsoft.Json;
+
+namespace BlazorApp
 {
     public class AppealComment
     {
+        [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
         public string Text { get; set; }
         public string Status { get; set; }
