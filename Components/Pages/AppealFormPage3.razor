@@ -230,7 +230,7 @@
         }
     }
 
-    private void HandleValidSubmit()
+    private async void HandleValidSubmit()
     {
         FormService.UpdateForm(form =>
         {
@@ -259,24 +259,21 @@
                 IsRequiredForMajor = vc.IsRequiredForMajor
             }).ToList();
         });
-    }
-
-    private async Task HandleSubmit()
-    {
-        // At this point, the FormService.CurrentForm contains all the data from all pages
-        bool success = await FormService.SubmitFormAsync();
+        
+    // At this point, the FormService.CurrentForm contains all the data from all pages
+        var success =  await FormService.SubmitFormAsync();
 
         if (success)
         {
-            // Reset the form for future use
+    // Reset the form for future use
             FormService.ResetForm();
 
-            // Navigate to a confirmation page
+    // Navigate to a confirmation page
             Navigation.NavigateTo("/confirmation");
         }
         else
         {
-            // Handle submission error
+    // Handle submission error
         }
     }
 }
