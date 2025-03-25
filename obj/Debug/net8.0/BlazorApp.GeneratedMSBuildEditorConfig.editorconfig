@@ -22,12 +22,28 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Micah/RiderProjects/SAPApp/Components/AppealCardInfo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHBlYWxDYXJkSW5mby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Micah/RiderProjects/SAPApp/Components/AppealsDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHBlYWxzRGFzaGJvYXJkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Micah/RiderProjects/SAPApp/Components/AppealSystemConfiguration.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHBlYWxTeXN0ZW1Db25maWd1cmF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/Admin.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/Advisor.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZHZpc29yLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/AppealDetailPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcHBlYWxEZXRhaWxQYWdlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/AppealFormPage1.razor]
@@ -40,6 +56,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/AppealFormPage3.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcHBlYWxGb3JtUGFnZTMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/Confirmation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb25maXJtYXRpb24ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/Error.razor]
