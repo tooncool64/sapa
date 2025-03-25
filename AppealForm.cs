@@ -24,6 +24,7 @@ public class AppealForm
 
 public class CourseBase
 {
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     public string CourseName { get; set; } = string.Empty;
     public string CourseNumber { get; set; } = string.Empty;
     public int CreditHours { get; set; }

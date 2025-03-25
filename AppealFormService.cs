@@ -159,7 +159,7 @@ public class AppealFormService : IAppealFormService
         }
         catch (DbUpdateException dbEx)
         {
-            _lastErrorMessage = $"A database error occurred while saving your appeal:{dbEx.Message} Please try again later.";
+            _lastErrorMessage = $"A database error occurred while saving your appeal:{dbEx.Message} {dbEx.InnerException!.Message} Please try again later.";
             return false;
         }
         catch (Exception ex) 
