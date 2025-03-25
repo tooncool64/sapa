@@ -37,8 +37,8 @@
                     </div>
                     <div class="col-md-4">
                         <select class="form-select rounded-pill" 
-                                @bind="statusFilter" 
-                                @onchange="() => ApplyFilters()">
+                                value="@statusFilter"
+                                @onchange="HandleStatusChange">
                             <option value="">All Statuses</option>
                             <option value="Pending">Pending</option>
                             <option value="Approved">Approved</option>
@@ -207,6 +207,12 @@
 
         // Apply custom filter if provided
         ApplyCustomFilter();
+    }
+
+    private void HandleStatusChange(ChangeEventArgs e)
+    {
+        statusFilter = e.Value?.ToString() ?? "";
+        ApplyFilters();
     }
 
     private void ClearStatusFilter()
