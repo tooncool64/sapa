@@ -27,8 +27,6 @@ else if (!_isAppealPeriodOpen)
 }
 else
 {
-    <!DOCTYPE html>
-    <html lang="en">
     <head>
         <link rel="stylesheet" href="AppealFormPage1.css"/>
         <script src="AppealFormPage1.js"></script>
@@ -41,14 +39,97 @@ else
         <main>
             <EditForm Model="@_page1Model" FormName="AppealForm1" OnValidSubmit="@HandleValidSubmit">
                 <DataAnnotationsValidator/>
-
-                <!-- Rest of your existing form HTML -->
+                <section id="student-info" class="card">
+                                <h2 id="student-info-heading">Student Information</h2>
+                                <div class="form-group">
+                                    <label id="label-name">
+                                        <span class="label-text">Name:</span>
+                                        <InputText @bind-Value="_page1Model.Name" class="form-control" placeholder="Your name..."/>
+                                        <ValidationMessage For="@(() => _page1Model.Name)"/>
+                                    </label>
+                                </div>
                 
+                                <div class="form-group">
+                                    <label id="label-student-id">
+                                        <span class="label-text">Student ID#:</span>
+                                        <InputText @bind-Value="_page1Model.StudentId" class="form-control" placeholder="ex: p000..."/>
+                                        <ValidationMessage For="@(() => _page1Model.StudentId)"/>
+                                    </label>
+                                </div>
+                
+                                <div class="form-group">
+                                    <label id="label-date">
+                                        <span class="label-text">Date:</span>
+                                        <InputDate @bind-Value="_page1Model.Date" class="form-control"/>
+                                        <ValidationMessage For="@(() => _page1Model.Date)"/>
+                                    </label>
+                                </div>
+                
+                                <div class="form-group">
+                                    <label id="email-name">
+                                        <span class="label-text">Email:</span>
+                                        <InputText @bind-Value="_page1Model.Email" class="form-control" placeholder="Your email..."/>
+                                        <ValidationMessage For="@(() => _page1Model.Email)"/>
+                                    </label>
+                                </div>
+                
+                                <div class="form-group">
+                                    <label id="label-major">
+                                        <span class="label-text">Major:</span>
+                                        <InputText @bind-Value="_page1Model.Major" class="form-control" placeholder="Your major..."/>
+                                        <ValidationMessage For="@(() => _page1Model.Major)"/>
+                                    </label>
+                                </div>
+                            </section>
+                
+                            <section id="appeal-details" class="card">
+                                <h2 id="appeal-details-heading">Appeal Explanation</h2>
+                                <p id="appeal-details-text">
+                                    Please provide a signed, typed, or written statement (max 500 words) explaining:
+                                </p>
+                                <ol id="appeal-details-list">
+                                    <li id="appeal-list-1">Any extenuating circumstances that led to your SAP status.</li>
+                                    <li id="appeal-list-2">How these circumstances affected your academic progress.</li>
+                                    <li id="appeal-list-3">Steps you have taken to overcome them.</li>
+                                    <li id="appeal-list-4">Your plan for future academic success.</li>
+                                </ol>
+                                <div class="form-group">
+                                    <InputTextArea @bind-Value="_page1Model.AppealExplanation"
+                                                  class="form-control"
+                                                  id="text-area"
+                                                  rows="6"
+                                                  placeholder="Write your explanation here..."
+                                                  />
+                                    <ValidationMessage For="@(() => _page1Model.AppealExplanation)"/>
+                                </div>
+                            </section>
+                
+                            <section class="card" id="acknowledgements-section">
+                                <h2 id="acknowledgements-heading">Acknowledgements</h2>
+                                <div class="checkbox-container">
+                                    <InputCheckbox @bind-Value="_page1Model.AcknowledgementPayment" id="checkbox1" />
+                                    <span id="checkbox1-text">
+                                        Payment arrangement: I understand the Office of Financial Aid will NOT hold my classes pending a decision by the SAP committee if I am unable to pay any balance on the account.
+                                    </span>
+                                    <ValidationMessage For="@(() => _page1Model.AcknowledgementPayment)"/>
+                                </div>
+                                
+                                <div class="checkbox-container">
+                                    <InputCheckbox @bind-Value="_page1Model.AcknowledgementFinal" id="checkbox2" />
+                                    <span id="checkbox2-text">
+                                        I understand that the decision of the Office of Financial Aid is final.
+                                    </span>
+                                    <ValidationMessage For="@(() => _page1Model.AcknowledgementFinal)"/>
+                                </div>
+                            </section>
+                            
+                            <div class="form-actions mt-3">
+                                <button type="submit" id="submit-button" class="btn btn-primary">Next</button>
+                            </div>
             </EditForm>
         </main>
     </div>
     </body>
-    </html>
 }
 
 @code {
