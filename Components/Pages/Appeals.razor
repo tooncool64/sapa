@@ -1,0 +1,156 @@
+﻿@page "/admin/appeals"
+@using BlazorApp
+@using Microsoft.EntityFrameworkCore
+@inject CosmosContext CosmosDb
+@inject NavigationManager NavManager
+@attribute [Authorize(Roles = "Admin")]
+
+<h1>Appeals Dashboard</h1>
+
+@if (loading)
+{
+    <div class="mt-4">
+        <p>Loading appeals...</p>
+    </div>
+}
+else
+{
+    <div class="mt-4">
+        <div class="row mb-3">
+            <div class="col">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search by name, student ID or status" 
+                           @bind="searchTerm" @bind:event="oninput" />
+                    <button class="btn btn-outline-secondary" type="button" @onclick="ApplyFilters">
+                        <i class="oi oi-magnifying-glass"></i> Search
+                    </button>
+                </div>
+            </div>
+            <div class="col-auto">
+                <select class="form-select" @bind="statusFilter">
+                    <option value="">All Statuses</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
+        </div>
+
+        @if (!appeals.Any())
+        {
+            <div class="alert alert-info">No appeals found.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Student ID</th>
+                            <th>Date Submitted</th>
+                            <th>Status</th>
+                            <th>Degree Program</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var appeal in filteredAppeals)
+                        {
+                            <tr>
+                                <td>@appeal.Name</td>
+                                <td>@appeal.StudentId</td>
+                                <td>@(appeal.Date?.ToShortDateString() ?? "Not specified")</td>
+                                <td>
+                                    <span class="badge @GetStatusBadgeClass(appeal.Status)">
+                                        @appeal.Status
+                                    </span>
+                                </td>
+                                <td>@appeal.DegreeProgram</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" 
+                                            @onclick="() => ViewAppealDetails(appeal.Id)">
+                                        View Details
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private bool loading = true;
+    private List<AppealForm> appeals = new();
+    private List<AppealForm> filteredAppeals = new();
+    private string searchTerm = "";
+    private string statusFilter = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAppeals();
+    }
+
+    private async Task LoadAppeals()
+    {
+        try
+        {
+            loading = true;
+            appeals = await CosmosDb.Appeals.ToListAsync();
+            ApplyFilters();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception
+            Console.WriteLine($"Error loading appeals: {ex.Message}");
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private void ApplyFilters()
+    {
+        filteredAppeals = appeals;
+
+        // Apply search term filter
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            string term = searchTerm.ToLower();
+            filteredAppeals = filteredAppeals
+                .Where(a => 
+                    a.Name.ToLower().Contains(term) || 
+                    a.StudentId.ToLower().Contains(term) ||
+                    a.Status.ToLower().Contains(term))
+                .ToList();
+        }
+
+        // Apply status filter
+        if (!string.IsNullOrWhiteSpace(statusFilter))
+        {
+            filteredAppeals = filteredAppeals
+                .Where(a => a.Status == statusFilter)
+                .ToList();
+        }
+    }
+
+    private string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Approved" => "bg-success",
+            "Rejected" => "bg-danger",
+            "Pending" => "bg-warning",
+            _ => "bg-secondary"
+        };
+    }
+
+    private void ViewAppealDetails(string appealId)
+    {
+        NavManager.NavigateTo($"/admin/appeals/{appealId}");
+    }
+}
