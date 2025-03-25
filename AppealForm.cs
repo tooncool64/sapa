@@ -15,15 +15,15 @@ public class AppealForm
     public DateTime? Date { get; set; } = DateTime.Now;
 
     [Required(ErrorMessage = "Email is required")]
-   [EmailAddress(ErrorMessage = "Please enter a valid email address")]
+    [EmailAddress(ErrorMessage = "Please enter a valid email address")]
     public string Email { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Major is required")]
     public string Major { get; set; } = string.Empty;
 
-   [Required(ErrorMessage = "Appeal explanation is required")]
+    [Required(ErrorMessage = "Appeal explanation is required")]
     public string AppealExplanation { get; set; } = string.Empty;
-    //[Required(ErrorMessage = "Degree Program is required")]
+    [Required(ErrorMessage = "Degree Program is required")]
     public string DegreeProgram { get; set; } = string.Empty;
 
     //[Required(ErrorMessage = "Graduation Date is required")]
