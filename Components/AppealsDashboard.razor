@@ -30,11 +30,15 @@
                             </span>
                             <input type="text" class="form-control border-start-0 ps-0"
                                    placeholder="Search by name, student ID or status"
-                                   @bind="searchTerm" @bind:event="oninput" @oninput="ApplyFilters"/>
+                                   @bind-value="searchTerm" 
+                                   @bind-value:event="oninput" 
+                                   @onkeyup="ApplyFilters" />
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <select class="form-select rounded-pill" @bind="statusFilter" @onchange="ApplyFilters">
+                        <select class="form-select rounded-pill" 
+                                @bind="statusFilter" 
+                                @onchange="() => ApplyFilters()">
                             <option value="">All Statuses</option>
                             <option value="Pending">Pending</option>
                             <option value="Approved">Approved</option>
@@ -133,8 +137,7 @@
             </div>
         </div>
     }
-    </div>
-}
+</div>
 
 @code {
     [Inject]
