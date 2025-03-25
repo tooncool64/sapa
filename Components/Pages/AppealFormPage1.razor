@@ -17,7 +17,7 @@
         <button id="toggle-button" class="lang-toggle" onclick="toggleLanguage()">Español</button>
     </header>
     <main>
-        <EditForm Model="@FormService.CurrentForm" FormName="AppealForm1" OnSubmit="@HandleValidSubmit">
+        <EditForm Model="@FormService.CurrentForm" FormName="AppealForm1" OnValidSubmit="@HandleValidSubmit">
             <DataAnnotationsValidator/>
 
             <section id="student-info" class="card">
