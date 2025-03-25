@@ -95,7 +95,7 @@ builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddAppealFormServices();
+builder.Services.AddScoped<IAppealFormService, AppealFormService>();
 
 var app = builder.Build();
 
@@ -124,13 +124,3 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
-
-public static class ProgramExtensions
-{
-    public static IServiceCollection AddAppealFormServices(this IServiceCollection services)
-    {
-        // Register as a scoped service to persist during a user's session
-        services.AddScoped<IAppealFormService, AppealFormService>();
-        return services;
-    }
-}

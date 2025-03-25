@@ -1,11 +1,14 @@
 ﻿namespace BlazorApp;
 
+using System.ComponentModel.DataAnnotations;
+
 public interface IAppealFormService
 {
     AppealForm CurrentForm { get; }
-    void UpdateForm(Action<AppealForm> updateAction);
+    bool UpdateForm(Action<AppealForm> updateAction);
     Task<bool> SubmitFormAsync();
     void ResetForm();
+    event Action OnFormChanged;
 }
 
 public class AppealFormService : IAppealFormService
@@ -13,53 +16,108 @@ public class AppealFormService : IAppealFormService
     private readonly AppealForm _form = new AppealForm();
     private readonly CosmosContext _dbContext;
     
+    public event Action OnFormChanged;
+    
     public AppealFormService(CosmosContext dbContext)
     {
         _dbContext = dbContext;
+        // Initialize default values
+        _form.Date = DateTime.Today;
     }
     
     public AppealForm CurrentForm => _form;
     
-    public void UpdateForm(Action<AppealForm> updateAction)
+    public bool UpdateForm(Action<AppealForm> updateAction)
     {
+        // Create a temporary copy to validate
+        var tempForm = CloneForm(_form);
+        
+        // Apply the update to the temp form
+        updateAction(tempForm);
+        
+        // Validate the form after update
+        if (!ValidateForm(tempForm))
+        {
+            return false;
+        }
+        
+        // If valid, apply to the real form
         updateAction(_form);
+        
+        // Notify listeners that the form has changed
+        OnFormChanged?.Invoke();
+        
+        return true;
+    }
+    
+    private bool ValidateForm(AppealForm form)
+    {
+        var validationContext = new ValidationContext(form);
+        var validationResults = new List<ValidationResult>();
+        
+        return Validator.TryValidateObject(form, validationContext, validationResults, true);
+    }
+    
+    private AppealForm CloneForm(AppealForm original)
+    {
+        // Create a simple clone for validation
+        return new AppealForm
+        {
+            Name = original.Name,
+            StudentId = original.StudentId,
+            Date = original.Date,
+            Email = original.Email,
+            Major = original.Major,
+            AppealExplanation = original.AppealExplanation,
+            AcknowledgementPayment = original.AcknowledgementPayment,
+            AcknowledgementFinal = original.AcknowledgementFinal
+        };
     }
     
     public async Task<bool> SubmitFormAsync()
     {
         try
         {
-            // Add the completed form to your DbContext
-            _dbContext.Appeals.Add(_form);
+            // Validate before submission
+            if (!ValidateForm(_form))
+            {
+                return false;
+            }
+            
+            // Check if this form is already being tracked
+            if (_form.Id == 0) // Assuming Id is 0 for new forms
+            {
+                _dbContext.Appeals.Add(_form);
+            }
+            else
+            {
+                _dbContext.Appeals.Update(_form);
+            }
             
             // Save to the database
             await _dbContext.SaveChangesAsync();
             return true;
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine($"Error submitting form: {ex.Message}");
             return false;
         }
     }
     
     public void ResetForm()
     {
-        // Reset properties to default values
-        var properties = typeof(AppealForm).GetProperties();
-        foreach (var property in properties)
-        {
-            if (property.PropertyType == typeof(string))
-                property.SetValue(_form, string.Empty);
-            else if (property.PropertyType == typeof(bool))
-                property.SetValue(_form, false);
-            else if (property.PropertyType == typeof(DateTime))
-                property.SetValue(_form, DateTime.Now);
-            else if (property.PropertyType.IsGenericType && 
-                     property.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
-            {
-                var list = Activator.CreateInstance(property.PropertyType);
-                property.SetValue(_form, list);
-            }
-        }
+        // Explicitly reset each property to avoid reflection issues
+        _form.Name = string.Empty;
+        _form.StudentId = string.Empty;
+        _form.Date = DateTime.Today;
+        _form.Email = string.Empty;
+        _form.Major = string.Empty;
+        _form.AppealExplanation = string.Empty;
+        _form.AcknowledgementPayment = false;
+        _form.AcknowledgementFinal = false;
+        
+        // Notify listeners that the form has changed
+        OnFormChanged?.Invoke();
     }
 }

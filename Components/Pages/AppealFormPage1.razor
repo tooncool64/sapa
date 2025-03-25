@@ -69,26 +69,26 @@
                     Please provide a signed, typed, or written statement (max 500 words) explaining:
                 </p>
                 <ol id="appeal-details-list">
-                    <li id = "appeal-list-1">Any extenuating circumstances that led to your SAP status.</li>
-                    <li id = "appeal-list-2">How these circumstances affected your academic progress.</li>
-                    <li id = "appeal-list-3">Steps you have taken to overcome them.</li>
-                    <li id = "appeal-list-4">Your plan for future academic success.</li>
+                    <li id="appeal-list-1">Any extenuating circumstances that led to your SAP status.</li>
+                    <li id="appeal-list-2">How these circumstances affected your academic progress.</li>
+                    <li id="appeal-list-3">Steps you have taken to overcome them.</li>
+                    <li id="appeal-list-4">Your plan for future academic success.</li>
                 </ol>
-               <div class="form-group">
-                                   <InputTextArea @bind-Value="FormService.CurrentForm.AppealExplanation"
-                                                  class="form-control"
-                                                  id="text-area"
-                                                  rows="6"
-                                                  placeholder="Write your explanation here..."
-                                                  onkeyup="UpdateWordCount"/>
-                                   <!--- <div class="word-count (isOverLimit ? "text-danger" : "text-muted")">
-                                       wordCountMessage
-                                   </div> --->
-                                   <ValidationMessage For="@(() => FormService.CurrentForm.AppealExplanation)"/>
-                   </div>
+                <div class="form-group">
+                    <InputTextArea @bind-Value="FormService.CurrentForm.AppealExplanation"
+                                  class="form-control"
+                                  id="text-area"
+                                  rows="6"
+                                  placeholder="Write your explanation here..."
+                                  @onkeyup="UpdateWordCount" />
+                    <div class="word-count @(isOverLimit ? "text-danger" : "text-muted")">
+                        @wordCountMessage
+                    </div>
+                    <ValidationMessage For="@(() => FormService.CurrentForm.AppealExplanation)"/>
+                </div>
             </section>
 
- <section class="card" id="acknowledgements-section">
+            <section class="card" id="acknowledgements-section">
                 <h2 id="acknowledgements-heading">Acknowledgements</h2>
                 <div class="checkbox-container">
                     <InputCheckbox @bind-Value="FormService.CurrentForm.AcknowledgementPayment" id="checkbox1" />
@@ -113,42 +113,37 @@
         </EditForm>
     </main>
 </div>
-<div class="card">
-    <NavLink href="/appeal2"><button>Next Page</button></NavLink>
-</div>
 </body>
 </html>
 
 @code {
-    // Create a local copy of the form for this page
-    private AppealForm _localForm = new AppealForm();
+    private string wordCountMessage = "0/500 words";
+    private bool isOverLimit = false;
     
-    protected override void OnInitialized()
+    private void ToggleLanguage()
     {
-    // Load existing data from the service when page initializes
-        _localForm.Name = FormService.CurrentForm.Name;
-        _localForm.StudentId = FormService.CurrentForm.StudentId;
-        _localForm.Date = FormService.CurrentForm.Date;
-        _localForm.Email = FormService.CurrentForm.Email;
-        _localForm.Major = FormService.CurrentForm.Major;
-        _localForm.AcknowledgementPayment = FormService.CurrentForm.AcknowledgementPayment;
-        _localForm.AcknowledgementFinal = FormService.CurrentForm.AcknowledgementFinal;
+        // Implement language toggle functionality
+    }
+    
+    private void UpdateWordCount(KeyboardEventArgs e)
+    {
+        if (FormService.CurrentForm.AppealExplanation != null)
+        {
+            string text = FormService.CurrentForm.AppealExplanation.Trim();
+            int wordCount = text.Split(new[] { ' ', '\t', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length;
+            isOverLimit = wordCount > 500;
+            wordCountMessage = $"{wordCount}/500 words";
+        }
+        else
+        {
+            wordCountMessage = "0/500 words";
+            isOverLimit = false;
+        }
     }
     
     private void HandleValidSubmit()
     {
-    // Save data back to the service before navigating
-        FormService.UpdateForm(form => {
-                                           form.Name = _localForm.Name;
-                                           form.StudentId = _localForm.StudentId;
-                                           form.Date = _localForm.Date;
-                                           form.Email = _localForm.Email;
-                                           form.Major = _localForm.Major;
-                                           form.AcknowledgementPayment = _localForm.AcknowledgementPayment;
-                                           form.AcknowledgementFinal = _localForm.AcknowledgementFinal;
-        });
-        
-    // Now navigate to the next page
-        Navigation.NavigateTo("/appeal2", true);
+        // Simply navigate to the next page since form is already bound to FormService.CurrentForm
+        Navigation.NavigateTo("/appeal2");
     }
 }

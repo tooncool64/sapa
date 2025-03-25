@@ -4,6 +4,7 @@ namespace BlazorApp;
 
 public class AppealForm
 {
+    public int Id { get; set; }
     [Required(ErrorMessage = "Name is required")]
     public string Name { get; set; } = string.Empty;
 
@@ -43,9 +44,12 @@ public class AppealForm
 
     [Required(ErrorMessage = "At least one course is required per semester")]
     public List<SemesterCourse> Semester2Courses { get; set; } = new();
-    [Required(ErrorMessage = "Please check the checkbox before submitting.")]
+    
+    [Required(ErrorMessage = "You must acknowledge this statement")]
+    [Range(typeof(bool), "true", "true", ErrorMessage = "You must acknowledge this statement")]
     public bool AcknowledgementPayment { get; set; }
-    [Required(ErrorMessage = "Please check the checkbox before submitting.")]
+    [Required(ErrorMessage = "You must acknowledge this statement")]
+    [Range(typeof(bool), "true", "true", ErrorMessage = "You must acknowledge this statement")]
     public bool AcknowledgementFinal { get; set; }
 }
 
