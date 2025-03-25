@@ -53,12 +53,12 @@
                     
                     <div class="form-group">
                         <label>Set Closing Date:</label>
-                        <InputDate @bind-Value="_closingDateModel.ClosingDate" class="form-control" />
+                        <InputDate @bind-value="_closingDateModel.ClosingDate" class="form-control" />
                         <ValidationMessage For="@(() => _closingDateModel.ClosingDate)" />
                     </div>
                     
                     <div class="form-check mt-3">
-                        <InputCheckbox @bind-Value="_closingDateModel.RemoveClosingDate" id="removeDate" class="form-check-input" />
+                        <InputCheckbox @bind-value="_closingDateModel.RemoveClosingDate" id="removeDate" class="form-check-input" />
                         <label for="removeDate" class="form-check-label">Remove closing date (keep appeals open indefinitely)</label>
                     </div>
                     
