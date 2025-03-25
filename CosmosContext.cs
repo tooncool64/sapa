@@ -13,7 +13,6 @@ namespace BlazorApp
         }
         
         public DbSet<AppealForm> Appeals { get; set; }
-        public DbSet<AppealComment> Comments { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
