@@ -217,6 +217,32 @@
         h2 {
             margin-top: 0;
         }
+
+        .close-btn {
+            margin-left: 10px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .close-btn:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+
+        .status-label {
+            font-weight: bold;
+        }
+
+        #filterStatus {
+            margin: 10px 0 20px;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
     </style>
 </head>
 <body>
@@ -257,6 +283,14 @@
                 </div>
                 
                 <h2>Recent Submissions</h2>
+                <!-- Filter Dropdown -->
+            <label for="filterStatus"><strong>Filter by Status:</strong></label>
+            <select id="filterStatus" onchange="filterAppealsByStatus()">
+                <option value="All">All</option>
+                <option value="Pending">Open</option>
+                <option value="Closed">Closed</option>
+            </select>
+
                 <table>
                     <thead>
                         <tr>
@@ -266,10 +300,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr data-status="Pending">
                             <td>Appeal 1</td>
                             <td>0</td>
-                            <td>Pending</td>
+                            <td>
+                                <span class="status-label">Pending</span>
+                                <button onclick="closeAppeal(this)" class="close-btn">Close</button>
+                            </td>
+                        </tr>
+                        <tr data-status="Closed">
+                            <td>Appeal 2</td>
+                            <td>1</td>
+                            <td>
+                                <span class="status-label" style="color:red;">Closed</span>
+                                <button class="close-btn" disabled>Closed</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -339,5 +384,31 @@
                 }
             });
         }
+
+        // collapse thead appeal
+        function closeAppeal(button) {
+        const row = button.closest("tr");
+        const statusSpan = row.querySelector(".status-label");
+
+        statusSpan.innerText = "Closed";
+        statusSpan.style.color = "red";
+        row.setAttribute("data-status", "Closed");
+
+        button.disabled = true;
+        button.innerText = "Closed";
+
+        filterAppealsByStatus(); // Refresh filtering
+    }
+
+    //filter by open or close
+    function filterAppealsByStatus() {
+        const selected = document.getElementById("filterStatus").value;
+        const rows = document.querySelectorAll("tbody tr");
+
+        rows.forEach(row => {
+            const status = row.getAttribute("data-status");
+            row.style.display = (selected === "All" || selected === status) ? "" : "none";
+        });
+    }
     </script>
 </body>
