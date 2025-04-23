@@ -17,7 +17,7 @@ header {
 #toggle-button {
     background: none;
     border: none;
-    color: #004080;
+    color: #D97A7A;
     text-decoration: underline;
     cursor: pointer;
     font-size: 16px;
@@ -57,7 +57,7 @@ input {
 }
 
 .submit-btn {
-    background: #004080;
+    background: #D97A7A;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -75,7 +75,7 @@ input {
     right: 20px;
     background: none;
     border: none;
-    color: #004080;
+    color: #D97A7A;
     text-decoration: underline;
     cursor: pointer;
     font-size: 16px;

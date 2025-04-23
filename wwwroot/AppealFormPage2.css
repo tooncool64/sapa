@@ -23,7 +23,7 @@ h1 {
 }
 
 h2 {
-    background: #004080;
+    background: #D97A7A;
     color: white;
     padding: 10px;
     border-radius: 5px;
@@ -40,7 +40,7 @@ h2 {
     right: 20px;
     background: none;
     border: none;
-    color: #004080;
+    color: #D97A7A;
     text-decoration: underline;
     cursor: pointer;
     font-size: 16px;
@@ -112,7 +112,7 @@ h2 {
 }
 
 .upload-btn {
-    background-color: #007bff;
+    background-color: #D97A7A;
     color: white;
     padding: 8px 16px;
     border: none;
