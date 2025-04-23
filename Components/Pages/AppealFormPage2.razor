@@ -1,6 +1,9 @@
 ﻿@page "/appeal2"
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
+@inject IAppealFormService FormService
+@inject IAppealClosingDateService ClosingDateService
+@inject NavigationManager Navigation
 
 <PageTitle>Appeal Documentation</PageTitle>
 
@@ -13,7 +16,7 @@
     <h1 id="page-title">Reasons & Supporting Documentation for SAP Appeal</h1>
 
     <div class="card">
-        <h2 id="reason-1-title">1. Personal Illness or Injury (Physical and Mental Health)</h2>
+        <h2 id="reason-1-title">Personal Illness or Injury (Physical and Mental Health)</h2>
         <div class="subpoints">
             <p id="reason-1a">a. A detailed explanation of the medical circumstances including the date.</p>
             <p id="reason-1b">b. Supporting documentation.</p>
@@ -22,7 +25,7 @@
     </div>
 
     <div class="card">
-        <h2 id="reason-2-title">2. Illness of a Family Member</h2>
+        <h2 id="reason-2-title">Illness of a Family Member</h2>
         <div class="subpoints">
             <p id="reason-2a">a. A detailed explanation of the medical circumstances of the family member.</p>
             <p id="reason-2b">b. Supporting documentation.</p>
@@ -76,14 +79,29 @@
         </div>
     </div>
     
-    <div class="card">
-        <h2 id="important-info-title">Important Information</h2>
-        <p id="deadline-note" class="note">**DEADLINE** - YOUR appeal must be submitted prior to the mid-point of the term.</p>
-        <p id="mid-semester-warning">If your appeal is not received by mid-semester, it will not be reviewed, and you are responsible for paying your balance with out-of-pocket funds.</p>
-        <p id="additional-info">The Office of Financial Aid may require additional information.</p>
-        <p id="processing-warning">The Office of Financial Aid staff will not continue processing your appeal until the requested information has been received.</p>
-        <p id="contact-info">Contact the Office of Financial Aid for further assistance at <strong>finaid@stmartin.edu</strong></p>
+    <EditForm Model="@_page3Model" FormName="AppealForm3" OnValidSubmit="@HandleValidSubmit">
+    <div id="appeal-details" class="card">
+        <h2 id="appeal-details-heading">Appeal Explanation</h2>
+        <p id="appeal-details-text">
+            Please provide a statement explaining circumstances from the most recent completed semester to include but not limited to the following:
+        </p>
+        <ol id="appeal-details-list">
+            <li id="appeal-list-1">Any extenuating circumstances that led to your SAP status.</li>
+            <li id="appeal-list-2">How these circumstances affected your academic progress.</li>
+            <li id="appeal-list-3">Steps you have taken to overcome them.</li>
+            <li id="appeal-list-4">Your plan for future academic success.</li>
+        </ol>
+        <div class="form-group">
+            <InputTextArea @bind-Value="_page3Model.AppealExplanation"
+                           class="form-control"
+                           id="text-area"
+                           rows="6"
+                           placeholder="Write your explanation here..."
+            />
+            <ValidationMessage For="@(() => _page3Model.AppealExplanation)"/>
+        </div>
     </div>
+    </EditForm>
     
     <div class="documentation">
         <label id="documentation-label">
@@ -338,5 +356,28 @@
             isUploading = false;
             StateHasChanged();
         }
+    }
+}
+
+@code {
+    private AppealFormPart3 _page3Model = new();
+    private bool _loading = true;
+    private DateTime? _closingDate;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _page3Model.AppealExplanation = FormService.CurrentForm.AppealExplanation;
+        
+        _loading = false;
+    }
+    
+    private async Task HandleValidSubmit()
+    {
+        
+        FormService.UpdateForm(form => {
+                                           form.AppealExplanation = _page3Model.AppealExplanation;
+        });
+        
+        Navigation.NavigateTo("/appeal2");
     }
 }
