@@ -20,11 +20,17 @@ public class AppealFormPart2
 
     public bool ChangeMajor { get; set; } = false;
 
+    [Required(ErrorMessage = "Advisor email is required")]
+    [EmailAddress(ErrorMessage = "Enter a valid email address")]
+    [StMartinEmail]
+    public string AdvisorEmail { get; set; } = string.Empty;
+
     [Required(ErrorMessage = "At least one course is required per semester")]
     public List<SemesterCourseValid> Semester1Courses { get; set; } = new();
 
     [Required(ErrorMessage = "At least one course is required per semester")]
     public List<SemesterCourseValid> Semester2Courses { get; set; } = new();
+
 }
 
 public class SemesterCourseValid : CourseBase

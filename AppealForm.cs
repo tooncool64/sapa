@@ -25,6 +25,9 @@ public class AppealForm
     public string Status { get; set; } = "Pending"; // default for students
     
     public virtual List<AppealComment> Comments { get; set; } = new List<AppealComment>();
+    public string AdvisorEmail { get; set; } = string.Empty;
+    public string AdvisorApprovalStatus { get; set; } = "Pending";
+
 }
 
 public class CourseBase

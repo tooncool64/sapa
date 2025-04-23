@@ -220,7 +220,23 @@
                 </div>
             </div>
         </section>
-        
+
+        <section class="card">
+            <div class="card-header">
+                <h2>Advisor Information</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="advisorEmail">
+                        <span class="label-text">Advisor Email</span>
+                        <InputText @bind-Value="_page3Model.AdvisorEmail" class="form-control" placeholder="advisor@stmartin.edu" />
+                        <ValidationMessage For="@(() => _page3Model.AdvisorEmail)" />
+                    </label>
+                </div>
+            </div>
+        </section>
+
+
         <div class="form-actions">
             <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">
                 @if (_isSubmitting)
@@ -311,6 +327,8 @@
                 form.GPA = _page3Model.GPA;
                 form.DegreeHours = _page3Model.DegreeHours;
                 form.ChangeMajor = _page3Model.ChangeMajor;
+                form.AdvisorEmail = _page3Model.AdvisorEmail;
+
 
                 // Convert SemesterCourseValid objects back to SemesterCourse objects
                 form.Semester1Courses = _page3Model.Semester1Courses.Select(vc => new SemesterCourse
