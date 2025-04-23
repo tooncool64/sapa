@@ -75,7 +75,7 @@ input {
     right: 20px;
     background: none;
     border: none;
-    color: #D97A7A;
+    color: #004080;
     text-decoration: underline;
     cursor: pointer;
     font-size: 16px;
@@ -93,4 +93,8 @@ input {
 
 .checkbox-container input[type="checkbox"] {
     margin-right: 10px;
+}
+
+.button {
+    color: #D97A7A;
 }
