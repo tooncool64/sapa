@@ -19,7 +19,6 @@
     <nav class="sidebar">
         <ul>
             <li class="active"><a href="#" onclick="event.preventDefault(); showSection('dashboard')">Dashboard</a></li>
-            <li><a href="#" onclick="event.preventDefault(); showSection('appeals')">Appeals</a></li>
             <li><a href="#" onclick="event.preventDefault(); showSection('statusUpdate')">Status Update</a></li>
             <li><a href="#" onclick="event.preventDefault(); showSection('options')">Options</a></li>
         </ul>
@@ -28,21 +27,10 @@
         <section id="dashboard" class="section active">
             <h1>Dashboard</h1>
             <AppealCardInfo></AppealCardInfo>
-            <h2>Recent Submissions</h2>
-            <!-- Filter Dropdown -->
-            <label for="filterStatus"><strong>Filter by Status:</strong></label>
-            <select id="filterStatus" onchange="filterAppealsByStatus()">
-                <option value="All">All</option>
-                <option value="Pending">Pending</option>
-                <option value="Closed">Closed</option>
-            </select>
-        </section>
-            
-        <section id="appeals" class="section">
             <AppealsDashboard 
                 Title="Student Appeals Dashboard" 
                 OnAppealSelected="ViewAppealDetails" />
-
+            
             @code {
                 private void ViewAppealDetails(string appealId)
                 {
