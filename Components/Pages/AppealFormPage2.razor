@@ -167,17 +167,10 @@
                      }
 
                     @* --- Display Already Uploaded Files --- *@
-                    @if (FormService.CurrentForm.UploadedFileIdentifiers.Any())
+                    @if (FormService.CurrentForm.UploadedFiles.Any())
                     {
                         <div class="uploaded-files mt-3">
-                            <h5>Successfully uploaded documents:</h5>
-                            <ul>
-                                @foreach(var fileId in FormService.CurrentForm.UploadedFileIdentifiers)
-                                {
-                                    <li>@fileId</li>
-                                    @* Optionally add a "Remove" button here that calls a backend API to delete the file and removes the ID from FormService *@
-                                }
-                            </ul>
+                            <h5>Successfully uploaded documents.</h5>
                         </div>
                     }
 
@@ -207,8 +200,6 @@
 
     </div> @* End of container *@
     </body>
-} @* End of else block for open appeal period *@
-
 
 @code {
     // --- Models & State ---
@@ -316,13 +307,6 @@
                 continue; // Skip duplicate
             }
 
-    // 4. Check if already uploaded (based on name stored in FormService) - Optional but good UX
-            if (FormService.CurrentForm.UploadedFileIdentifiers.Any(id => id.Contains(file.Name, StringComparison.OrdinalIgnoreCase))) // Simple check, might need refinement
-            {
-                _uploadStatus = new UploadStatus { Success = false, Message = $"A file named '{file.Name}' (or similar) has already been uploaded." };
-                continue;
-            }
-
     // Add valid file to the list
             fileInfos.Add(new FileInfo
             {
@@ -350,103 +334,149 @@
         StateHasChanged();
     }
 
-    private async Task UploadSelectedFiles()
+ private async Task UploadSelectedFiles()
+{
+    // Guard clause: Don't upload if nothing is selected or already uploading
+    if (!fileInfos.Any() || isUploading)
     {
-        if (!fileInfos.Any() || isUploading) return;
+        return;
+    }
 
-        isUploading = true;
-        _uploadStatus = null; // Clear previous status
-        StateHasChanged();
+    isUploading = true;
+    _uploadStatus = null; // Clear previous status message
+    StateHasChanged(); // Update UI to show spinner/disable buttons
 
-        List<FileInfo> successfullyUploaded = new List<FileInfo>();
-        List<string> newlyUploadedIdentifiers = new List<string>(); // Store IDs from this batch
+    // List to track files successfully uploaded in THIS batch (for removing from selection)
+    var successfullyUploadedInBatch = new List<FileInfo>();
+    // List to collect the UploadedFileInfo objects (ID + Original Name) for THIS batch
+    var newlyUploadedFileInfos = new List<UploadedFileInfo>();
 
-        foreach (var fileInfo in fileInfos.ToList()) // Iterate over a copy in case we modify the list
+    // Iterate over a copy of the list, as we might modify the original list later
+    foreach (var fileInfo in fileInfos.ToList())
+    {
+        try
         {
-            try
+            // Create the multipart form data content
+            using var content = new MultipartFormDataContent();
+
+            // Open the file stream with the max size limit
+            // Use 'using' to ensure the stream is disposed correctly
+            using var stream = fileInfo.File.OpenReadStream(MaxFileSize);
+
+            // Create stream content from the file stream
+            using var streamContent = new StreamContent(stream);
+
+            // Add the stream content to the form data.
+            // "file" must match the parameter name expected by the API controller ([FromForm] IFormFile file)
+            // Pass the original filename, the API might use it or ignore it (ours ignores it for the saved name but needs it for metadata)
+            content.Add(streamContent, "file", fileInfo.FileName);
+
+            // *** Make the API call to the upload endpoint ***
+            var response = await Http.PostAsync(
+                "https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/api/upload", // Ensure this URL is correct
+                content);
+
+            // --- Process the response ---
+            if (response.IsSuccessStatusCode)
             {
-                using var content = new MultipartFormDataContent();
-    // Use OpenReadStream with max size
-                using var stream = fileInfo.File.OpenReadStream(MaxFileSize);
-                using var streamContent = new StreamContent(stream);
-                content.Add(streamContent, "file", fileInfo.FileName); // "file" must match the expected name in your API controller
-
-    // *** Make the API call ***
-                var response = await Http.PostAsync(
-                    "https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/api/upload", // Ensure this URL is correct
-                    content);
-
-                if (response.IsSuccessStatusCode)
+                // Read the response content as string
+                var responseContent = await response.Content.ReadAsStringAsync();
+                try
                 {
-    // --- Process Successful Upload ---
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    try
-                    {
-    // Deserialize the response to get the file identifier
-                        var uploadResponse = JsonSerializer.Deserialize<UploadResponse>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    // Deserialize the JSON response to get the file identifier
+                    // Use JsonSerializerOptions for case-insensitivity if needed
+                    var uploadResponse = JsonSerializer.Deserialize<UploadResponse>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-                        if (!string.IsNullOrWhiteSpace(uploadResponse?.FileId))
-                        {
-    // Add identifier to the list for this batch
-                            newlyUploadedIdentifiers.Add(uploadResponse.FileId);
-                            successfullyUploaded.Add(fileInfo); // Mark for removal from selection list
-                            _uploadStatus = new UploadStatus { Success = true, Message = $"Successfully uploaded: {fileInfo.FileName}" };
-                        }
-                        else
-                        {
-                            _uploadStatus = new UploadStatus { Success = false, Message = $"Upload succeeded for {fileInfo.FileName}, but server did not return a valid file identifier." };
-                            Console.Error.WriteLine($"Missing FileId in response for {fileInfo.FileName}. Response: {responseContent}");
-                        }
-                    }
-                    catch (JsonException jsonEx)
+                    // Check if the server returned a valid FileId
+                    if (!string.IsNullOrWhiteSpace(uploadResponse?.FileId))
                     {
-                        _uploadStatus = new UploadStatus { Success = false, Message = $"Upload succeeded for {fileInfo.FileName}, but failed to parse server response: {jsonEx.Message}" };
-                        Console.Error.WriteLine($"JSON Parsing Error for {fileInfo.FileName}: {jsonEx}. Response: {responseContent}");
+                        // SUCCESSFUL UPLOAD AND VALID RESPONSE
+
+                        // 1. Create the object holding both ID and Original Name
+                        var uploadedInfo = new UploadedFileInfo
+                        {
+                            FileId = uploadResponse.FileId,
+                            OriginalFileName = fileInfo.FileName // Store the original name
+                        };
+
+                        // 2. Add this info to the list for this batch
+                        newlyUploadedFileInfos.Add(uploadedInfo);
+
+                        // 3. Mark the original fileInfo (from the UI selection) for removal later
+                        successfullyUploadedInBatch.Add(fileInfo);
+
+                        // 4. Set temporary success status using the ORIGINAL filename
+                        _uploadStatus = new UploadStatus { Success = true, Message = $"Successfully uploaded: {fileInfo.FileName}" };
+                        Console.WriteLine($"Success: Uploaded '{fileInfo.FileName}' as '{uploadResponse.FileId}'");
+                    }
+                    else
+                    {
+                        // Upload succeeded (HTTP 200) but response format was wrong (missing FileId)
+                        _uploadStatus = new UploadStatus { Success = false, Message = $"Upload succeeded for {fileInfo.FileName}, but server did not return a valid file identifier." };
+                        Console.Error.WriteLine($"Missing FileId in response for {fileInfo.FileName}. Response: {responseContent}");
+                        // Do NOT add to newlyUploadedFileInfos or successfullyUploadedInBatch
                     }
                 }
-                else
+                catch (JsonException jsonEx)
                 {
-    // --- Process Failed Upload ---
-                    var errorContent = await response.Content.ReadAsStringAsync();
-                    _uploadStatus = new UploadStatus { Success = false, Message = $"Failed to upload {fileInfo.FileName}: {response.ReasonPhrase} - {errorContent}" };
-                    Console.Error.WriteLine($"Upload failed for {fileInfo.FileName}: {response.StatusCode} - {errorContent}");
-    // Keep the file in the selection list (fileInfos) so the user can retry or remove it.
+                    // Upload succeeded (HTTP 200) but the response wasn't valid JSON
+                    _uploadStatus = new UploadStatus { Success = false, Message = $"Upload succeeded for {fileInfo.FileName}, but failed to parse server response: {jsonEx.Message}" };
+                    Console.Error.WriteLine($"JSON Parsing Error for {fileInfo.FileName}: {jsonEx}. Response: {responseContent}");
+                    // Do NOT add to newlyUploadedFileInfos or successfullyUploadedInBatch
                 }
             }
-            catch (Exception ex) // Catch other errors like network issues, stream errors
+            else // Non-success status code (4xx, 5xx)
             {
-                _uploadStatus = new UploadStatus { Success = false, Message = $"Error uploading {fileInfo.FileName}: {ex.Message}" };
-                Console.Error.WriteLine($"Exception during upload of {fileInfo.FileName}: {ex}");
-    // Keep the file in the selection list (fileInfos)
+                // --- Process Failed Upload (HTTP Error) ---
+                var errorContent = await response.Content.ReadAsStringAsync();
+                _uploadStatus = new UploadStatus { Success = false, Message = $"Failed to upload {fileInfo.FileName}: {response.ReasonPhrase} - {errorContent}" };
+                Console.Error.WriteLine($"Upload failed for {fileInfo.FileName}: {response.StatusCode} - {errorContent}");
+                // File remains in the 'fileInfos' selection list for retry/removal by user
             }
-            finally
-            {
-                StateHasChanged(); // Update UI after each file attempt
-            }
-        } // End foreach loop
-
-    // --- Finalize after all files are attempted ---
-
-    // 1. Update FormService with NEWLY uploaded identifiers
-        if (newlyUploadedIdentifiers.Any())
-        {
-            FormService.UpdateForm(form =>
-            {
-    // Ensure the list exists before adding to it
-                form.UploadedFileIdentifiers ??= new List<string>();
-                form.UploadedFileIdentifiers.AddRange(newlyUploadedIdentifiers);
-            });
         }
+        catch (Exception ex) // Catch other errors (network, stream read, etc.)
+        {
+            _uploadStatus = new UploadStatus { Success = false, Message = $"Error uploading {fileInfo.FileName}: {ex.Message}" };
+            Console.Error.WriteLine($"Exception during upload of {fileInfo.FileName}: {ex}");
+            // File remains in the 'fileInfos' selection list
+        }
+        finally
+        {
+            // Update the UI after each file attempt to show progress/individual errors
+            StateHasChanged();
+        }
+    } // End foreach loop
 
-    // 2. Remove successfully uploaded files from the selection list
-        foreach (var uploadedFileInfo in successfullyUploaded)
+    // --- Finalize after attempting all selected files ---
+
+    // 1. Update the central FormService state ONLY with the files successfully uploaded in THIS batch
+    if (newlyUploadedFileInfos.Any())
+    {
+        FormService.UpdateForm(form =>
+        {
+            // Ensure the target list in the form service exists
+            form.UploadedFiles ??= new List<UploadedFileInfo>();
+            // Add the newly processed file information objects
+            form.UploadedFiles.AddRange(newlyUploadedFileInfos);
+        });
+        Console.WriteLine($"Added {newlyUploadedFileInfos.Count} file references to FormService.");
+    }
+
+    // 2. Remove the successfully uploaded files from the UI's *selection* list (`fileInfos`)
+    if (successfullyUploadedInBatch.Any())
+    {
+        foreach (var uploadedFileInfo in successfullyUploadedInBatch)
         {
             fileInfos.Remove(uploadedFileInfo);
         }
-
-        isUploading = false; // Re-enable upload button
-        StateHasChanged(); // Final UI update
+        Console.WriteLine($"Removed {successfullyUploadedInBatch.Count} files from the selection list.");
     }
+
+    // Reset the uploading flag
+    isUploading = false;
+    // Final UI update to reflect changes (upload finished, selection list updated)
+    StateHasChanged();
+}
 
     private async Task HandleValidSubmit()
     {
@@ -487,5 +517,4 @@
         if (fileName.Length <= maxLength) return fileName;
         return fileName.Substring(0, maxLength - 3) + "...";
     }
-
 }

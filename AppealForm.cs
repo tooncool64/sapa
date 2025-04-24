@@ -29,7 +29,7 @@ public class AppealForm
     
     public string AdvisorApprovalStatus { get; set; } = "Pending";
     
-    public List<string> UploadedFileIdentifiers { get; set; } = new List<string>();
+    public List<UploadedFileInfo> UploadedFiles { get; set; } = new List<UploadedFileInfo>();
 
 }
 
@@ -42,4 +42,10 @@ public class CourseBase
     public int CreditHours { get; set; }
     public bool IsRepeat { get; set; } = false;
     public bool IsRequiredForMajor { get; set; } = false;
+}
+
+public class UploadedFileInfo
+{
+    public string FileId { get; set; } = string.Empty;
+    public string OriginalFileName { get; set; } = string.Empty;
 }
