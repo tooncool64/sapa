@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace BlazorApp
+namespace BlazorApp.Services
 {
     public class AppealCardService
     {
@@ -14,13 +14,22 @@ namespace BlazorApp
         public async Task<Dictionary<string, int>> GetAppealCountsAsync()
         {
             using var context = await _contextFactory.CreateDbContextAsync();
-            
-            var appeals = await context.Appeals.ToListAsync();
-            
+
+            // Use CountAsync for better performance - queries the counts directly in the DB
+            var totalCount = await context.Appeals.CountAsync();
+            var pendingCount = await context.Appeals.CountAsync(a => a.Status == "Pending");
+            var approvedCount = await context.Appeals.CountAsync(a => a.Status == "Approved");
+            var deniedCount = await context.Appeals.CountAsync(a => a.Status == "Denied");
+            // Note: Assumes your Appeal entity has a string property named 'Status'
+            // and the possible values are exactly "Pending", "Approved", "Denied".
+            // Adjust the string values if your actual statuses differ.
+
             return new Dictionary<string, int>
             {
-                { "Total", appeals.Count },
-                { "Pending", appeals.Count(a => a.Status == "Pending") },
+                { "Total", totalCount },
+                { "Approved", approvedCount },
+                { "Denied", deniedCount },
+                { "Pending", pendingCount },
             };
         }
     }
