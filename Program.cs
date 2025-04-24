@@ -1,5 +1,6 @@
 using BlazorApp;
 using BlazorApp.Components;
+using BlazorApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
