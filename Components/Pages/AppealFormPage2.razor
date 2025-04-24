@@ -2,209 +2,235 @@
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
 @inject IAppealFormService FormService
-@inject IAppealClosingDateService ClosingDateService
 @inject NavigationManager Navigation
+@using System.Text.Json
 
 <PageTitle>Appeal Documentation</PageTitle>
 
-<head>
-    <link rel="stylesheet" href="AppealFormPage2.css"/>
-    <script src="AppealFormPage2.js"></script>
-</head>
-<body>
-<div class="container">
-    <h1 id="page-title">Reasons & Supporting Documentation for SAP Appeal</h1>
+    <head>
+        <link rel="stylesheet" href="AppealFormPage2.css"/>
+        <script src="AppealFormPage2.js"></script>
+    </head>
+    <body>
+    <div class="container">
+        <h1 id="page-title">Reasons & Supporting Documentation for SAP Appeal</h1>
 
-    <div class="card">
-        <h2 id="reason-1-title">Personal Illness or Injury (Physical and Mental Health)</h2>
-        <div class="subpoints">
-            <p id="reason-1a">a. A detailed explanation of the medical circumstances including the date.</p>
-            <p id="reason-1b">b. Supporting documentation.</p>
-            <p id="reason-1c">c. Documentation regarding what steps you've taken.</p>
+        @* ----- Existing Reason/Info Cards ----- *@
+        <div class="card">
+            <h2 id="reason-1-title">Personal Illness or Injury (Physical and Mental Health)</h2>
+            <div class="subpoints">
+                <p id="reason-1a">a. A detailed explanation of the medical circumstances including the date.</p>
+                <p id="reason-1b">b. Supporting documentation.</p>
+                <p id="reason-1c">c. Documentation regarding what steps you've taken.</p>
+            </div>
         </div>
-    </div>
 
-    <div class="card">
-        <h2 id="reason-2-title">Illness of a Family Member</h2>
-        <div class="subpoints">
-            <p id="reason-2a">a. A detailed explanation of the medical circumstances of the family member.</p>
-            <p id="reason-2b">b. Supporting documentation.</p>
-            <p id="reason-2c">c. Documentation regarding what steps you've taken.</p>
+        <div class="card">
+            <h2 id="reason-2-title">Illness of a Family Member</h2>
+            <div class="subpoints">
+                <p id="reason-2a">a. A detailed explanation of the medical circumstances of the family member.</p>
+                <p id="reason-2b">b. Supporting documentation.</p>
+                <p id="reason-2c">c. Documentation regarding what steps you've taken.</p>
+            </div>
         </div>
-    </div>
 
-    <div class="card">
-        <h2 id="reason-3-title">Death of a Family Member/ Roommate/ Close Friend</h2>
-        <div class="subpoints">
-            <p id="reason-3a">a. A detailed statement including the name of the deceased and their relationship.</p>
-            <p id="reason-3b">b. Supporting documentation.</p>
-            <p id="reason-3c">c. Documentation demonstrating your ability to return to classes.</p>
+        <div class="card">
+            <h2 id="reason-3-title">Death of a Family Member/ Roommate/ Close Friend</h2>
+            <div class="subpoints">
+                <p id="reason-3a">a. A detailed statement including the name of the deceased and their relationship.</p>
+                <p id="reason-3b">b. Supporting documentation.</p>
+                <p id="reason-3c">c. Documentation demonstrating your ability to return to classes.</p>
+            </div>
         </div>
-    </div>
 
-    <div class="card">
-        <h2 id="reason-4-title">Personal Crisis</h2>
-        <div class="subpoints">
-            <p id="reason-4a">a. A detailed explanation of the crisis including the date of occurrence, duration, and impact on coursework.</p>
-            <p id="reason-4b">b. Supporting documentation.</p>
-            <p id="reason-4c">c. Documentation regarding what steps you've taken to resolve the crisis.</p>
+        <div class="card">
+            <h2 id="reason-4-title">Personal Crisis</h2>
+            <div class="subpoints">
+                <p id="reason-4a">a. A detailed explanation of the crisis including the date of occurrence, duration, and impact on coursework.</p>
+                <p id="reason-4b">b. Supporting documentation.</p>
+                <p id="reason-4c">c. Documentation regarding what steps you've taken to resolve the crisis.</p>
+            </div>
         </div>
-    </div>
 
-    <div class="card">
-        <h2 id="reason-5-title">Other Circumstances Beyond Your Control</h2>
-        <div class="subpoints">
-            <p id="reason-5a">a. Provide documentation of extenuating circumstances beyond your control.</p>
-            <p id="reason-5b">b. Documentation supporting that your circumstances have either been resolved or are being managed.</p>
+        <div class="card">
+            <h2 id="reason-5-title">Other Circumstances Beyond Your Control</h2>
+            <div class="subpoints">
+                <p id="reason-5a">a. Provide documentation of extenuating circumstances beyond your control.</p>
+                <p id="reason-5b">b. Documentation supporting that your circumstances have either been resolved or are being managed.</p>
+            </div>
         </div>
-    </div>
 
-    <div class="card">
-        <h2 id="reason-6-title">Exceeded Maximum Hours for Degree Completion</h2>
-        <div class="subpoints">
-            <p id="reason-6a">a. A detailed explanation for exceeding the maximum hours required.</p>
-            <p id="reason-6b">b. A prescribed academic plan of work from an academic advisor.</p>
+        <div class="card">
+            <h2 id="reason-6-title">Exceeded Maximum Hours for Degree Completion</h2>
+            <div class="subpoints">
+                <p id="reason-6a">a. A detailed explanation for exceeding the maximum hours required.</p>
+                <p id="reason-6b">b. A prescribed academic plan of work from an academic advisor.</p>
+            </div>
         </div>
-    </div>
 
-    <div class="card">
-        <h2 id="required-documents-title">Required Supporting Documents</h2>
-        <p id="required-documents-text">Supporting documentation can be submitted below.</p>
-        <div class="subpoints">
-            <p id="medical-condition"><strong>Medical Condition:</strong> Submit a letter from your health care provider stating whether you are well enough to return.</p>
-            <p id="medical-note" class="note">**Do NOT send us your medical records.**</p>
-            <p id="maximum-time-frame"><strong>Maximum Time Frame:</strong> Submit documentation from your academic advisor confirming your graduation date.</p>
-            <p id="double-majors"><strong>Double Majors:</strong> If you are seeking two majors, documentation must come from BOTH advisors.</p>
-            <p id="other-reasons"><strong>Other:</strong> Submit documentation that proves each factor as noted as influencing your academics.</p>
+        <div class="card">
+            <h2 id="required-documents-title">Required Supporting Documents</h2>
+            <p id="required-documents-text">Supporting documentation can be submitted below.</p>
+            <div class="subpoints">
+                <p id="medical-condition"><strong>Medical Condition:</strong> Submit a letter from your health care provider stating whether you are well enough to return.</p>
+                <p id="medical-note" class="note">**Do NOT send us your medical records.**</p>
+                <p id="maximum-time-frame"><strong>Maximum Time Frame:</strong> Submit documentation from your academic advisor confirming your graduation date.</p>
+                <p id="double-majors"><strong>Double Majors:</strong> If you are seeking two majors, documentation must come from BOTH advisors.</p>
+                <p id="other-reasons"><strong>Other:</strong> Submit documentation that proves each factor as noted as influencing your academics.</p>
+            </div>
         </div>
-    </div>
-    
-    <EditForm Model="@_page3Model" FormName="AppealForm3" OnValidSubmit="@HandleValidSubmit">
-    <div id="appeal-details" class="card">
-        <h2 id="appeal-details-heading">Appeal Explanation</h2>
-        <p id="appeal-details-text">
-            Please provide a statement explaining circumstances from the most recent completed semester to include but not limited to the following:
-        </p>
-        <ol id="appeal-details-list">
-            <li id="appeal-list-1">Any extenuating circumstances that led to your SAP status.</li>
-            <li id="appeal-list-2">How these circumstances affected your academic progress.</li>
-            <li id="appeal-list-3">Steps you have taken to overcome them.</li>
-            <li id="appeal-list-4">Your plan for future academic success.</li>
-        </ol>
-        <div class="form-group">
-            <InputTextArea @bind-Value="_page3Model.AppealExplanation"
-                           class="form-control"
-                           id="text-area"
-                           rows="6"
-                           placeholder="Write your explanation here..."
-            />
-            <ValidationMessage For="@(() => _page3Model.AppealExplanation)"/>
-        </div>
-    </div>
-    </EditForm>
-    
-    <div class="documentation">
-        <label id="documentation-label">
-            <span class="label-text">
-                Official documentation supporting your extenuating circumstance(s):
-            </span>
-        </label>
-        <p id="documentation-description">
-            The only acceptable forms of documentation are PDF and Word.
-        </p>
-    </div>
 
-    <div class="file-upload-container">
-        <div class="file-input-wrapper">
-            @foreach (var inputFileId in inputFileIds)
-            {
-                <InputFile OnChange="@(e => HandleFileSelection(e, inputFileId))" 
-                           multiple 
-                           accept=".pdf, .docx" 
-                           id="@inputFileId" 
-                           style="display: none;" />
-            }
-            
-            <button @onclick="AddNewFiles" class="file-select-btn">
-                Select PDF or Word documents
-            </button>
-            
-            @if (fileInfos.Count > 0)
-            {
-                <div class="selected-files">
-                    @foreach (var fileInfo in fileInfos)
+        @* ----- EditForm for Explanation and Submit Button ----- *@
+        <EditForm Model="@_page2Model" FormName="AppealForm2" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator /> @* <-- Added validator for AppealExplanation *@
+
+            <div id="appeal-details" class="card">
+                <h2 id="appeal-details-heading">Appeal Explanation</h2>
+                <p id="appeal-details-text">
+                    Please provide a statement explaining circumstances from the most recent completed semester to include but not limited to the following:
+                </p>
+                <ol id="appeal-details-list">
+                    <li id="appeal-list-1">Any extenuating circumstances that led to your SAP status.</li>
+                    <li id="appeal-list-2">How these circumstances affected your academic progress.</li>
+                    <li id="appeal-list-3">Steps you have taken to overcome them.</li>
+                    <li id="appeal-list-4">Your plan for future academic success.</li>
+                </ol>
+                <div class="form-group">
+                    <InputTextArea @bind-Value="_page2Model.AppealExplanation"
+                                   class="form-control"
+                                   id="text-area"
+                                   rows="6"
+                                   placeholder="Write your explanation here..." />
+                    <ValidationMessage For="@(() => _page2Model.AppealExplanation)" />
+                </div>
+            </div>
+
+            @* ----- File Upload Section (Inside EditForm if validation depends on it, otherwise can be outside) ----- *@
+            <div class="card">
+                <h2 id="upload-heading">Upload Supporting Documentation</h2>
+                 <div class="documentation">
+                     <label id="documentation-label">
+                         <span class="label-text">
+                             Official documentation supporting your extenuating circumstance(s):
+                         </span>
+                     </label>
+                     <p id="documentation-description">
+                         The only acceptable forms of documentation are PDF and Word (.pdf, .docx). Max file size: 10MB.
+                     </p>
+                 </div>
+
+                 <div class="file-upload-container mb-3">
+                     <div class="file-input-wrapper">
+                         @* --- Hidden Inputs for triggering file selection --- *@
+                         @foreach (var inputFileId in inputFileIds)
+                         {
+                             <InputFile OnChange="@(e => HandleFileSelection(e, inputFileId))"
+                                        multiple
+                                        accept=".pdf, .docx"
+                                        id="@inputFileId"
+                                        style="display: none;" />
+                         }
+
+                         <button type="button" @onclick="TriggerFileInput" class="btn btn-secondary me-2">
+                             Select Files
+                         </button>
+
+                         <button type="button" class="btn btn-primary" @onclick="UploadSelectedFiles" disabled="@(isUploading || fileInfos.Count == 0)">
+                             @if (isUploading)
+                             {
+                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                 <span> Uploading...</span>
+                             }
+                             else
+                             {
+                                 <span>Upload Selected Files</span>
+                             }
+                         </button>
+                     </div>
+
+                    @* --- Display Selected Files (Ready for Upload) --- *@
+                     @if (fileInfos.Count > 0)
+                     {
+                         <div class="selected-files mt-3">
+                             <h5>Files selected for upload:</h5>
+                             @foreach (var fileInfo in fileInfos)
+                             {
+                                 <div class="file-thumbnail">
+                                     <button type="button" class="remove-file" title="Remove selection" @onclick="() => RemoveFile(fileInfo)">×</button>
+                                     <div class="file-icon">
+                                         @if (fileInfo.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase)) { <span>📄</span> }
+                                         else if (fileInfo.FileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase)) { <span>📝</span> }
+                                     </div>
+                                     <div class="file-name" title="@fileInfo.FileName">@TruncateFileName(fileInfo.FileName)</div>
+                                 </div>
+                             }
+                         </div>
+                     }
+
+                    @* --- Display Already Uploaded Files --- *@
+                    @if (FormService.CurrentForm.UploadedFileIdentifiers.Any())
                     {
-                        <div class="file-thumbnail">
-                            <button class="remove-file" @onclick="() => RemoveFile(fileInfo)">×</button>
-                            <div class="file-icon">
-                                @if (fileInfo.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                        <div class="uploaded-files mt-3">
+                            <h5>Successfully uploaded documents:</h5>
+                            <ul>
+                                @foreach(var fileId in FormService.CurrentForm.UploadedFileIdentifiers)
                                 {
-                                    <span>📄</span>
+                                    <li>@fileId</li>
+                                    @* Optionally add a "Remove" button here that calls a backend API to delete the file and removes the ID from FormService *@
                                 }
-                                else if (fileInfo.FileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    <span>📝</span>
-                                }
-                            </div>
-                            <div class="file-name">@fileInfo.FileName</div>
+                            </ul>
                         </div>
                     }
-                </div>
-                <button class="upload-btn" @onclick="UploadSelectedFiles" disabled="@isUploading">
-                    @if (isUploading)
-                    {
-                        <span>Uploading...</span>
-                    }
-                    else
-                    {
-                        <span>Upload Selected Files</span>
-                    }
-                </button>
-            }
-        </div>
-    </div>
 
-    <div class="card">
-        <p id="final-note"><strong>Note:</strong> Appeals submitted for reasons above will be reviewed on a case-by-case basis. Appeals are not automatically approved for any of the above reasons but are reviewed based on circumstances, documented academic history, and academic success potential.</p>
-    </div>
 
-    <!-- Language Toggle Button -->
-    <button id="toggle-button" class="lang-toggle" onclick="toggleLanguage()">Español</button>
-
-    <!--Test Div -->
-    <div class="mt-3">
-        @if (_uploadStatus != null)
-        {
-            <div class="@(_uploadStatus.Success ? "text-success" : "text-danger")">
-                @_uploadStatus.Message
+                     @* --- Upload Status Message --- *@
+                     <div class="mt-3">
+                         @if (_uploadStatus != null)
+                         {
+                             <div class="@(_uploadStatus.Success ? "text-success" : "text-danger")">
+                                 @_uploadStatus.Message
+                             </div>
+                         }
+                     </div>
+                 </div>
             </div>
-        }
-    </div>
 
-    <div class="card">
-        <NavLink href="/appeal3"><button>Next Page</button></NavLink>
-    </div>
-</div>
-</body>
+             @* --- Navigation Buttons --- *@
+             <div class="form-actions mt-3 d-flex justify-content-between">
+                 <button type="button" class="btn btn-secondary" @onclick="NavigateBack">Back</button>
+                 <button type="submit" id="submit-button" class="btn btn-primary">Next</button>
+             </div>
+
+        </EditForm> @* <-- End of EditForm *@
+
+        <!-- Language Toggle Button -->
+        <button id="toggle-button" class="lang-toggle" onclick="toggleLanguage()">Español</button>
+
+    </div> @* End of container *@
+    </body>
+} @* End of else block for open appeal period *@
+
 
 @code {
+    // --- Models & State ---
+    private AppealFormPart3 _page2Model = new();
+    private bool _loading = true;
+    private bool _isAppealPeriodOpen;
+    private DateTime? _closingDate;
     private UploadStatus? _uploadStatus;
     private bool isUploading = false;
-    private int nextInputId = 0;
-    private List<string> inputFileIds = new List<string>();
     private List<FileInfo> fileInfos = new List<FileInfo>();
-    
+    private List<string> inputFileIds = new List<string>();
+    private int nextInputId = 0;
+        private const long MaxFileSize = 10 * 1024 * 1024; // 10 MB
+
+    // --- Helper Classes ---
     private class FileInfo
     {
         public string InputId { get; set; } = "";
         public string FileName { get; set; } = "";
         public IBrowserFile File { get; set; } = null!;
-    }
-
-    protected override void OnInitialized()
-    {
-        // Create initial input
-        inputFileIds.Add($"file-input-{nextInputId++}");
+        public long Size => File?.Size ?? 0; // Helper for size check
     }
 
     private class UploadStatus
@@ -213,171 +239,256 @@
         public string Message { get; set; } = "";
     }
 
-    private void AddNewFiles()
+    // --- Class to deserialize the expected API response ---
+    private class UploadResponse
     {
-        // Generate a new unique ID for the input
-        string newInputId = $"file-input-{nextInputId++}";
-        inputFileIds.Add(newInputId);
-        
-        // Force UI to update first
-        StateHasChanged();
-        
-        // Then trigger click on the new input
-        InvokeAsync(async () => 
+    // Property name must match the JSON key returned by the API
+        public string? FileId { get; set; }
+    }
+
+    // --- Lifecycle Methods ---
+    protected override async Task OnInitializedAsync()
+    {
+    // Load data from FormService into the local model
+        _page2Model.AppealExplanation = FormService.CurrentForm.AppealExplanation;
+    // Note: UploadedFileIdentifiers are already in FormService.CurrentForm, no need to copy locally unless displaying differently
+
+    // Create initial hidden file input
+        AddFileInputId();
+
+        _loading = false;
+        await base.OnInitializedAsync(); // Use base method
+    }
+
+    // --- Event Handlers & Methods ---
+
+    private void AddFileInputId()
+    {
+        inputFileIds.Add($"file-input-{nextInputId++}");
+    }
+
+    private string GetLatestInputFileId()
+    {
+        if (!inputFileIds.Any()) AddFileInputId();
+        return inputFileIds.Last();
+    }
+
+    private async Task TriggerFileInput()
+    {
+    // Ensure there's an input ID ready
+        string targetInputId = GetLatestInputFileId();
+        try
         {
-            await Task.Delay(10); // Small delay to ensure DOM is updated
-            await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('{newInputId}').click()");
-        });
+            await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('{targetInputId}').click()");
+        }
+        catch (Exception ex)
+        {
+    // Handle potential JS interop errors
+            _uploadStatus = new UploadStatus { Success = false, Message = $"Error triggering file input: {ex.Message}" };
+            Console.WriteLine($"Error triggering file input: {ex.Message}"); // Log error
+        }
     }
 
     private void HandleFileSelection(InputFileChangeEventArgs e, string inputId)
     {
-        foreach (var file in e.GetMultipleFiles())
+        _uploadStatus = null; // Clear previous status messages
+        bool fileAdded = false;
+
+        foreach (var file in e.GetMultipleFiles(int.MaxValue)) // Allow selecting many files at once
         {
-            // Check if file type is .pdf or .docx
-            if (file.Name.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) || 
-                file.Name.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
+    // 1. Validate File Type
+            string? extension = Path.GetExtension(file.Name)?.ToLowerInvariant();
+            if (extension != ".pdf" && extension != ".docx")
             {
-                // Check for duplicate file names
-                if (!fileInfos.Any(f => f.FileName == file.Name))
-                {
-                    fileInfos.Add(new FileInfo 
-                    { 
-                        InputId = inputId,
-                        FileName = file.Name,
-                        File = file
-                    });
-                }
-                else
-                {
-                    _uploadStatus = new UploadStatus
-                    {
-                        Success = false,
-                        Message = $"File with name '{file.Name}' is already selected."
-                    };
-                }
+                _uploadStatus = new UploadStatus { Success = false, Message = $"Invalid file type: '{file.Name}'. Only PDF and Word documents are accepted." };
+                continue; // Skip this file
             }
-            else
+
+    // 2. Validate File Size
+            if (file.Size > MaxFileSize)
             {
-                _uploadStatus = new UploadStatus
-                {
-                    Success = false,
-                    Message = $"Invalid file type: {file.Name}. Only PDF and Word documents are accepted."
-                };
+                _uploadStatus = new UploadStatus { Success = false, Message = $"File '{file.Name}' is too large ({FormatFileSize(file.Size)}). Maximum size is {FormatFileSize(MaxFileSize)}." };
+                continue; // Skip this file
             }
+
+    // 3. Check for Duplicates (based on name in the current selection)
+            if (fileInfos.Any(f => f.FileName.Equals(file.Name, StringComparison.OrdinalIgnoreCase)))
+            {
+    // Optionally inform the user or just ignore the duplicate
+                Console.WriteLine($"File '{file.Name}' is already selected.");
+                continue; // Skip duplicate
+            }
+
+    // 4. Check if already uploaded (based on name stored in FormService) - Optional but good UX
+            if (FormService.CurrentForm.UploadedFileIdentifiers.Any(id => id.Contains(file.Name, StringComparison.OrdinalIgnoreCase))) // Simple check, might need refinement
+            {
+                _uploadStatus = new UploadStatus { Success = false, Message = $"A file named '{file.Name}' (or similar) has already been uploaded." };
+                continue;
+            }
+
+    // Add valid file to the list
+            fileInfos.Add(new FileInfo
+            {
+                InputId = inputId, // Keep track of which input triggered it (less relevant now)
+                FileName = file.Name,
+                File = file
+            });
+            fileAdded = true;
         }
-        
-        StateHasChanged();
+
+        if (fileAdded)
+        {
+    // Create a new hidden input for the *next* selection action
+    // This helps avoid issues if the user selects files, then immediately selects more *without* uploading first.
+            AddFileInputId();
+        }
+
+        StateHasChanged(); // Update UI to show selected files
     }
 
-    private void RemoveFile(FileInfo fileInfo)
+    private void RemoveFile(FileInfo fileInfoToRemove)
     {
-        fileInfos.Remove(fileInfo);
-        
-        if (fileInfos.Count == 0)
-        {
-            _uploadStatus = null;
-        }
-        
+        fileInfos.Remove(fileInfoToRemove);
+        _uploadStatus = null; // Clear status when a file is removed from selection
         StateHasChanged();
     }
 
     private async Task UploadSelectedFiles()
     {
-        if (fileInfos.Count == 0) return;
+        if (!fileInfos.Any() || isUploading) return;
 
-        try
+        isUploading = true;
+        _uploadStatus = null; // Clear previous status
+        StateHasChanged();
+
+        List<FileInfo> successfullyUploaded = new List<FileInfo>();
+        List<string> newlyUploadedIdentifiers = new List<string>(); // Store IDs from this batch
+
+        foreach (var fileInfo in fileInfos.ToList()) // Iterate over a copy in case we modify the list
         {
-            isUploading = true;
-            _uploadStatus = null;
-            StateHasChanged();
-
-            List<FileInfo> successfullyUploaded = new List<FileInfo>();
-
-            foreach (var fileInfo in fileInfos.ToList())
+            try
             {
-                try
+                using var content = new MultipartFormDataContent();
+    // Use OpenReadStream with max size
+                using var stream = fileInfo.File.OpenReadStream(MaxFileSize);
+                using var streamContent = new StreamContent(stream);
+                content.Add(streamContent, "file", fileInfo.FileName); // "file" must match the expected name in your API controller
+
+    // *** Make the API call ***
+                var response = await Http.PostAsync(
+                    "https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/api/upload", // Ensure this URL is correct
+                    content);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    var content = new MultipartFormDataContent();
-                    var stream = fileInfo.File.OpenReadStream(10_000_000);
-                    var streamContent = new StreamContent(stream);
-                    content.Add(streamContent, "file", fileInfo.FileName);
-
-                    var response = await Http.PostAsync(
-                        "https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/api/upload",
-                        content);
-
+    // --- Process Successful Upload ---
                     var responseContent = await response.Content.ReadAsStringAsync();
-
-                    if (!response.IsSuccessStatusCode)
+                    try
                     {
-                        throw new Exception($"Upload failed: {response.StatusCode} - {responseContent}");
+    // Deserialize the response to get the file identifier
+                        var uploadResponse = JsonSerializer.Deserialize<UploadResponse>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                        if (!string.IsNullOrWhiteSpace(uploadResponse?.FileId))
+                        {
+    // Add identifier to the list for this batch
+                            newlyUploadedIdentifiers.Add(uploadResponse.FileId);
+                            successfullyUploaded.Add(fileInfo); // Mark for removal from selection list
+                            _uploadStatus = new UploadStatus { Success = true, Message = $"Successfully uploaded: {fileInfo.FileName}" };
+                        }
+                        else
+                        {
+                            _uploadStatus = new UploadStatus { Success = false, Message = $"Upload succeeded for {fileInfo.FileName}, but server did not return a valid file identifier." };
+                            Console.Error.WriteLine($"Missing FileId in response for {fileInfo.FileName}. Response: {responseContent}");
+                        }
                     }
-
-                    _uploadStatus = new UploadStatus
+                    catch (JsonException jsonEx)
                     {
-                        Success = true,
-                        Message = $"Successfully uploaded {fileInfo.FileName}"
-                    };
-                    
-                    // Track successfully uploaded files
-                    successfullyUploaded.Add(fileInfo);
+                        _uploadStatus = new UploadStatus { Success = false, Message = $"Upload succeeded for {fileInfo.FileName}, but failed to parse server response: {jsonEx.Message}" };
+                        Console.Error.WriteLine($"JSON Parsing Error for {fileInfo.FileName}: {jsonEx}. Response: {responseContent}");
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    _uploadStatus = new UploadStatus
-                    {
-                        Success = false,
-                        Message = $"Failed to upload {fileInfo.FileName}: {ex.Message}"
-                    };
-                }
-                finally
-                {
-                    StateHasChanged();
+    // --- Process Failed Upload ---
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    _uploadStatus = new UploadStatus { Success = false, Message = $"Failed to upload {fileInfo.FileName}: {response.ReasonPhrase} - {errorContent}" };
+                    Console.Error.WriteLine($"Upload failed for {fileInfo.FileName}: {response.StatusCode} - {errorContent}");
+    // Keep the file in the selection list (fileInfos) so the user can retry or remove it.
                 }
             }
-            
-            // Remove only the successfully uploaded files
-            foreach (var fileInfo in successfullyUploaded)
+            catch (Exception ex) // Catch other errors like network issues, stream errors
             {
-                fileInfos.Remove(fileInfo);
+                _uploadStatus = new UploadStatus { Success = false, Message = $"Error uploading {fileInfo.FileName}: {ex.Message}" };
+                Console.Error.WriteLine($"Exception during upload of {fileInfo.FileName}: {ex}");
+    // Keep the file in the selection list (fileInfos)
             }
-        }
-        catch (Exception ex)
-        {
-            _uploadStatus = new UploadStatus
+            finally
             {
-                Success = false,
-                Message = $"Error processing files: {ex.Message}"
-            };
-        }
-        finally
-        {
-            isUploading = false;
-            StateHasChanged();
-        }
-    }
-}
+                StateHasChanged(); // Update UI after each file attempt
+            }
+        } // End foreach loop
 
-@code {
-    private AppealFormPart3 _page3Model = new();
-    private bool _loading = true;
-    private DateTime? _closingDate;
-    
-    protected override async Task OnInitializedAsync()
-    {
-        _page3Model.AppealExplanation = FormService.CurrentForm.AppealExplanation;
-        
-        _loading = false;
+    // --- Finalize after all files are attempted ---
+
+    // 1. Update FormService with NEWLY uploaded identifiers
+        if (newlyUploadedIdentifiers.Any())
+        {
+            FormService.UpdateForm(form =>
+            {
+    // Ensure the list exists before adding to it
+                form.UploadedFileIdentifiers ??= new List<string>();
+                form.UploadedFileIdentifiers.AddRange(newlyUploadedIdentifiers);
+            });
+        }
+
+    // 2. Remove successfully uploaded files from the selection list
+        foreach (var uploadedFileInfo in successfullyUploaded)
+        {
+            fileInfos.Remove(uploadedFileInfo);
+        }
+
+        isUploading = false; // Re-enable upload button
+        StateHasChanged(); // Final UI update
     }
-    
+
     private async Task HandleValidSubmit()
     {
-        
-        FormService.UpdateForm(form => {
-                                           form.AppealExplanation = _page3Model.AppealExplanation;
+
+    // Update the form service with the explanation text
+        FormService.UpdateForm(form =>
+        {
+            form.AppealExplanation = _page2Model.AppealExplanation;
+    // UploadedFileIdentifiers were already added during the UploadSelectedFiles process
         });
-        
-        Navigation.NavigateTo("/appeal2");
+
+    // Navigate to the next page
+        Navigation.NavigateTo("/appeal3"); // Assuming there is an AppealFormPage3
     }
+
+    private void NavigateBack()
+    {
+        Navigation.NavigateTo("/appeal"); // Navigate back to the first page
+    }
+
+    // Helper to format file size for display
+    private string FormatFileSize(long bytes)
+    {
+        var units = new[] { "B", "KB", "MB", "GB", "TB" };
+        int i = 0;
+        double size = bytes;
+        while (size >= 1024 && i < units.Length - 1)
+        {
+            size /= 1024;
+            i++;
+        }
+        return $"{size:0.##} {units[i]}";
+    }
+
+    // Helper to truncate long filenames
+    private string TruncateFileName(string fileName, int maxLength = 30)
+    {
+        if (fileName.Length <= maxLength) return fileName;
+        return fileName.Substring(0, maxLength - 3) + "...";
+    }
+
 }

@@ -26,7 +26,10 @@ public class AppealForm
     
     public virtual List<AppealComment> Comments { get; set; } = new List<AppealComment>();
     public string AdvisorEmail { get; set; } = string.Empty;
+    
     public string AdvisorApprovalStatus { get; set; } = "Pending";
+    
+    public List<string> UploadedFileIdentifiers { get; set; } = new List<string>();
 
 }
 
