@@ -6,7 +6,6 @@
 @using System.Text.Json
 
 <PageTitle>Appeal Documentation</PageTitle>
-
     <head>
         <link rel="stylesheet" href="AppealFormPage2.css"/>
         <script src="AppealFormPage2.js"></script>
@@ -214,7 +213,6 @@
 @code {
     // --- Models & State ---
     private AppealFormPart3 _page2Model = new();
-    private bool _loading = true;
     private bool _isAppealPeriodOpen;
     private DateTime? _closingDate;
     private UploadStatus? _uploadStatus;
@@ -255,8 +253,7 @@
 
     // Create initial hidden file input
         AddFileInputId();
-
-        _loading = false;
+        
         await base.OnInitializedAsync(); // Use base method
     }
 
