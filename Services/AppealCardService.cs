@@ -19,7 +19,7 @@ namespace BlazorApp.Services
             var totalCount = await context.Appeals.CountAsync();
             var pendingCount = await context.Appeals.CountAsync(a => a.Status == "Pending");
             var approvedCount = await context.Appeals.CountAsync(a => a.Status == "Approved");
-            var deniedCount = await context.Appeals.CountAsync(a => a.Status == "Denied");
+            var rejectedCount = await context.Appeals.CountAsync(a => a.Status == "Rejected");
             // Note: Assumes your Appeal entity has a string property named 'Status'
             // and the possible values are exactly "Pending", "Approved", "Denied".
             // Adjust the string values if your actual statuses differ.
@@ -28,7 +28,7 @@ namespace BlazorApp.Services
             {
                 { "Total", totalCount },
                 { "Approved", approvedCount },
-                { "Denied", deniedCount },
+                { "Rejected", rejectedCount },
                 { "Pending", pendingCount },
             };
         }
