@@ -19,7 +19,6 @@
     <nav class="sidebar">
         <ul>
             <li class="active"><a href="#" onclick="event.preventDefault(); showSection('dashboard')">Dashboard</a></li>
-            <li><a href="#" onclick="event.preventDefault(); showSection('statusUpdate')">Status Update</a></li>
             <li><a href="#" onclick="event.preventDefault(); showSection('options')">Options</a></li>
         </ul>
     </nav>
@@ -37,21 +36,10 @@
                 }
             }
         </section>
-            
-        <section id="statusUpdate" class="section">
-            <h1>Status Updates</h1>
-            <button class="accordion">Update 1</button>
-            <div class="panel">
-                <p>Status update details...</p>
-            </div>
-            <button class="accordion">Update 2</button>
-            <div class="panel">
-                <p>Status update details...</p>
-            </div>
-        </section>
-                <section id="options" class="section">
-                    <AppealSystemConfiguration></AppealSystemConfiguration>
-                    </section>
+
+        <section id="options" class="section">
+            <AppealSystemConfiguration></AppealSystemConfiguration>
+            </section>
     </main>
 </div>
 
