@@ -1,11 +1,116 @@
 ﻿@page "/advisor"
-@using Microsoft.AspNetCore.Authorization
-<!--- "at"attribute [Authorize(Roles = "Advisor")] --->
+@inject NavigationManager Navigation
+@inject CosmosContext DbContext
 
 <PageTitle>Advisor Dashboard</PageTitle>
 
 <h3>Advisor Page</h3>
 
-<p>Only users in the Advisor role can view this page.</p>
+<!-- Loading state -->
+@if (isLoading)
+{
+    <p>Loading student information...</p>
+}
+<!-- Error state -->
+else if (isError)
+{
+    <p style="color:red;">Error loading academic plan.</p>
+}
+<!-- If form is successfully loaded -->
+else if (form != null)
+{
+    <div class="card">
+        <h4>Student Academic Plan</h4>
+        <p><strong>Student Name:</strong> @form.Name</p>
+        <p><strong>Student ID:</strong> @form.StudentId</p>
+        <p><strong>Degree Program:</strong> @form.DegreeProgram</p>
+        <p><strong>Expected Graduation:</strong> @form.GradDate?.ToShortDateString()</p>
+        <p><strong>Current GPA:</strong> @form.GPA</p>
 
-<p>As of 3/25/25, work on this page has not been done. The message above and this message are purely placeholders.</p> 
+        <!-- Semester 1 Courses -->
+        <h5>Semester 1 Courses</h5>
+        <ul>
+            @foreach (var course in form.Semester1Courses)
+            {
+                <li>@course.CourseNumber - @course.CourseName (@course.CreditHours credits)</li>
+            }
+        </ul>
+
+        <!-- Semester 2 Courses -->
+        <h5>Semester 2 Courses</h5>
+        <ul>
+            @foreach (var course in form.Semester2Courses)
+            {
+                <li>@course.CourseNumber - @course.CourseName (@course.CreditHours credits)</li>
+            }
+        </ul>
+
+        <!-- Approve and Reject buttons -->
+        <div class="approval-buttons" style="margin-top:20px;">
+            <button class="btn btn-success" @onclick="ApprovePlan">Approve</button>
+            <button class="btn btn-danger" @onclick="RejectPlan">Reject</button>
+        </div>
+    </div>
+}
+<!-- If no ID was provided in URL -->
+else
+{
+    <p>No student plan to review. Please check the link provided in your email.</p>
+}
+
+@code {
+    private AppealForm? form;            // Holds the student form loaded from Cosmos DB
+    private bool isLoading = true;        // True when loading data
+    private bool isError = false;         // True if error loading data
+
+    // Runs when page is first loaded
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+
+        // Try to get the 'id' parameter from the URL query string
+        if (Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query).TryGetValue("id", out var id))
+        {
+            try
+            {
+                // Load the AppealForm from Cosmos DB by Id
+                form = await DbContext.Appeals.FindAsync(id.ToString());
+                isLoading = false;
+            }
+            catch
+            {
+                // If error during fetch
+                isError = true;
+                isLoading = false;
+            }
+        }
+        else
+        {
+            // No id provided in URL
+            isError = true;
+            isLoading = false;
+        }
+    }
+
+    // Approve the student's plan
+    private async Task ApprovePlan()
+    {
+        if (form != null)
+        {
+            form.AdvisorApprovalStatus = "Approved";       // Update approval status
+            await DbContext.SaveChangesAsync();             // Save changes to Cosmos DB
+            Navigation.NavigateTo("/advisor-thankyou");     // Redirect to thank you page
+        }
+    }
+
+    // Reject the student's plan
+    private async Task RejectPlan()
+    {
+        if (form != null)
+        {
+            form.AdvisorApprovalStatus = "Rejected";        // Update approval status
+            await DbContext.SaveChangesAsync();             // Save changes to Cosmos DB
+            Navigation.NavigateTo("/advisor-thankyou");     // Redirect to thank you page
+        }
+    }
+}
