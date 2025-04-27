@@ -299,6 +299,41 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-12">
+                                                            <div class="card border-0 bg-light rounded-3">
+                                                                <div class="card-body">
+                                                                    <h4 class="fs-5 mb-3 d-flex align-items-center">
+                                                                        <i class="oi oi-folder me-2 text-primary"></i> Uploaded Documents
+                                                                    </h4>
+                                                                    @if (appeal.UploadedFiles == null || !appeal.UploadedFiles.Any())
+                                                                    {
+                                                                        <div class="alert alert-light mb-0">No documents were uploaded with this appeal.</div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <ul class="list-group list-group-flush bg-white rounded-3">
+                                                                            @foreach (var fileInfo in appeal.UploadedFiles)
+                                                                            {
+                                                                                <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-2">
+                                                                                    <span>
+                                                                                        <i class="oi oi-document me-2 text-muted"></i>
+                                                                                        @fileInfo.OriginalFileName
+                                                                                    </span>
+                                                                                    <a href="@GetDownloadUrl(fileInfo.FileId)" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                                                                        <i class="oi oi-data-transfer-download me-1"></i> Download
+                                                                                    </a>
+                                                                                    @* Alternative: Button triggering a method - useful if more complex logic is needed later
+                                                                                    <button class="btn btn-sm btn-outline-primary rounded-pill px-3" @onclick="() => DownloadFile(fileInfo.FileId)">
+                                                                                        <i class="oi oi-data-transfer-download me-1"></i> Download
+                                                                                    </button>
+                                                                                    *@
+                                                                                </li>
+                                                                            }
+                                                                        </ul>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
                         </div>
                     </div>
                 </div>
@@ -430,171 +465,264 @@
 
 @code {
     [Parameter]
-    public string AppealId { get; set; }
+    public string AppealId { get; set; } = ""; // Initialize to avoid potential null issues
 
-    private AppealForm appeal;
-    private bool loading = true;
-    private bool isSaving = false;
-    private string newStatus = "";
-    private string newComment = "";
-    private string newGeneralComment = "";
+    // --- State Variables ---
+    private AppealForm? appeal; // The loaded appeal data (nullable)
+    private bool loading = true; // Tracks initial loading state
+    private bool isSaving = false; // Tracks state during save operations (status/comment)
+
+    // --- Input Model Properties for Admin Actions ---
+    private string newStatus = ""; // Bound to the status dropdown
+    private string newComment = ""; // Bound to the status comment textarea
+    private string newGeneralComment = ""; // Bound to the general comment textarea
+
+    // --- Lifecycle Methods ---
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadAppeal();
+        // Base initialization if needed
+        await base.OnInitializedAsync();
+        // Loading is triggered by OnParametersSetAsync
     }
 
     protected override async Task OnParametersSetAsync()
     {
+        // This method runs when parameters are set, including the initial load
+        // and when navigating between different appeal IDs on the same component instance.
         await LoadAppeal();
     }
 
+    // --- Data Loading ---
+
     private async Task LoadAppeal()
     {
+        // Check if the AppealId parameter is valid
         if (string.IsNullOrEmpty(AppealId))
         {
+            appeal = null; // Ensure appeal is null if ID is missing
+            loading = false;
+            StateHasChanged(); // Update UI
             return;
         }
 
         try
         {
             loading = true;
+            StateHasChanged(); // Show loading indicator immediately
+
+            // Create a DbContext instance using the factory
             await using var context = await ContextFactory.CreateDbContextAsync();
-            
+
+            // Fetch the specific appeal by ID from the database.
+            // IMPORTANT: If UploadedFiles, Comments, Courses are separate related entities
+            // (e.g., in SQL Server), you MUST use .Include() here.
+            // If they are embedded within the AppealForm document (common in Cosmos DB),
+            // .Include() is not needed. Adjust based on your database structure.
             appeal = await context.Appeals
+                // Examples (Uncomment if using relational DB with separate tables):
+                // .Include(a => a.UploadedFiles)
+                // .Include(a => a.Comments)
+                // .Include(a => a.Semester1Courses)
+                // .Include(a => a.Semester2Courses)
                 .FirstOrDefaultAsync(a => a.Id == AppealId);
 
-            if (appeal != null && string.IsNullOrEmpty(newStatus))
+            // --- Post-Load Processing ---
+            if (appeal != null)
             {
-                newStatus = appeal.Status ?? "Pending";
+                // Initialize the status dropdown. Only set it from appeal.Status
+                // if it hasn't been manually changed by the admin yet OR if the appeal changed.
+                // This prevents resetting the dropdown if the user selects a status then adds a comment.
+                 if (string.IsNullOrEmpty(newStatus) || newStatus != appeal.Status)
+                 {
+                    newStatus = appeal.Status ?? "Pending"; // Default to Pending if null
+                 }
+
+                 // Sort comments descending by timestamp for display
+                 appeal.Comments = appeal.Comments.OrderByDescending(c => c.Timestamp).ToList();
+            }
+            else
+            {
+                // Appeal with the given ID was not found
+                Console.WriteLine($"Appeal with ID {AppealId} not found in the database.");
+                 newStatus = "Pending"; // Reset status dropdown if appeal not found
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error loading appeal details: {ex.Message}");
+            // Log any errors during data fetching
+            Console.WriteLine($"Error loading appeal details for ID {AppealId}: {ex.Message}");
+            appeal = null; // Ensure appeal is null on error
         }
         finally
         {
+            // Loading is complete, whether successful or not
             loading = false;
+            StateHasChanged(); // Update the UI to show content or 'not found' message
         }
     }
 
+    // --- Admin Actions ---
+
     private async Task UpdateAppealStatus()
     {
+        // Prevent action if appeal data isn't loaded or status is invalid
         if (appeal == null || string.IsNullOrWhiteSpace(newStatus))
         {
+            Console.WriteLine("Update status cancelled: Appeal not loaded or status is empty.");
             return;
         }
 
+        isSaving = true;
+        StateHasChanged(); // Show saving indicator
+
         try
         {
-            isSaving = true;
-
             await using var context = await ContextFactory.CreateDbContextAsync();
-            var appealToUpdate = await context.Appeals
-                .FirstOrDefaultAsync(a => a.Id == AppealId);
+
+            // Fetch the entity again within this context for tracking changes
+            var appealToUpdate = await context.Appeals.FirstOrDefaultAsync(a => a.Id == AppealId);
 
             if (appealToUpdate != null)
             {
+                // Update the status
                 appealToUpdate.Status = newStatus;
 
+                // Add a comment associated with this status change if provided
                 if (!string.IsNullOrWhiteSpace(newComment))
                 {
-                    if (appealToUpdate.Comments == null)
-                    {
-                        appealToUpdate.Comments = new List<AppealComment>();
-                    }
+                    // Ensure the Comments collection exists
+                    appealToUpdate.Comments ??= new List<AppealComment>();
 
                     var comment = new AppealComment
                     {
-                        Id = Guid.NewGuid().ToString(),
-                        Text = newComment,
-                        Status = newStatus,
+                        Id = Guid.NewGuid().ToString(), // Generate a unique ID for the comment
+                        Text = newComment.Trim(),
+                        Status = newStatus, // Link comment to this status change
                         Timestamp = DateTime.UtcNow,
-                        AdminId = "current-admin-id", // Replace with actual admin ID from authentication
-                        AdminName = "Admin User" // Replace with actual admin name from authentication
+                        AdminId = "admin_placeholder_id", // Get from AuthenticationStateProvider or HttpContext.User
+                        AdminName = "Admin User"          // Get from AuthenticationStateProvider or HttpContext.User
                     };
-
                     appealToUpdate.Comments.Add(comment);
+                    Console.WriteLine($"Added status comment for appeal {AppealId}.");
                 }
 
+                // Save changes to the database
                 await context.SaveChangesAsync();
+                Console.WriteLine($"Successfully updated status for appeal {AppealId} to {newStatus}.");
+
+                // Refresh the appeal data on the page to show the update
                 await LoadAppeal();
+
+                // Clear the comment input field after successful submission
                 newComment = "";
+            }
+            else
+            {
+                 Console.WriteLine($"Update status failed: Appeal {AppealId} not found during update.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error updating appeal status: {ex.Message}");
+            Console.WriteLine($"Error updating appeal status for ID {AppealId}: {ex.Message}");
         }
         finally
         {
             isSaving = false;
+            StateHasChanged(); // Hide saving indicator and update UI
         }
     }
 
     private async Task AddGeneralComment()
     {
+        // Prevent action if appeal data isn't loaded or comment is empty
         if (appeal == null || string.IsNullOrWhiteSpace(newGeneralComment))
         {
+             Console.WriteLine("Add comment cancelled: Appeal not loaded or comment is empty.");
             return;
         }
 
+        isSaving = true;
+        StateHasChanged(); // Show saving indicator
+
         try
         {
-            isSaving = true;
-
             await using var context = await ContextFactory.CreateDbContextAsync();
-            var appealToUpdate = await context.Appeals
-                .FirstOrDefaultAsync(a => a.Id == AppealId);
+            // Fetch the entity again for tracking
+            var appealToUpdate = await context.Appeals.FirstOrDefaultAsync(a => a.Id == AppealId);
 
             if (appealToUpdate != null)
             {
-                if (appealToUpdate.Comments == null)
-                {
-                    appealToUpdate.Comments = new List<AppealComment>();
-                }
+                // Ensure the Comments collection exists
+                appealToUpdate.Comments ??= new List<AppealComment>();
 
                 var comment = new AppealComment
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Text = newGeneralComment,
-                    Status = null,
+                    Text = newGeneralComment.Trim(),
+                    Status = null, // Indicate this is a general comment, not tied to a status change
                     Timestamp = DateTime.UtcNow,
-                    AdminId = "current-admin-id", // Replace with actual admin ID from authentication
-                    AdminName = "Admin User" // Replace with actual admin name from authentication
+                    AdminId = "admin_placeholder_id",
+                    AdminName = "Admin User"
                 };
-
                 appealToUpdate.Comments.Add(comment);
+                Console.WriteLine($"Added general comment for appeal {AppealId}.");
+
                 await context.SaveChangesAsync();
+                Console.WriteLine($"Successfully saved general comment for appeal {AppealId}.");
+
+
+                // Refresh data to show the new comment
                 await LoadAppeal();
+
+                // Clear the input field
                 newGeneralComment = "";
+            }
+             else
+            {
+                 Console.WriteLine($"Add comment failed: Appeal {AppealId} not found during update.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error adding general comment: {ex.Message}");
+            Console.WriteLine($"Error adding general comment for ID {AppealId}: {ex.Message}");
         }
         finally
         {
             isSaving = false;
+            StateHasChanged(); // Hide saving indicator and update UI
         }
     }
 
+    // --- Navigation & Helpers ---
+
     private void GoBack()
     {
+        // Navigate back to the main admin page or previous page
         NavManager.NavigateTo("/admin");
     }
 
-    private string GetStatusBadgeClass(string status)
+    // Helper method to generate the download URL for the API endpoint
+    private string GetDownloadUrl(string fileId)
     {
-        return status switch
+        // Ensure fileId is properly encoded to be part of a URL path segment
+        // System.Net.WebUtility is generally preferred for path encoding over HttpUtility
+        var encodedFileId = System.Net.WebUtility.UrlEncode(fileId);
+
+        // Construct the relative URL pointing to your DownloadController action
+        return $"api/download/{encodedFileId}";
+    }
+
+    // Helper method to determine the CSS class for status badges
+    private string GetStatusBadgeClass(string? status) // Allow nullable status
+    {
+        return status switch // Using switch expression for conciseness
         {
             "Approved" => "bg-success",
             "Rejected" => "bg-danger",
-            "Pending" => "bg-warning text-dark",
-            "More Information Needed" => "bg-info text-dark",
-            _ => "bg-secondary"
+            "Pending" => "bg-warning text-dark", // Added text-dark for better readability on yellow
+            "More Information Needed" => "bg-info text-dark", // Added text-dark for better readability on light blue
+            _ => "bg-secondary" // Default for null or unexpected statuses
         };
     }
 }

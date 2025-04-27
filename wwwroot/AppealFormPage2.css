@@ -24,7 +24,7 @@ h1 {
 
 h2 {
     background: #D97A7A;
-    color: white;
+    color: #2E2E2E;
     padding: 10px;
     border-radius: 5px;
 }
@@ -128,8 +128,8 @@ h2 {
 
 .file-select-btn {
     display: inline-block;
-    background-color: #6c757d;
-    color: white;
+    background-color: #D97A7A;
+    color: #2E2E2E;
     padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;

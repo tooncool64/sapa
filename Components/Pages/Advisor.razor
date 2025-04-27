@@ -1,101 +1,11 @@
 ﻿@page "/advisor"
-@inject NavigationManager Navigation
-@inject CosmosContext DbContext
+@using Microsoft.AspNetCore.Authorization
+<!--- "at"attribute [Authorize(Roles = "Advisor")] --->
 
 <PageTitle>Advisor Dashboard</PageTitle>
 
 <h3>Advisor Page</h3>
 
-@if (isLoading)
-{
-    <p>Loading student information...</p>
-}
-else if (isError)
-{
-    <p style="color:red;">Error loading academic plan.</p>
-}
-else if (form != null)
-{
-    <div class="card">
-        <h4>Student Academic Plan</h4>
-        <p><strong>Student Name:</strong> @form.Name</p>
-        <p><strong>Student ID:</strong> @form.StudentId</p>
-        <p><strong>Degree Program:</strong> @form.DegreeProgram</p>
-        <p><strong>Expected Graduation:</strong> @form.GradDate?.ToShortDateString()</p>
-        <p><strong>Current GPA:</strong> @form.GPA</p>
+<p>Only users in the Advisor role can view this page.</p>
 
-        <h5>Semester 1 Courses</h5>
-        <ul>
-            @foreach (var course in form.Semester1Courses)
-            {
-                <li>@course.CourseNumber - @course.CourseName (@course.CreditHours credits)</li>
-            }
-        </ul>
-
-        <h5>Semester 2 Courses</h5>
-        <ul>
-            @foreach (var course in form.Semester2Courses)
-            {
-                <li>@course.CourseNumber - @course.CourseName (@course.CreditHours credits)</li>
-            }
-        </ul>
-
-        <div class="approval-buttons" style="margin-top:20px;">
-            <button class="btn btn-success" @onclick="ApprovePlan">Approve</button>
-            <button class="btn btn-danger" @onclick="RejectPlan">Reject</button>
-        </div>
-    </div>
-}
-else
-{
-    <p>No student plan to review. Please check the link provided in your email.</p>
-}
-
-@code {
-    private AppealForm? form;
-    private bool isLoading = true;
-    private bool isError = false;
-
-    protected override async Task OnInitializedAsync()
-    {
-        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
-        if (Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query).TryGetValue("id", out var id))
-        {
-            try
-            {
-                form = await DbContext.Appeals.FindAsync(id.ToString());
-                isLoading = false;
-            }
-            catch
-            {
-                isError = true;
-                isLoading = false;
-            }
-        }
-        else
-        {
-            isError = true;
-            isLoading = false;
-        }
-    }
-
-    private async Task ApprovePlan()
-    {
-        if (form != null)
-        {
-            form.AdvisorApprovalStatus = "Approved";
-            await DbContext.SaveChangesAsync();
-            Navigation.NavigateTo("/advisor-thankyou");
-        }
-    }
-
-    private async Task RejectPlan()
-    {
-        if (form != null)
-        {
-            form.AdvisorApprovalStatus = "Rejected";
-            await DbContext.SaveChangesAsync();
-            Navigation.NavigateTo("/advisor-thankyou");
-        }
-    }
-}
+<p>As of 3/25/25, work on this page has not been done. The message above and this message are purely placeholders.</p> 

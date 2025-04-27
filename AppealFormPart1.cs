@@ -21,9 +21,6 @@ public class AppealFormPart1
 
     [Required(ErrorMessage = "Major is required")]
     public string Major { get; set; } = string.Empty;
-
-    [Required(ErrorMessage = "Appeal explanation is required")]
-    public string AppealExplanation { get; set; } = string.Empty;
     
     [Required(ErrorMessage = "You must acknowledge this statement")]
     [Range(typeof(bool), "true", "true", ErrorMessage = "You must acknowledge this statement")]

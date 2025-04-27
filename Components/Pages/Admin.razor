@@ -19,8 +19,6 @@
     <nav class="sidebar">
         <ul>
             <li class="active"><a href="#" onclick="event.preventDefault(); showSection('dashboard')">Dashboard</a></li>
-            <li><a href="#" onclick="event.preventDefault(); showSection('appeals')">Appeals</a></li>
-            <li><a href="#" onclick="event.preventDefault(); showSection('statusUpdate')">Status Update</a></li>
             <li><a href="#" onclick="event.preventDefault(); showSection('options')">Options</a></li>
         </ul>
     </nav>
@@ -28,41 +26,9 @@
         <section id="dashboard" class="section active">
             <h1>Dashboard</h1>
             <AppealCardInfo></AppealCardInfo>
-            <h2>Recent Submissions</h2>
-            <!-- Filter Dropdown -->
-            <label for="filterStatus"><strong>Filter by Status:</strong></label>
-            <select id="filterStatus" onchange="filterAppealsByStatus()">
-                <option value="All">All</option>
-                <option value="Pending">Pending</option>
-                <option value="Closed">Closed</option>
-            </select>
-
-            <table>
-                <thead>
-                <tr>
-                    <th>Appeal</th>
-                    <th>Comments</th>
-                    <th>Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr data-status="Pending" data-id="0">
-                    <td>Appeal 1</td>
-                    <td>0</td>
-                    <td>
-                        <span class="status-label">Pending</span>
-                        <button onclick="toggleAppealStatus(this)" class="close-btn">Close</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-            
-        <section id="appeals" class="section">
-            <AppealsDashboard 
-                Title="Student Appeals Dashboard" 
+            <AppealsDashboard
                 OnAppealSelected="ViewAppealDetails" />
-
+            
             @code {
                 private void ViewAppealDetails(string appealId)
                 {
@@ -70,21 +36,10 @@
                 }
             }
         </section>
-            
-        <section id="statusUpdate" class="section">
-            <h1>Status Updates</h1>
-            <button class="accordion">Update 1</button>
-            <div class="panel">
-                <p>Status update details...</p>
-            </div>
-            <button class="accordion">Update 2</button>
-            <div class="panel">
-                <p>Status update details...</p>
-            </div>
-        </section>
-                <section id="options" class="section">
-                    <AppealSystemConfiguration></AppealSystemConfiguration>
-                    </section>
+
+        <section id="options" class="section">
+            <AppealSystemConfiguration></AppealSystemConfiguration>
+            </section>
     </main>
 </div>
 
