@@ -1,6 +1,7 @@
 ﻿@page "/advisor"
-@inject NavigationManager Navigation
-@inject CosmosContext DbContext
+@inject NavigationManager NavManager
+@inject IDbContextFactory<CosmosContext> DbFactory
+
 
 <PageTitle>Advisor Dashboard</PageTitle>
 
@@ -59,58 +60,62 @@ else
 }
 
 @code {
-    private AppealForm? form;            // Holds the student form loaded from Cosmos DB
-    private bool isLoading = true;        // True when loading data
-    private bool isError = false;         // True if error loading data
+    [Parameter]
+    public string id { get; set; } = string.Empty; // <-- capture id from the URL
 
-    // Runs when page is first loaded
+    private CosmosContext _dbContext;
+    private AppealForm? form;
+    private bool isLoading = true;
+    private bool isError = false;
+    private bool hasSubmitted = false;
+
     protected override async Task OnInitializedAsync()
     {
-        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        _dbContext = await DbFactory.CreateDbContextAsync();
 
-        // Try to get the 'id' parameter from the URL query string
-        if (Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query).TryGetValue("id", out var id))
+        if (!string.IsNullOrEmpty(id))
         {
             try
             {
-                // Load the AppealForm from Cosmos DB by Id
-                form = await DbContext.Appeals.FindAsync(id.ToString());
+                form = await _dbContext.Appeals.FindAsync(id);
+                if (form == null)
+                {
+                    isError = true;
+                }
                 isLoading = false;
             }
             catch
             {
-                // If error during fetch
                 isError = true;
                 isLoading = false;
             }
         }
         else
         {
-            // No id provided in URL
             isError = true;
             isLoading = false;
         }
     }
 
-    // Approve the student's plan
     private async Task ApprovePlan()
     {
         if (form != null)
         {
-            form.AdvisorApprovalStatus = "Approved";       // Update approval status
-            await DbContext.SaveChangesAsync();             // Save changes to Cosmos DB
-            Navigation.NavigateTo("/advisor-thankyou");     // Redirect to thank you page
+            form.AdvisorApprovalStatus = "Approved";
+            await _dbContext.SaveChangesAsync();
+            hasSubmitted = true;
+            Navigation.NavigateTo("/advisor-thankyou");
         }
     }
 
-    // Reject the student's plan
     private async Task RejectPlan()
     {
         if (form != null)
         {
-            form.AdvisorApprovalStatus = "Rejected";        // Update approval status
-            await DbContext.SaveChangesAsync();             // Save changes to Cosmos DB
-            Navigation.NavigateTo("/advisor-thankyou");     // Redirect to thank you page
+            form.AdvisorApprovalStatus = "Rejected";
+            await _dbContext.SaveChangesAsync();
+            hasSubmitted = true;
+            Navigation.NavigateTo("/advisor-thankyou");
         }
     }
 }
