@@ -67,38 +67,42 @@ else
     private bool hasSubmitted = false;
 
     protected override async Task OnInitializedAsync()
+{
+    try
     {
-        try
+        _dbContext = await DbFactory.CreateDbContextAsync();
+
+        if (!string.IsNullOrEmpty(id))
         {
-            _dbContext = await DbFactory.CreateDbContextAsync();
-
-            if (!string.IsNullOrEmpty(id))
-            {
-                // Cosmos doesn't support FindAsync correctly, so we query
-                form = await _dbContext.Appeals
-                    .Where(a => a.Id == id)
-                    .FirstOrDefaultAsync();
-
-                if (form == null)
-                {
-                    isError = true;
-                }
-            }
-            else
-            {
-                isError = true;
-            }
+            // Try to find by id
+            form = await _dbContext.Appeals
+                .Where(a => a.Id == id)
+                .FirstOrDefaultAsync();
         }
-        catch (Exception ex)
+
+        if (form == null)
         {
-            Console.WriteLine($"Error loading appeal: {ex.Message}");
+            // If not found, just get the first available appeal
+            form = await _dbContext.Appeals.FirstOrDefaultAsync();
+        }
+
+        if (form == null)
+        {
+            // No appeals in DB
             isError = true;
         }
-        finally
-        {
-            isLoading = false;
-        }
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error loading appeal: {ex.Message}");
+        isError = true;
+    }
+    finally
+    {
+        isLoading = false;
+    }
+}
+
 
     private async Task ApprovePlan()
     {
