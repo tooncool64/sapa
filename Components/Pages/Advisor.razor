@@ -1,7 +1,7 @@
 ﻿@page "/advisor"
 @using Microsoft.EntityFrameworkCore
 @inject NavigationManager Navigation
-@inject IDbContextFactory<CosmosContext> DbFactory
+@inject IServiceProvider ServiceProvider
 
 <PageTitle>Advisor Dashboard</PageTitle>
 
@@ -70,7 +70,8 @@ else
 {
     try
     {
-        _dbContext = await DbFactory.CreateDbContextAsync();
+        var dbFactory = ServiceProvider.GetRequiredService<IDbContextFactory<CosmosContext>>();
+            _dbContext = await dbFactory.CreateDbContextAsync();
 
         if (!string.IsNullOrEmpty(id))
         {
