@@ -1,0 +1,33 @@
+@page "/emailtest"
+@inject BlazorApp.Services.IEmailService EmailService
+
+<h3>Test Email Sending</h3>
+
+<button class="btn btn-primary" @onclick="SendTestEmail">Send Test Email</button>
+
+@if (!string.IsNullOrEmpty(statusMessage))
+{
+    <p>@statusMessage</p>
+}
+
+@code {
+    private string statusMessage = "";
+
+    private async Task SendTestEmail()
+    {
+        try
+        {
+            await EmailService.SendEmailAsync(
+                "dalvarezcontreras@stmartin.edu", // <-- send it to yourself first
+                "Test Email from SAP App",
+                "<p>Hello! This is a test email from your SAP App setup.</p>"
+            );
+
+            statusMessage = "Email sent successfully!";
+        }
+        catch (Exception ex)
+        {
+            statusMessage = $"Failed to send email: {ex.Message}";
+        }
+    }
+}

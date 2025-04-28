@@ -98,6 +98,9 @@ builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
 
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+
 builder.Services.AddScoped<IAppealFormService, AppealFormService>();
 builder.Services.AddScoped<AppealCardService>();
 

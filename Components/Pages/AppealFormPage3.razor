@@ -1,6 +1,7 @@
 @page "/appeal3"
 @inject IAppealFormService FormService
 @inject NavigationManager Navigation
+@inject IEmailService _emailService
 
 <PageTitle>Academic Plan</PageTitle>
 
@@ -355,6 +356,28 @@
 
             if (success)
             {
+                string advisorEmail = _page3Model.AdvisorEmail;
+
+                if (!string.IsNullOrEmpty(advisorEmail) && advisorEmail.EndsWith("@stmartin.edu"))
+                {
+                    // Generate the advisor approval link
+                    string advisorLink = $"https://sap-app-e2hbhkhuabe3hjd8.westus-01.azurewebsites.net/advisor?id={FormService.CurrentForm.Id}";
+
+                    // Create email subject and body
+                    string subject = "Student Academic Plan Approval Needed";
+                    string body = $@"
+                        <p>Dear Advisor,</p>
+                        <p>A student has submitted an academic plan that requires your review.</p>
+                        <p><strong>Student Name:</strong> {FormService.CurrentForm.Name}</p>
+                        <p><strong>Student ID:</strong> {FormService.CurrentForm.StudentId}</p>
+                        <p>Please click the link below to review and approve/reject the plan:</p>
+                        <p><a href='{advisorLink}'>View Academic Plan</a></p>
+                        <p>Thank you.</p>";
+
+                    // Send email (You need to inject IEmailService at the top first)
+                    await _emailService.SendEmailAsync(advisorEmail, subject, body);
+                }
+
                 // Reset the form for future use
                 FormService.ResetForm();
 
