@@ -1,34 +1,28 @@
 ﻿@page "/advisor"
 @using Microsoft.EntityFrameworkCore
 @inject NavigationManager Navigation
-@inject IServiceProvider ServiceProvider
+@inject IDbContextFactory<CosmosContext> DbFactory
 
 <PageTitle>Advisor Dashboard</PageTitle>
 
-<h3>Advisor Review Page</h3>
-
-<!-- Loading State -->
 @if (isLoading)
 {
     <p>Loading student academic plan...</p>
 }
-<!-- Error State -->
 else if (isError)
 {
-    <p style="color:red;">Error loading the academic plan. Please verify the link or contact support.</p>
+    <p style="color:red;">Error loading the academic plan.</p>
 }
-<!-- If Plan is Loaded Successfully -->
 else if (form != null)
 {
-    <div class="card">
-        <h4>Student Academic Plan</h4>
-        <p><strong>Student Name:</strong> @form.Name</p>
-        <p><strong>Student ID:</strong> @form.StudentId</p>
+    <div class="card p-4 shadow-sm">
+        <h2>Academic Plan</h2>
         <p><strong>Degree Program:</strong> @form.DegreeProgram</p>
         <p><strong>Expected Graduation Date:</strong> @form.GradDate?.ToShortDateString()</p>
         <p><strong>Current GPA:</strong> @form.GPA</p>
+        <p><strong>Cumulative Degree Hours:</strong> @form.DegreeHours</p>
 
-        <h5>Semester 1 Courses</h5>
+        <h4 class="mt-4">Semester 1 Courses</h4>
         <ul>
             @foreach (var course in form.Semester1Courses)
             {
@@ -36,7 +30,7 @@ else if (form != null)
             }
         </ul>
 
-        <h5>Semester 2 Courses</h5>
+        <h4 class="mt-4">Semester 2 Courses</h4>
         <ul>
             @foreach (var course in form.Semester2Courses)
             {
@@ -44,75 +38,52 @@ else if (form != null)
             }
         </ul>
 
-        <div class="approval-buttons" style="margin-top:20px;">
-            <button class="btn btn-success" @onclick="ApprovePlan">Approve</button>
+        <div class="mt-4">
+            <button class="btn btn-success me-2" @onclick="ApprovePlan">Approve</button>
             <button class="btn btn-danger" @onclick="RejectPlan">Reject</button>
         </div>
     </div>
 }
-<!-- If no student ID was provided -->
 else
 {
-    <p>No student academic plan found. Please check your email link.</p>
+    <p>No academic plan available for review.</p>
 }
 
 @code {
-    [Parameter]
-    public string id { get; set; } = string.Empty; // Capture the ID from URL
-
     private CosmosContext _dbContext;
     private AppealForm? form;
     private bool isLoading = true;
     private bool isError = false;
-    private bool hasSubmitted = false;
 
     protected override async Task OnInitializedAsync()
-{
-    try
     {
-        var dbFactory = ServiceProvider.GetRequiredService<IDbContextFactory<CosmosContext>>();
-            _dbContext = await dbFactory.CreateDbContextAsync();
-
-        if (!string.IsNullOrEmpty(id))
+        try
         {
-            // Try to find by id
-            form = await _dbContext.Appeals
-                .Where(a => a.Id == id)
-                .FirstOrDefaultAsync();
+            _dbContext = await DbFactory.CreateDbContextAsync();
+            form = await _dbContext.Appeals.FirstOrDefaultAsync(a => !string.IsNullOrEmpty(a.DegreeProgram));
+
+            if (form == null)
+            {
+                isError = true;
+            }
         }
-
-        if (form == null)
+        catch (Exception ex)
         {
-            // If not found, just get the first available appeal
-            form = await _dbContext.Appeals.FirstOrDefaultAsync();
-        }
-
-        if (form == null)
-        {
-            // No appeals in DB
+            Console.WriteLine($"Error loading academic plan: {ex.Message}");
             isError = true;
         }
+        finally
+        {
+            isLoading = false;
+        }
     }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error loading appeal: {ex.Message}");
-        isError = true;
-    }
-    finally
-    {
-        isLoading = false;
-    }
-}
-
 
     private async Task ApprovePlan()
     {
         if (form != null)
         {
-            form.AdvisorApprovalStatus = "Approved"; // Update approval field
-            _dbContext.Update(form);
+            form.AdvisorApprovalStatus = "Approved";
             await _dbContext.SaveChangesAsync();
-            hasSubmitted = true;
             Navigation.NavigateTo("/advisor-thankyou");
         }
     }
@@ -121,11 +92,11 @@ else
     {
         if (form != null)
         {
-            form.AdvisorApprovalStatus = "Rejected"; // Update approval field
-            _dbContext.Update(form);
+            form.AdvisorApprovalStatus = "Rejected";
             await _dbContext.SaveChangesAsync();
-            hasSubmitted = true;
             Navigation.NavigateTo("/advisor-thankyou");
         }
     }
 }
+
+
