@@ -93,7 +93,11 @@ else
         try
         {
             _dbContext = await DbFactory.CreateDbContextAsync();
-            form = await _dbContext.Appeals.FirstOrDefaultAsync();
+            if (!string.IsNullOrEmpty(id))
+            {
+                form = await _dbContext.Appeals.FirstOrDefaultAsync(x => x.Id == id);
+            }
+
 
             if (form == null)
             {
