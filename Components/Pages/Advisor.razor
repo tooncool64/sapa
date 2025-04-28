@@ -22,22 +22,55 @@ else if (form != null)
         <p><strong>Current GPA:</strong> @form.GPA</p>
         <p><strong>Cumulative Degree Hours:</strong> @form.DegreeHours</p>
 
-        <h4 class="mt-4">Semester 1 Courses</h4>
-        <ul>
-            @foreach (var course in form.Semester1Courses)
-            {
-                <li>@course.CourseNumber - @course.CourseName (@course.CreditHours credits)</li>
-            }
-        </ul>
+        <h5>Semester 1 Courses</h5>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Course Number</th>
+                        <th>Course Name</th>
+                        <th>Credit Hours</th>
+                        <th>Repeat</th>
+                        <th>Required for Major</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var course in form.Semester1Courses)
+                    {
+                        <tr>
+                            <td>@course.CourseNumber</td>
+                            <td>@course.CourseName</td>
+                            <td>@course.CreditHours</td>
+                            <td>@(course.IsRepeat ? "Yes" : "No")</td>
+                            <td>@(course.IsRequiredForMajor ? "Yes" : "No")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-        <h4 class="mt-4">Semester 2 Courses</h4>
-        <ul>
-            @foreach (var course in form.Semester2Courses)
-            {
-                <li>@course.CourseNumber - @course.CourseName (@course.CreditHours credits)</li>
-            }
-        </ul>
-
+            <h5>Semester 2 Courses</h5>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Course Number</th>
+                            <th>Course Name</th>
+                            <th>Credit Hours</th>
+                            <th>Repeat</th>
+                            <th>Required for Major</th>
+                            </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var course in form.Semester2Courses)
+                        {
+                            <tr>
+                                <td>@course.CourseNumber</td>
+                                <td>@course.CourseName</td>
+                                <td>@course.CreditHours</td>
+                                <td>@(course.IsRepeat ? "Yes" : "No")</td>
+                                <td>@(course.IsRequiredForMajor ? "Yes" : "No")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
         <div class="mt-4">
             <button class="btn btn-success me-2" @onclick="ApprovePlan">Approve</button>
             <button class="btn btn-danger" @onclick="RejectPlan">Reject</button>
