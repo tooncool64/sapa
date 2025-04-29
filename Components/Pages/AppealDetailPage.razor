@@ -104,6 +104,20 @@
                                                 <p class="fw-medium mb-0">@(appeal.ChangeMajor ? "Yes" : "No")</p>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-12 mb-3">
+                                                <label class="text-muted small mb-1">Advisor Review Status</label>
+                                                    @if (!string.IsNullOrWhiteSpace(appeal.AdvisorApprovalStatus))
+                                                    {
+                                                        <p class="fw-medium mb-0">@appeal.AdvisorApprovalStatus</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="text-muted mb-0">Pending</p> <!-- Default if somehow blank -->
+                                                    }
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
