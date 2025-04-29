@@ -80,6 +80,7 @@
                                 <th class="border-0">Student ID</th>
                                 <th class="border-0">Date Submitted</th>
                                 <th class="border-0">Status</th>
+                                <th class="border-0">Advisor Approval</th>
                                 <th class="border-0">Degree Program</th>
                                 <th class="border-0 text-end">Actions</th>
                             </tr>
@@ -106,6 +107,11 @@
                                     <td>
                                         <span class="badge @GetStatusBadgeClass(appeal.Status) rounded-pill px-3 py-2">
                                             @appeal.Status
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge @GetAdvisorStatusBadgeClass(appeal.AdvisorApprovalStatus) rounded-pill px-3 py-2">
+                                        @appeal.AdvisorApprovalStatus
                                         </span>
                                     </td>
                                     <td>
@@ -235,6 +241,17 @@
             filteredAppeals = filteredAppeals.Where(CustomFilter).ToList();
         }
     }
+    private string GetAdvisorStatusBadgeClass(string advisorStatus)
+    {
+        return advisorStatus switch
+        {
+            "Approved" => "bg-success",
+            "Rejected" => "bg-danger",
+            "Pending" => "bg-warning text-dark",
+            _ => "bg-secondary"
+        };
+    }
+
 }
 
 <style>
