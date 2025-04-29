@@ -743,6 +743,17 @@
             _ => "bg-secondary" // Default for null or unexpected statuses
         };
     }
+    private string GetAdvisorStatusDotClass(string status)
+    {
+        return status switch
+        {
+            "Approved" => "bg-approved",
+            "Rejected" => "bg-rejected",
+            "Pending" => "bg-pending",
+            _ => "bg-secondary" // fallback if somehow invalid status
+        };
+    }
+
 }
 
 <style>
