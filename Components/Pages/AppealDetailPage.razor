@@ -107,14 +107,18 @@
                                         <div class="row">
                                             <div class="col-12 mb-3">
                                                 <label class="text-muted small mb-1">Advisor Review Status</label>
-                                                    @if (!string.IsNullOrWhiteSpace(appeal.AdvisorApprovalStatus))
-                                                    {
-                                                        <p class="fw-medium mb-0">@appeal.AdvisorApprovalStatus</p>
-                                                    }
-                                                    else
-                                                    {
-                                                        <p class="text-muted mb-0">Pending</p> <!-- Default if somehow blank -->
-                                                    }
+                                                    <div class="d-flex align-items-center">
+                                                        @if (!string.IsNullOrWhiteSpace(appeal.AdvisorApprovalStatus))
+                                                        {
+                                                            <span class="status-dot me-2 @GetAdvisorStatusDotClass(appeal.AdvisorApprovalStatus)"></span>
+                                                            <p class="fw-medium mb-0">@appeal.AdvisorApprovalStatus</p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="status-dot me-2 bg-warning"></span>
+                                                            <p class="text-muted mb-0">Pending</p>
+                                                        }
+                                                    </div>
                                             </div>
                                         </div>
 
@@ -753,5 +757,23 @@
     
     .timeline-icon {
         min-width: 32px;
+    }
+    .status-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .bg-approved {
+        background-color: #28a745; /* Bootstrap green */
+    }
+
+    .bg-rejected {
+        background-color: #dc3545; /* Bootstrap red */
+    }
+
+    .bg-pending {
+        background-color: #ffc107; /* Bootstrap yellow */
     }
 </style>
