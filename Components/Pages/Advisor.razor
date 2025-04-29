@@ -1,5 +1,4 @@
 ﻿@page "/advisor"
-@page "/advisor/{id}"
 @using Microsoft.EntityFrameworkCore
 @inject NavigationManager Navigation
 @inject IDbContextFactory<CosmosContext> DbFactory
@@ -85,7 +84,8 @@ else
 
 @code {
     [Parameter]
-    public string id { get; set; } = string.Empty;
+    [SupplyParameterFromQuery]
+    public string id { get; set; }
 
     private CosmosContext _dbContext;
     private AppealForm? form;
