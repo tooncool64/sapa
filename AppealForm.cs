@@ -30,6 +30,10 @@ public class AppealForm
     public string AdvisorApprovalStatus { get; set; } = "Pending";
     
     public List<UploadedFileInfo> UploadedFiles { get; set; } = new List<UploadedFileInfo>();
+    
+    public new SemesterType? Semester1Label { get; set; }
+
+    public new SemesterType? Semester2Label { get; set; }
 
 }
 

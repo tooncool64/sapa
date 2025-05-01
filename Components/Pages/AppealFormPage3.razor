@@ -279,6 +279,8 @@
         _page3Model.GPA = FormService.CurrentForm.GPA;
         _page3Model.DegreeHours = FormService.CurrentForm.DegreeHours;
         _page3Model.ChangeMajor = FormService.CurrentForm.ChangeMajor;
+        _page3Model.Semester1Label = FormService.CurrentForm.Semester1Label;
+        _page3Model.Semester2Label = FormService.CurrentForm.Semester2Label;
 
         // Initialize course lists with at least one empty item if needed
         if (FormService.CurrentForm.Semester1Courses.Count == 0)
@@ -341,6 +343,8 @@
                 form.DegreeHours = _page3Model.DegreeHours;
                 form.ChangeMajor = _page3Model.ChangeMajor;
                 form.AdvisorEmail = _page3Model.AdvisorEmail;
+                form.Semester1Label = _page3Model.Semester1Label;
+                form.Semester2Label = _page3Model.Semester2Label;
 
 
                 // Convert SemesterCourseValid objects back to SemesterCourse objects
