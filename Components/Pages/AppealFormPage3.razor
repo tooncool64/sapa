@@ -6,17 +6,14 @@
 
 <PageTitle>Academic Plan</PageTitle>
 
-<head>
-    <link rel="stylesheet" href="AppealFormPage3.css"/>
-</head>
 <div class="container">
     <EditForm Model="@_page3Model" FormName="AcademicPlan" OnValidSubmit="@HandleValidSubmit">
-        <DataAnnotationsValidator/>
+        <DataAnnotationsValidator />
 
         @if (!string.IsNullOrEmpty(_errorMessage))
         {
             <div class="alert alert-danger" role="alert">
-                <i class="fas fa-exclamation-circle"></i>
+                <i class="fas fa-exclamation-circle"></i> @* Example icon usage *@
                 <span>@_errorMessage</span>
             </div>
         }
@@ -25,77 +22,70 @@
             <div class="card-header">
                 <h1>Academic Plan</h1>
             </div>
-            
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label id="label-degree-program">
-                            <span class="label-text">Degree Program</span>
-                            <InputText @bind-Value="_page3Model.DegreeProgram" class="form-control" placeholder="Your degree program..."/>
-                            <ValidationMessage For="@(() => _page3Model.DegreeProgram)"/>
-                        </label>
-                    </div>
-
-                    <div class="form-group">
-                        <label id="label-grad-date">
-                            <span class="label-text">Expected Graduation Date</span>
-                            <InputDate @bind-Value="_page3Model.GradDate" class="form-control"/>
-                            <ValidationMessage For="@(() => _page3Model.GradDate)"/>
-                        </label>
-                    </div>
+            <div class="card-body grid-layout"> @* Use grid for layout *@
+                <div class="form-group">
+                    <label id="label-degree-program">
+                        <span class="label-text">Degree Program</span>
+                        <InputText @bind-Value="_page3Model.DegreeProgram" class="form-control" placeholder="Your degree program..." />
+                        <ValidationMessage For="@(() => _page3Model.DegreeProgram)" />
+                    </label>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label id="label-gpa">
-                            <span class="label-text">Current Cumulative GPA</span>
-                            <InputNumber @bind-Value="_page3Model.GPA" class="form-control" placeholder="0.00"/>
-                            <ValidationMessage For="@(() => _page3Model.GPA)"/>
-                        </label>
-                    </div>
+                <div class="form-group">
+                    <label id="label-grad-date">
+                        <span class="label-text">Expected Graduation Date</span>
+                        <InputDate @bind-Value="_page3Model.GradDate" class="form-control" />
+                        <ValidationMessage For="@(() => _page3Model.GradDate)" />
+                    </label>
+                </div>
 
-                    <div class="form-group">
-                        <label id="label-degree-hours">
-                            <span class="label-text">Cumulative Degree Hours</span>
-                            <InputNumber @bind-Value="_page3Model.DegreeHours" class="form-control" placeholder="0"/>
-                            <ValidationMessage For="@(() => _page3Model.DegreeHours)"/>
-                        </label>
-                    </div>
+                <div class="form-group">
+                    <label id="label-gpa">
+                        <span class="label-text">Current Cumulative GPA</span>
+                        <InputNumber @bind-Value="_page3Model.GPA" class="form-control" placeholder="0.00" step="0.01"/> @* Added step for better number input UX *@
+                        <ValidationMessage For="@(() => _page3Model.GPA)" />
+                    </label>
+                </div>
 
-                    <div class="form-group">
-                        <label id="label-change-major">
-                            <span class="label-text">Is this a Change of Major?</span>
-                            <InputSelect @bind-Value="_page3Model.ChangeMajor" class="form-control">
-                                <option value="false">No</option>
-                                <option value="true">Yes</option>
-                            </InputSelect>
-                        </label>
-                    </div>
+                <div class="form-group">
+                    <label id="label-degree-hours">
+                        <span class="label-text">Cumulative Degree Hours</span>
+                        <InputNumber @bind-Value="_page3Model.DegreeHours" class="form-control" placeholder="0" />
+                        <ValidationMessage For="@(() => _page3Model.DegreeHours)" />
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label id="label-change-major">
+                        <span class="label-text">Is this a Change of Major?</span>
+                        <InputSelect @bind-Value="_page3Model.ChangeMajor" class="form-control">
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                        </InputSelect>
+                         @* No ValidationMessage needed for bool usually, unless required *@
+                    </label>
                 </div>
             </div>
         </section>
 
         <section id="semester1" class="card">
-            <div class="card-header">
-                <h2>Semester 1</h2>
-                <p class="subtitle">Please enter your planned courses for the first semester</p>
+            <div class="card-header semester-header">
+                <div>
+                    <h2>Semester 1</h2>
+                    <p class="subtitle">Please enter your planned courses for the first semester.</p>
+                </div>
+                <div class="form-group semester-select-group">
+                    <label for="semester1LabelSelect" class="sr-only">Semester 1 Label</label> @* Screen reader only label *@
+                    <InputSelect id="semester1LabelSelect" @bind-Value="_page3Model.Semester1Label" class="form-control form-control-sm">
+                        <option value="">-- Select Semester --</option>
+                        @foreach (var semesterValue in Enum.GetValues<SemesterType>())
+                        {
+                            <option value="@semesterValue">@semesterValue.ToString()</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => _page3Model.Semester1Label)" />
+                </div>
             </div>
-            
-                  
-            <div class="form-group compact">
-                <label for="semester1LabelSelect">Semester:</label> 
-                <InputSelect id="semester1LabelSelect" @bind-Value="_page3Model.Semester1Label" class="form-control">
-                    
-                    <option value="">-- Select Semester --</option> 
-                    
-                    @foreach (var semesterValue in Enum.GetValues<SemesterType>())
-                    {
-                        <option value="@semesterValue">@semesterValue.ToString()</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="@(() => _page3Model.Semester1Label)"/>
-            </div>
-            
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="course-table">
@@ -112,45 +102,40 @@
                             @for (var i = 0; i < 6; i++)
                             {
                                 var index = i;
+                                @if (_page3Model.Semester1Courses.Count <= index)
+                                {
+                                    _page3Model.Semester1Courses.Add(new SemesterCourseValid());
+                                }
                                 <tr>
-                                    @if (_page3Model.Semester1Courses.Count <= index)
-                                    {
-                                        _page3Model.Semester1Courses.Add(new SemesterCourseValid());
-                                    }
-                                    
                                     <td>
                                         <div class="form-group compact">
-                                            <InputText @bind-Value="_page3Model.Semester1Courses[index].CourseName" class="form-control" placeholder="Course name..."/>
-                                            <ValidationMessage For="@(() => _page3Model.Semester1Courses[index].CourseName)"/>
+                                            <InputText @bind-Value="_page3Model.Semester1Courses[index].CourseName" class="form-control" placeholder="Course name..." aria-label="Semester 1 Course Name @(index + 1)"/>
+                                            <ValidationMessage For="@(() => _page3Model.Semester1Courses[index].CourseName)" />
                                         </div>
                                     </td>
-                                    
                                     <td>
                                         <div class="form-group compact">
-                                            <InputText @bind-Value="_page3Model.Semester1Courses[index].CourseNumber" class="form-control" placeholder="e.g. CS101"/>
-                                            <ValidationMessage For="@(() => _page3Model.Semester1Courses[index].CourseNumber)"/>
+                                            <InputText @bind-Value="_page3Model.Semester1Courses[index].CourseNumber" class="form-control" placeholder="e.g. CS101" aria-label="Semester 1 Course Number @(index + 1)"/>
+                                            <ValidationMessage For="@(() => _page3Model.Semester1Courses[index].CourseNumber)" />
                                         </div>
                                     </td>
-                                    
                                     <td>
                                         <div class="form-group compact">
-                                            <InputNumber @bind-Value="_page3Model.Semester1Courses[index].CreditHours" class="form-control" placeholder="0"/>
-                                            <ValidationMessage For="@(() => _page3Model.Semester1Courses[index].CreditHours)"/>
+                                            <InputNumber @bind-Value="_page3Model.Semester1Courses[index].CreditHours" class="form-control" placeholder="0" aria-label="Semester 1 Credit Hours @(index + 1)"/>
+                                            <ValidationMessage For="@(() => _page3Model.Semester1Courses[index].CreditHours)" />
                                         </div>
                                     </td>
-                                    
                                     <td>
                                         <div class="form-group compact">
-                                            <InputSelect @bind-Value="_page3Model.Semester1Courses[index].IsRepeat" class="form-control select-sm">
+                                            <InputSelect @bind-Value="_page3Model.Semester1Courses[index].IsRepeat" class="form-control select-sm" aria-label="Semester 1 Repeat Course @(index + 1)">
                                                 <option value="false">No</option>
                                                 <option value="true">Yes</option>
                                             </InputSelect>
                                         </div>
                                     </td>
-                                    
                                     <td>
                                         <div class="form-group compact">
-                                            <InputSelect @bind-Value="_page3Model.Semester1Courses[index].IsRequiredForMajor" class="form-control select-sm">
+                                            <InputSelect @bind-Value="_page3Model.Semester1Courses[index].IsRequiredForMajor" class="form-control select-sm" aria-label="Semester 1 Required for Major @(index + 1)">
                                                 <option value="false">No</option>
                                                 <option value="true">Yes</option>
                                             </InputSelect>
@@ -165,25 +150,23 @@
         </section>
 
         <section id="semester2" class="card">
-            <div class="card-header">
-                <h2>Semester 2</h2>
-                <p class="subtitle">Please enter your planned courses for the second semester</p>
-            </div>
-            
-            <div class="form-group compact">
-                <label for="semester2LabelSelect">Semester:</label> 
-                <InputSelect id="semester2LabelSelect" @bind-Value="_page3Model.Semester2Label" class="form-control">
-                                
-                    <option value="">-- Select Semester --</option> 
-                                
-                    @foreach (var semesterValue in Enum.GetValues<SemesterType>())
-                    {
-                        <option value="@semesterValue">@semesterValue.ToString()</option>
-                    }
-                    </InputSelect>
-                <ValidationMessage For="@(() => _page3Model.Semester2Label)"/>
+             <div class="card-header semester-header">
+                <div>
+                    <h2>Semester 2</h2>
+                    <p class="subtitle">Please enter your planned courses for the second semester.</p>
                 </div>
-            
+                <div class="form-group semester-select-group">
+                    <label for="semester2LabelSelect" class="sr-only">Semester 2 Label</label>
+                    <InputSelect id="semester2LabelSelect" @bind-Value="_page3Model.Semester2Label" class="form-control form-control-sm">
+                        <option value="">-- Select Semester --</option>
+                        @foreach (var semesterValue in Enum.GetValues<SemesterType>())
+                        {
+                            <option value="@semesterValue">@semesterValue.ToString()</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => _page3Model.Semester2Label)" />
+                </div>
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="course-table">
@@ -200,45 +183,40 @@
                             @for (int i = 0; i < 6; i++)
                             {
                                 var index = i;
+                                @if (_page3Model.Semester2Courses.Count <= index)
+                                {
+                                    _page3Model.Semester2Courses.Add(new SemesterCourseValid());
+                                }
                                 <tr>
-                                    @if (_page3Model.Semester2Courses.Count <= index)
-                                    {
-                                        _page3Model.Semester2Courses.Add(new SemesterCourseValid());
-                                    }
-                                    
-                                    <td>
+                                     <td>
                                         <div class="form-group compact">
-                                            <InputText @bind-Value="_page3Model.Semester2Courses[index].CourseName" class="form-control" placeholder="Course name..."/>
-                                            <ValidationMessage For="@(() => _page3Model.Semester2Courses[index].CourseName)"/>
+                                            <InputText @bind-Value="_page3Model.Semester2Courses[index].CourseName" class="form-control" placeholder="Course name..." aria-label="Semester 2 Course Name @(index + 1)"/>
+                                            <ValidationMessage For="@(() => _page3Model.Semester2Courses[index].CourseName)" />
                                         </div>
                                     </td>
-                                    
                                     <td>
                                         <div class="form-group compact">
-                                            <InputText @bind-Value="_page3Model.Semester2Courses[index].CourseNumber" class="form-control" placeholder="e.g. CS101"/>
-                                            <ValidationMessage For="@(() => _page3Model.Semester2Courses[index].CourseNumber)"/>
+                                            <InputText @bind-Value="_page3Model.Semester2Courses[index].CourseNumber" class="form-control" placeholder="e.g. CS101" aria-label="Semester 2 Course Number @(index + 1)"/>
+                                            <ValidationMessage For="@(() => _page3Model.Semester2Courses[index].CourseNumber)" />
                                         </div>
                                     </td>
-                                    
                                     <td>
                                         <div class="form-group compact">
-                                            <InputNumber @bind-Value="_page3Model.Semester2Courses[index].CreditHours" class="form-control" placeholder="0"/>
-                                            <ValidationMessage For="@(() => _page3Model.Semester2Courses[index].CreditHours)"/>
+                                            <InputNumber @bind-Value="_page3Model.Semester2Courses[index].CreditHours" class="form-control" placeholder="0" aria-label="Semester 2 Credit Hours @(index + 1)"/>
+                                            <ValidationMessage For="@(() => _page3Model.Semester2Courses[index].CreditHours)" />
                                         </div>
                                     </td>
-                                    
                                     <td>
                                         <div class="form-group compact">
-                                            <InputSelect @bind-Value="_page3Model.Semester2Courses[index].IsRepeat" class="form-control select-sm">
+                                            <InputSelect @bind-Value="_page3Model.Semester2Courses[index].IsRepeat" class="form-control select-sm" aria-label="Semester 2 Repeat Course @(index + 1)">
                                                 <option value="false">No</option>
                                                 <option value="true">Yes</option>
                                             </InputSelect>
                                         </div>
                                     </td>
-                                    
                                     <td>
                                         <div class="form-group compact">
-                                            <InputSelect @bind-Value="_page3Model.Semester2Courses[index].IsRequiredForMajor" class="form-control select-sm">
+                                            <InputSelect @bind-Value="_page3Model.Semester2Courses[index].IsRequiredForMajor" class="form-control select-sm" aria-label="Semester 2 Required for Major @(index + 1)">
                                                 <option value="false">No</option>
                                                 <option value="true">Yes</option>
                                             </InputSelect>
@@ -252,21 +230,20 @@
             </div>
         </section>
 
-        <section class="card">
+        <section id="advisor-info" class="card">
             <div class="card-header">
                 <h2>Advisor Information</h2>
             </div>
-            <div class="card-body">
+            <div class="card-body"> @* Can use grid here too if more fields are added later *@
                 <div class="form-group">
-                    <label for="advisorEmail">
+                    <label for="advisorEmail"> @* Use for attribute when not wrapping *@
                         <span class="label-text">Advisor Email</span>
-                        <InputText @bind-Value="_page3Model.AdvisorEmail" class="form-control" placeholder="advisor@stmartin.edu" />
+                        <InputText id="advisorEmail" @bind-Value="_page3Model.AdvisorEmail" class="form-control" placeholder="advisor@stmartin.edu" />
                         <ValidationMessage For="@(() => _page3Model.AdvisorEmail)" />
                     </label>
                 </div>
             </div>
         </section>
-
 
         <div class="form-actions">
             <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">
