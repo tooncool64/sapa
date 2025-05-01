@@ -32,10 +32,10 @@ public class AppealFormPart2
     public List<SemesterCourseValid> Semester2Courses { get; set; } = new();
         
     [Required(ErrorMessage = "Please choose the semester you will be taking these courses.")]
-    public new SemesterType Semester1Label { get; set; }
+    public new SemesterType? Semester1Label { get; set; }
         
     [Required(ErrorMessage = "Please choose the semester you will be taking these courses.")]
-    public new SemesterType Semester2Label { get; set; }
+    public new SemesterType? Semester2Label { get; set; }
 
 }
 

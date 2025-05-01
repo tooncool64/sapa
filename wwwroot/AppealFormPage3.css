@@ -58,7 +58,7 @@ body {
 
 .card-header h1,
 .card-header h2 {
-    color: var(--primary-dark);
+    color: #D97A7A;
     margin: 0;
     padding: 0;
     border: none; /* Removed bottom border from h1/h2 */
