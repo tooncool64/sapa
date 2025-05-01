@@ -98,6 +98,7 @@
                                 <th>Required for Major</th>
                             </tr>
                         </thead>
+                              
                         <tbody>
                             @for (var i = 0; i < 6; i++)
                             {
@@ -109,25 +110,25 @@
                                 <tr>
                                     <td>
                                         <div class="form-group compact">
-                                            <InputText @bind-Value="_page3Model.Semester1Courses[index].CourseName" class="form-control" placeholder="Course name..." aria-label="Semester 1 Course Name @(index + 1)"/>
+                                            <InputText @bind-Value="_page3Model.Semester1Courses[index].CourseName" class="form-control" placeholder="Course name..." aria-label="@($"Semester 1 Course Name {index + 1}")"/> @* Corrected *@
                                             <ValidationMessage For="@(() => _page3Model.Semester1Courses[index].CourseName)" />
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group compact">
-                                            <InputText @bind-Value="_page3Model.Semester1Courses[index].CourseNumber" class="form-control" placeholder="e.g. CS101" aria-label="Semester 1 Course Number @(index + 1)"/>
+                                            <InputText @bind-Value="_page3Model.Semester1Courses[index].CourseNumber" class="form-control" placeholder="e.g. CS101" aria-label="@($"Semester 1 Course Number {index + 1}")"/> @* Corrected *@
                                             <ValidationMessage For="@(() => _page3Model.Semester1Courses[index].CourseNumber)" />
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group compact">
-                                            <InputNumber @bind-Value="_page3Model.Semester1Courses[index].CreditHours" class="form-control" placeholder="0" aria-label="Semester 1 Credit Hours @(index + 1)"/>
+                                            <InputNumber @bind-Value="_page3Model.Semester1Courses[index].CreditHours" class="form-control" placeholder="0" aria-label="@($"Semester 1 Credit Hours {index + 1}")"/> @* Corrected *@
                                             <ValidationMessage For="@(() => _page3Model.Semester1Courses[index].CreditHours)" />
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group compact">
-                                            <InputSelect @bind-Value="_page3Model.Semester1Courses[index].IsRepeat" class="form-control select-sm" aria-label="Semester 1 Repeat Course @(index + 1)">
+                                            <InputSelect @bind-Value="_page3Model.Semester1Courses[index].IsRepeat" class="form-control select-sm" aria-label="@($"Semester 1 Repeat Course {index + 1}")"> @* Corrected *@
                                                 <option value="false">No</option>
                                                 <option value="true">Yes</option>
                                             </InputSelect>
@@ -135,7 +136,7 @@
                                     </td>
                                     <td>
                                         <div class="form-group compact">
-                                            <InputSelect @bind-Value="_page3Model.Semester1Courses[index].IsRequiredForMajor" class="form-control select-sm" aria-label="Semester 1 Required for Major @(index + 1)">
+                                            <InputSelect @bind-Value="_page3Model.Semester1Courses[index].IsRequiredForMajor" class="form-control select-sm" aria-label="@($"Semester 1 Required for Major {index + 1}")"> @* Corrected *@
                                                 <option value="false">No</option>
                                                 <option value="true">Yes</option>
                                             </InputSelect>
@@ -179,6 +180,7 @@
                                 <th>Required for Major</th>
                             </tr>
                         </thead>
+                        
                         <tbody>
                             @for (int i = 0; i < 6; i++)
                             {
@@ -190,25 +192,25 @@
                                 <tr>
                                      <td>
                                         <div class="form-group compact">
-                                            <InputText @bind-Value="_page3Model.Semester2Courses[index].CourseName" class="form-control" placeholder="Course name..." aria-label="Semester 2 Course Name @(index + 1)"/>
+                                            <InputText @bind-Value="_page3Model.Semester2Courses[index].CourseName" class="form-control" placeholder="Course name..." aria-label="@($"Semester 2 Course Name {index + 1}")"/> @* Corrected *@
                                             <ValidationMessage For="@(() => _page3Model.Semester2Courses[index].CourseName)" />
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group compact">
-                                            <InputText @bind-Value="_page3Model.Semester2Courses[index].CourseNumber" class="form-control" placeholder="e.g. CS101" aria-label="Semester 2 Course Number @(index + 1)"/>
+                                            <InputText @bind-Value="_page3Model.Semester2Courses[index].CourseNumber" class="form-control" placeholder="e.g. CS101" aria-label="@($"Semester 2 Course Number {index + 1}")"/> @* Corrected *@
                                             <ValidationMessage For="@(() => _page3Model.Semester2Courses[index].CourseNumber)" />
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group compact">
-                                            <InputNumber @bind-Value="_page3Model.Semester2Courses[index].CreditHours" class="form-control" placeholder="0" aria-label="Semester 2 Credit Hours @(index + 1)"/>
+                                            <InputNumber @bind-Value="_page3Model.Semester2Courses[index].CreditHours" class="form-control" placeholder="0" aria-label="@($"Semester 2 Credit Hours {index + 1}")"/> @* Corrected *@
                                             <ValidationMessage For="@(() => _page3Model.Semester2Courses[index].CreditHours)" />
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group compact">
-                                            <InputSelect @bind-Value="_page3Model.Semester2Courses[index].IsRepeat" class="form-control select-sm" aria-label="Semester 2 Repeat Course @(index + 1)">
+                                            <InputSelect @bind-Value="_page3Model.Semester2Courses[index].IsRepeat" class="form-control select-sm" aria-label="@($"Semester 2 Repeat Course {index + 1}")"> @* Corrected *@
                                                 <option value="false">No</option>
                                                 <option value="true">Yes</option>
                                             </InputSelect>
@@ -216,7 +218,7 @@
                                     </td>
                                     <td>
                                         <div class="form-group compact">
-                                            <InputSelect @bind-Value="_page3Model.Semester2Courses[index].IsRequiredForMajor" class="form-control select-sm" aria-label="Semester 2 Required for Major @(index + 1)">
+                                            <InputSelect @bind-Value="_page3Model.Semester2Courses[index].IsRequiredForMajor" class="form-control select-sm" aria-label="@($"Semester 2 Required for Major {index + 1}")"> @* Corrected *@
                                                 <option value="false">No</option>
                                                 <option value="true">Yes</option>
                                             </InputSelect>
