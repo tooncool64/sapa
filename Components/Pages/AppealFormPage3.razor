@@ -81,10 +81,19 @@
                 <p class="subtitle">Please enter your planned courses for the first semester</p>
             </div>
             
-            <div class="form-group compact">
-                <InputText @bind-Value="_page3Model.Semester1Label" class="form-control" placeholder="Semester..."/>
-                <ValidationMessage For="@(() => _page3Model.Semester1Label)"/>
-                </div>
+                  
+    <div class="form-group compact">
+    <label for="semester1LabelSelect">Semester:</label> 
+        <InputSelect id="semester1LabelSelect" @bind-Value="_page3Model.Semester1Label" class="form-control">
+            @foreach (var semesterValue in Enum.GetValues<BlazorApp.SemesterType>())
+            {
+                <option value="@semesterValue">@semesterValue.ToString()</option> 
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => _page3Model.Semester1Label)"/>
+    </div>
+
+    
             
             <div class="card-body">
                 <div class="table-responsive">
