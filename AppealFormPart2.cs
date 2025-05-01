@@ -30,6 +30,12 @@ public class AppealFormPart2
 
     [Required(ErrorMessage = "At least one course is required per semester")]
     public List<SemesterCourseValid> Semester2Courses { get; set; } = new();
+        
+    [Required(ErrorMessage = "Please choose the semester you will be taking these courses.")]
+    public new SemesterType Semester1Label { get; set; }
+        
+    [Required(ErrorMessage = "Please choose the semester you will be taking these courses.")]
+    public new SemesterType Semester2Label { get; set; }
 
 }
 
@@ -48,3 +54,10 @@ public class SemesterCourseValid : CourseBase
 
 public class SemesterCourse : CourseBase
 { }
+
+public enum SemesterType
+{
+    Summer,
+    Fall,
+    Spring
+}

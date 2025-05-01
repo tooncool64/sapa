@@ -11,23 +11,10 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Identity.Web;
-using QuestPDF.Infrastructure;
-using SAPA.Components.PDF.Templates;
-using SAPA.Components.PDF.Data;
-using QuestPDF.Fluent;
 using Microsoft.Identity.Web.UI;
 using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
-
-//QuestPDF free license
-QuestPDF.Settings.License = LicenseType.Community;
-
-//QuestPDF compiler
-var model = AppealDocumentDataSource.GetSampleAppeal(); // Get data
-    var document = new AppealDocument(model);
-
-   // document.GeneratePdf("StudentAppeal.pdf"); // Save as PDF
 
 builder.Services.AddControllersWithViews();
 

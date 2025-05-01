@@ -9,91 +9,95 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = BlazorApp
 build_property.RootNamespace = BlazorApp
-build_property.ProjectDir = C:\Users\israe\Downloads\sapa\
+build_property.ProjectDir = C:\Users\Micah\RiderProjects\SAPApp\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\israe\Downloads\sapa
+build_property.MSBuildProjectDirectory = C:\Users\Micah\RiderProjects\SAPApp
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/israe/Downloads/sapa/Components/App.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/AppealCardInfo.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/AppealCardInfo.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHBlYWxDYXJkSW5mby5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/AppealsDashboard.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/AppealsDashboard.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHBlYWxzRGFzaGJvYXJkLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/AppealSystemConfiguration.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/AppealSystemConfiguration.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHBlYWxTeXN0ZW1Db25maWd1cmF0aW9uLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/Pages/Admin.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/Admin.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/Pages/Advisor.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/Advisor.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZHZpc29yLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/Pages/AppealDetailPage.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/AdvisorThankYou.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZHZpc29yVGhhbmtZb3UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/AppealDetailPage.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcHBlYWxEZXRhaWxQYWdlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/Pages/AppealFormPage1.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/AppealFormPage1.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcHBlYWxGb3JtUGFnZTEucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/Pages/AppealFormPage2.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/AppealFormPage2.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcHBlYWxGb3JtUGFnZTIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/Pages/AppealFormPage3.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/AppealFormPage3.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcHBlYWxGb3JtUGFnZTMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/Pages/Confirmation.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/Confirmation.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb25maXJtYXRpb24ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/Pages/EmailTest.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/EmailTest.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFbWFpbFRlc3QucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/Pages/Error.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/Pages/Home.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/Pages/Logged-out.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/Logged-out.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMb2dnZWQtb3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/Pages/Logout.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Pages/Logout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMb2dvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/Routes.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/_Imports.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/israe/Downloads/sapa/Components/Layout/MainLayout.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-qgsvw684bo
 
-[C:/Users/israe/Downloads/sapa/Components/Layout/NavMenu.razor]
+[C:/Users/Micah/RiderProjects/SAPApp/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-g8o6n169oq
