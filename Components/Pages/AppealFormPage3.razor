@@ -82,18 +82,19 @@
             </div>
             
                   
-    <div class="form-group compact">
-    <label for="semester1LabelSelect">Semester:</label> 
-        <InputSelect id="semester1LabelSelect" @bind-Value="_page3Model.Semester1Label" class="form-control">
-            @foreach (var semesterValue in Enum.GetValues<BlazorApp.SemesterType>())
-            {
-                <option value="@semesterValue">@semesterValue.ToString()</option> 
-            }
-        </InputSelect>
-        <ValidationMessage For="@(() => _page3Model.Semester1Label)"/>
-    </div>
-
-    
+            <div class="form-group compact">
+                <label for="semester1LabelSelect">Semester:</label> 
+                <InputSelect id="semester1LabelSelect" @bind-Value="_page3Model.Semester1Label" class="form-control">
+                    
+                    <option value="">-- Select Semester --</option> 
+                    
+                    @foreach (var semesterValue in Enum.GetValues<SemesterType>())
+                    {
+                        <option value="@semesterValue">@semesterValue.ToString()</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => _page3Model.Semester1Label)"/>
+            </div>
             
             <div class="card-body">
                 <div class="table-responsive">
@@ -168,6 +169,20 @@
                 <h2>Semester 2</h2>
                 <p class="subtitle">Please enter your planned courses for the second semester</p>
             </div>
+            
+            <div class="form-group compact">
+                <label for="semester2LabelSelect">Semester:</label> 
+                <InputSelect id="semester2LabelSelect" @bind-Value="_page3Model.Semester2Label" class="form-control">
+                                
+                    <option value="">-- Select Semester --</option> 
+                                
+                    @foreach (var semesterValue in Enum.GetValues<SemesterType>())
+                    {
+                        <option value="@semesterValue">@semesterValue.ToString()</option>
+                    }
+                    </InputSelect>
+                <ValidationMessage For="@(() => _page3Model.Semester2Label)"/>
+                </div>
             
             <div class="card-body">
                 <div class="table-responsive">
