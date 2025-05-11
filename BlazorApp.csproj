@@ -27,4 +27,8 @@
     <PackageReference Include="QuestPDF" Version="2024.12.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\.well-known\microsoft-identity-association.json" />
+  </ItemGroup>
+
 </Project>
