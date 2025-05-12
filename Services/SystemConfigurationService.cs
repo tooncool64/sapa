@@ -1,11 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Hosting;
+﻿using System.Text.Json;
 
-namespace BlazorApp
+namespace BlazorApp.Services
 {
     public interface IAppealClosingDateService
     {

@@ -1,8 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
-namespace BlazorApp;
-
-using System.ComponentModel.DataAnnotations;
+namespace BlazorApp.Services;
 
 public interface IAppealFormService
 {

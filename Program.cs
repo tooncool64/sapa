@@ -4,14 +4,8 @@ using BlazorApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI;
 using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -71,9 +65,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStat
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Admin", policy =>
-        policy.RequireClaim("roles", "Admin"))
-    .AddPolicy("Advisor", policy => 
-        policy.RequireClaim("roles", "Advisor"));
+        policy.RequireClaim("roles", "Admin"));
 
 builder.Services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme, 
     options => {

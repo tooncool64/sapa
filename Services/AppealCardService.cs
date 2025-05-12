@@ -20,9 +20,6 @@ namespace BlazorApp.Services
             var pendingCount = await context.Appeals.CountAsync(a => a.Status == "Pending");
             var approvedCount = await context.Appeals.CountAsync(a => a.Status == "Approved");
             var rejectedCount = await context.Appeals.CountAsync(a => a.Status == "Rejected");
-            // Note: Assumes your Appeal entity has a string property named 'Status'
-            // and the possible values are exactly "Pending", "Approved", "Denied".
-            // Adjust the string values if your actual statuses differ.
 
             return new Dictionary<string, int>
             {
